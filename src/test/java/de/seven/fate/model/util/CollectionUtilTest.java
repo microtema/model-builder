@@ -28,31 +28,20 @@ public class CollectionUtilTest {
 
     @Test
     public void testRandomFromList() throws Exception {
-        assertNotEquals(sut.first(list), list);
-    }
 
-    @Test
-    public void testRandomFromSet() throws Exception {
-        assertNotEquals(sut.first(set), set);
-    }
-
-    @Test
-    public void testRandom1() throws Exception {
-
+        assertNotEquals(sut.first(list), sut.randomList(list));
     }
 
     @Test
     public void testFirst() throws Exception {
 
+        assertEquals(list.get(0), sut.first(list));
     }
 
     @Test
-    public void testRandom2() throws Exception {
+    public void testRandom() throws Exception {
 
+        assertNotEquals(list.get(0), sut.random(list));
     }
 
-    @Test
-    public void testRandom3() throws Exception {
-
-    }
 }

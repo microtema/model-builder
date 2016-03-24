@@ -6,6 +6,8 @@ import de.seven.fate.model.util.NumberUtil;
 
 import java.util.*;
 
+import static de.seven.fate.model.adapter.ModelRandomAdapterFactory.initPropertiesWithRandomValues;
+
 
 public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
@@ -65,7 +67,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
 	private void initWithRandomValues(T model) {
 
-		//initPropertiesWithRandomValues(model);
+		initPropertiesWithRandomValues(model);
 	}
 
 	protected int randomSize() {

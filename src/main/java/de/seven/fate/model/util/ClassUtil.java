@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public final class ClassUtil {
 
-    private static final Logger LOGGER = Logger.getLogger(ClassUtil.class.getCanonicalName());
+    private static final Logger LOGGER = Logger.getLogger(ClassUtil.class.getName());
 
     private ClassUtil() {
         throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
@@ -47,21 +47,6 @@ public final class ClassUtil {
         return instance;
     }
 
-    public static Map<String, Object> getProperties(Object obj) {
-
-        Map<String, Object> describe = new HashMap<>();
-        List<String> propertyNames = getPropertyNames(obj.getClass());
-
-        for (String propertyName : propertyNames) {
-            try {
-                describe.put(propertyName, PropertyUtils.getProperty(obj, propertyName));
-            } catch (Exception e) {
-                LOGGER.warning("Unable to find Property " + propertyName + " in Object " + obj.getClass().getCanonicalName());
-            }
-        }
-
-        return describe;
-    }
 
     public static List<String> getPropertyNames(Class<?> objectClass) {
 
