@@ -27,12 +27,6 @@ public class PersonBuilderTest {
 
         assertNotNull(persons);
         assertFalse(persons.isEmpty());
-
-        for (Person person : persons) {
-            assertNotNull(person.getName());
-            assertNotNull(person.getEmail());
-            assertNotNull(person.getPhoneNumber());
-        }
     }
 
     @Test
@@ -42,12 +36,6 @@ public class PersonBuilderTest {
 
         assertNotNull(persons);
         assertFalse(persons.isEmpty());
-
-        for (Person person : persons) {
-            assertNotNull(person.getName());
-            assertNotNull(person.getEmail());
-            assertNotNull(person.getPhoneNumber());
-        }
     }
 
     @Test
@@ -56,10 +44,18 @@ public class PersonBuilderTest {
         Person person = sut.min();
 
         assertNotNull(person);
+
+        assertNotNull(person.getId());
+        assertTrue(person.getId() >= 1000);
+
         assertNotNull(person.getName());
         assertNotNull(person.getEmail());
-        assertNotNull(person.getPhoneNumber());
 
+        assertNotNull(person.getPhoneNumber());
+        assertNotNull(person.getPosition());
+
+        assertNotNull(person.getUpdateDate());
+        assertNotNull(person.getAmount());
     }
 
     @Test

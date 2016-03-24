@@ -41,7 +41,7 @@ public class CollectionUtilTest {
     @Test
     public void testRandom() throws Exception {
 
-        assertNotEquals(list.get(0), sut.random(list));
+        assertNotNull(sut.random(list));
     }
 
 }

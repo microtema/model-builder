@@ -1,7 +1,10 @@
 package de.seven.fate.model.adapter;
 
 import de.seven.fate.model.adapter.bool.BooleanRandomPropertyValueAdapter;
+import de.seven.fate.model.adapter.date.DateRandomPropertyValueAdapter;
+import de.seven.fate.model.adapter.decimal.BigDecimalRandomPropertyValueAdapter;
 import de.seven.fate.model.adapter.integer.IntegerRandomPropertyValueAdapter;
+import de.seven.fate.model.adapter.longv.LongRandomPropertyValueAdapter;
 import de.seven.fate.model.adapter.string.StringRandomPropertyValueAdapter;
 import de.seven.fate.model.util.ClassUtil;
 import de.seven.fate.model.util.CollectionUtil;
@@ -23,6 +26,9 @@ public final class ModelRandomAdapterFactory {
         registerRandomAdapter(new StringRandomPropertyValueAdapter());
         registerRandomAdapter(new BooleanRandomPropertyValueAdapter());
         registerRandomAdapter(new IntegerRandomPropertyValueAdapter());
+        registerRandomAdapter(new DateRandomPropertyValueAdapter());
+        registerRandomAdapter(new BigDecimalRandomPropertyValueAdapter());
+        registerRandomAdapter(new LongRandomPropertyValueAdapter());
     }
 
     private ModelRandomAdapterFactory() {
@@ -35,17 +41,19 @@ public final class ModelRandomAdapterFactory {
         List<String> propertyNames = ClassUtil.getPropertyNames(model.getClass());
 
         for (String propertyName : propertyNames) {
-
             setProperty(model, propertyName);
         }
     }
 
     public static void registerRandomAdapter(RandomPropertyValueAdapter<?> valueAdapter) {
+        assert valueAdapter != null;
 
         MAP.put(valueAdapter.getValueType(), valueAdapter);
     }
 
     private static void setProperty(Object model, String propertyName) {
+        assert model != null;
+        assert propertyName != null;
 
         Class<?> modelType = model.getClass();
 
@@ -61,6 +69,7 @@ public final class ModelRandomAdapterFactory {
     }
 
     private static RandomPropertyValueAdapter<?> getRandomPropertyValueAdapter(Class<?> propertyType) {
+        assert propertyType != null;
 
         if (MAP.containsKey(propertyType)) {
             return MAP.get(propertyType);
