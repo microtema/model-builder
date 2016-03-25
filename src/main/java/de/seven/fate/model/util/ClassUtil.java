@@ -9,6 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @SuppressWarnings({"ALL", "unchecked"})
@@ -20,9 +21,10 @@ public final class ClassUtil {
         throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
     }
 
-    public static <T> T getGenericType(Class<?> classType) {
+    public static <T> T getGenericType(Class<?> type) {
+        assert type != null;
 
-        ParameterizedType genericSuperclass = (ParameterizedType) classType.getGenericSuperclass();
+        ParameterizedType genericSuperclass = (ParameterizedType) type.getGenericSuperclass();
 
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
 
@@ -30,25 +32,27 @@ public final class ClassUtil {
     }
 
     public static <T> T createInstance(Class<T> instanceType) {
+        assert instanceType != null;
 
         T instance = null;
 
         try {
-            instance = instanceType.newInstance();
+            return instanceType.newInstance();
         } catch (Exception e) {
-            LOGGER.warning("unable to create new instance of Type " + instanceType.getCanonicalName());
+            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + instanceType.getName(), e);
         }
 
-        return instance;
+        throw new IllegalArgumentException("unable to create new instance of Type " + instanceType.getName());
     }
 
 
-    public static List<String> getPropertyNames(Class<?> objectClass) {
+    public static List<String> getPropertyNames(Class<?> type) {
+        assert type != null;
 
         BeanInfo info;
 
         try {
-            info = Introspector.getBeanInfo(objectClass);
+            info = Introspector.getBeanInfo(type);
         } catch (IntrospectionException e) {
             throw new IllegalArgumentException(e);
         }
@@ -69,9 +73,11 @@ public final class ClassUtil {
         return list;
     }
 
-    public static Class<?> getPropertyType(String propertyName, Class<?> objType) {
+    public static Class<?> getPropertyType(String propertyName, Class<?> type) {
+        assert propertyName != null;
+        assert type != null;
 
-        List<Field> allFields = getAllFields(objType);
+        List<Field> allFields = getAllFields(type);
 
         for (Field field : allFields) {
 
@@ -84,6 +90,7 @@ public final class ClassUtil {
     }
 
     private static List<Field> getAllFields(Class<?> type) {
+        assert type != null;
 
         if (type.getSuperclass() != null) {
 

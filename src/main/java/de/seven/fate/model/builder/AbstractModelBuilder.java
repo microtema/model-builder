@@ -14,11 +14,18 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 	private static final int MIN_COLLECTION_SIZE = 1;
 	private static final int MAX_COLLECTION_SIZE = 10;
 
+	private static int randomCollectionSize() {
+
+		return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
+	}
+
+	@Override
 	public Class<T> getGenericType() {
 
 		return ClassUtil.getGenericType(getClass());
 	}
 
+	@Override
 	public T min() {
 
 		Class<T> modelType = getGenericType();
@@ -30,21 +37,25 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 		return model;
 	}
 
+	@Override
 	public T max() {
 
 		return min();
 	}
 
+	@Override
 	public T random() {
 
 		return random(new Random().nextBoolean());
 	}
 
+	@Override
 	public List<T> list() {
 
 		return list(randomCollectionSize());
 	}
 
+	@Override
 	public List<T> list(int size) {
 
 		List<T> list = new ArrayList<>();
@@ -54,6 +65,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 		return list;
 	}
 
+	@Override
 	public Set<T> set(int size) {
 
 		Set<T> set = new HashSet<>();
@@ -63,6 +75,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 		return set;
 	}
 
+	@Override
 	public Set<T> set() {
 
 		return set(randomCollectionSize());
@@ -71,11 +84,6 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 	private void initWithRandomValues(T model) {
 
 		initPropertiesWithRandomValues(model);
-	}
-
-	private int randomCollectionSize() {
-
-		return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
 	}
 
 	/*

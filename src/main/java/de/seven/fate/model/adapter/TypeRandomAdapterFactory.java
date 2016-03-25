@@ -13,11 +13,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Mario on 24.03.2016.
  */
 public final class TypeRandomAdapterFactory {
+
+    private static final Logger LOGGER = Logger.getLogger(TypeRandomAdapterFactory.class.getName());
 
     private static final Map<Class<?>, AbstractTypeRandomAdapter<?>> MAP = Collections.synchronizedMap(new HashMap<Class<?>, AbstractTypeRandomAdapter<?>>());
 
@@ -37,7 +41,7 @@ public final class TypeRandomAdapterFactory {
     }
 
     public static void initPropertiesWithRandomValues(Object model) {
-        assert model != null;
+//        assert model != null;
 
         List<String> propertyNames = ClassUtil.getPropertyNames(model.getClass());
 
@@ -49,17 +53,15 @@ public final class TypeRandomAdapterFactory {
     public static void registerAdapter(AbstractTypeRandomAdapter<?> valueAdapter) {
         assert valueAdapter != null;
 
-        synchronized (MAP) {
-            MAP.put(valueAdapter.getValueType(), valueAdapter);
-        }
+        MAP.put(valueAdapter.getValueType(), valueAdapter);
+
     }
 
     public static void unregisterAdapter(Class<?> valueAdapterType) {
         assert valueAdapterType != null;
 
-        synchronized (MAP) {
-            MAP.remove(valueAdapterType);
-        }
+        MAP.remove(valueAdapterType);
+
     }
 
     public static <T> AbstractTypeRandomAdapter<T> lookupRandomAdapter(Class<T> valueType) {
@@ -87,7 +89,7 @@ public final class TypeRandomAdapterFactory {
         try {
             BeanUtils.setProperty(model, propertyName, propertyValue);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Unable to set property: " + propertyName + " on model: " + model, e);
         }
     }
 
