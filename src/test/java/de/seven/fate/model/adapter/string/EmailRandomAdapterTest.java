@@ -13,12 +13,17 @@ public class EmailRandomAdapterTest {
     EmailRandomAdapter sut = new EmailRandomAdapter();
 
     @Test
-    public void randomValue() throws Exception {
+    public void randomValue(){
 
         String randomEmail = sut.randomValue();
 
         assertNotNull(randomEmail);
         assertTrue(randomEmail.contains("@"));
         assertTrue(randomEmail.contains("."));
+    }
+
+    @Test
+    public void getPropertyName() {
+        Assert.assertEquals("email", sut.getPropertyName());
     }
 }

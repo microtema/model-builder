@@ -12,8 +12,8 @@ public final class StringUtil {
             throw new NullPointerException("str should not be null");
         }
 
-        if (str.length() > maxLength) {
-            return str.substring(0, maxLength);
+        if (maxLength < str.length()) {
+            throw new IllegalArgumentException("str length should not be greater than: " + maxLength);
         }
 
         String temp = str;

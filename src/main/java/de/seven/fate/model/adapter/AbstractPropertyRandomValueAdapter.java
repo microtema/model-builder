@@ -4,6 +4,7 @@ import de.seven.fate.model.util.ClassUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class AbstractPropertyRandomValueAdapter<T> implements RandomPropertyValueAdapter<T> {
 
@@ -34,5 +35,10 @@ public abstract class AbstractPropertyRandomValueAdapter<T> implements RandomPro
     public Class<?> getValueType() {
 
         return ClassUtil.getGenericType(getClass());
+    }
+
+    public Set<String> getAdapterNames() {
+
+        return MAP.keySet();
     }
 }

@@ -13,11 +13,11 @@ public class CollectionUtilTest {
 
     CollectionUtil sut;
 
-    List<String> list = Arrays.asList("Foo", "Bar", "World", "Java", "JUnit", "Maven","JavaEE", "Git","EJB");
+    List<String> list = Arrays.asList("Foo", "Bar", "World", "Java", "JUnit", "Maven", "JavaEE", "Git", "EJB");
     Set<String> set = new HashSet<>(list);
 
     @Test
-    public void testRandomList() throws Exception {
+    public void testRandomList() {
 
         Collection<String> randomCollection = sut.randomList(list);
 
@@ -27,13 +27,13 @@ public class CollectionUtilTest {
 
 
     @Test
-    public void testRandomFromList() throws Exception {
+    public void testRandomFromList() {
 
         assertNotEquals(sut.first(list), sut.randomList(list));
     }
 
     @Test
-    public void testFirst() throws Exception {
+    public void testFirst() {
 
         assertEquals(list.get(0), sut.first(list));
     }

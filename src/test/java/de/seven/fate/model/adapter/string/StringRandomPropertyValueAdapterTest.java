@@ -3,6 +3,11 @@ package de.seven.fate.model.adapter.string;
 import de.seven.fate.model.person.Person;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.junit.Assert.*;
 
 /**
@@ -13,7 +18,7 @@ public class StringRandomPropertyValueAdapterTest {
     StringPropertyRandomValueAdapter sut = new StringPropertyRandomValueAdapter();
 
     @Test
-    public void randomValue() throws Exception {
+    public void randomValue() {
 
         String randomName = sut.randomValue("name", null);
 
@@ -21,10 +26,16 @@ public class StringRandomPropertyValueAdapterTest {
     }
 
     @Test
-    public void randomValueByClassType() throws Exception {
+    public void randomValueByClassType() {
 
         String randomName = sut.randomValue("name", Person.class);
 
         assertNotNull(randomName);
+    }
+
+    @Test
+    public void randomValueForEmail() {
+
+        assertEquals(new HashSet<String>(Arrays.asList("name", "email", "link", "phonenumber")), sut.getAdapterNames());
     }
 }

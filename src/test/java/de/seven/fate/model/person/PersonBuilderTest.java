@@ -15,13 +15,13 @@ public class PersonBuilderTest {
     PersonBuilder sut = new PersonBuilder();
 
     @Test
-    public void testGenericType() throws Exception {
+    public void testGenericType() {
 
         assertSame(Person.class, sut.getGenericType());
     }
 
     @Test
-    public void testList() throws Exception {
+    public void testList() {
 
         Collection<Person> persons = sut.list();
 
@@ -30,7 +30,7 @@ public class PersonBuilderTest {
     }
 
     @Test
-    public void testSet() throws Exception {
+    public void testSet() {
 
         Collection<Person> persons = sut.set();
 
@@ -39,7 +39,7 @@ public class PersonBuilderTest {
     }
 
     @Test
-    public void testMin() throws Exception {
+    public void testMin() {
 
         Person person = sut.min();
 
@@ -59,7 +59,7 @@ public class PersonBuilderTest {
     }
 
     @Test
-    public void testMax() throws Exception {
+    public void testMax() {
 
         Person person = sut.max();
 
@@ -71,7 +71,7 @@ public class PersonBuilderTest {
     }
 
     @Test
-    public void testRandom() throws Exception {
+    public void testRandom() {
 
         Person person = sut.random();
 
