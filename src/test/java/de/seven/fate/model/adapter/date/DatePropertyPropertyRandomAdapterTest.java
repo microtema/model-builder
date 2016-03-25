@@ -1,6 +1,5 @@
 package de.seven.fate.model.adapter.date;
 
-import de.seven.fate.model.person.Person;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -11,20 +10,14 @@ import static org.junit.Assert.*;
 /**
  * Created by Mario on 25.03.2016.
  */
-public class DatePropertyRandomValueAdapterTest {
+public class DatePropertyPropertyRandomAdapterTest {
 
-    DatePropertyRandomValueAdapter sut = new DatePropertyRandomValueAdapter();
+    DateRandomAdapter sut = new DateRandomAdapter();
 
     @Test
     public void randomValue() throws Exception {
 
-        assertNotNull(sut.randomValue("dob", null));
-    }
-
-    @Test
-    public void randomValueByClassType() {
-
-        assertNotNull(sut.randomValue("dob", Person.class));
+        assertNotNull(sut.randomValue("dob"));
     }
 
     @Test

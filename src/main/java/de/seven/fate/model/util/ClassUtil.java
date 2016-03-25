@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+@SuppressWarnings({"ALL", "unchecked"})
 public final class ClassUtil {
 
     private static final Logger LOGGER = Logger.getLogger(ClassUtil.class.getName());

@@ -1,6 +1,5 @@
 package de.seven.fate.model.adapter.string;
 
-import de.seven.fate.model.adapter.RandomValueAdapter;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -11,7 +10,7 @@ import static org.junit.Assert.*;
  */
 public class LinkRandomAdapterTest {
 
-    LinkRandomAdapter sut = new LinkRandomAdapter();
+    LinkPropertyRandomAdapter sut = new LinkPropertyRandomAdapter();
 
     @Test
     public void randomValue(){

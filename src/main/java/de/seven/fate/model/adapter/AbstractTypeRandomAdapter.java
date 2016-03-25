@@ -2,24 +2,25 @@ package de.seven.fate.model.adapter;
 
 import de.seven.fate.model.util.ClassUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractPropertyRandomValueAdapter<T> implements RandomPropertyValueAdapter<T> {
+public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<T> {
 
-    private final Map<String, RandomValueAdapter<T>> MAP = new HashMap<>();
+    private final Map<String, PropertyRandomAdapter<T>> MAP = Collections.synchronizedMap( new HashMap<String, PropertyRandomAdapter<T>>());
 
-    public void registerRandomAdapter(RandomValueAdapter<T>... valueAdapters) {
+    public void registerPropertyRandomAdapter(PropertyRandomAdapter<T>... valueAdapters) {
 
-        for (RandomValueAdapter<T> valueAdapter : valueAdapters) {
+        for (PropertyRandomAdapter<T> valueAdapter : valueAdapters) {
             MAP.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);
         }
     }
 
 
     @Override
-    public T randomValue(String propertyName, Class<?> objectType) {
+    public T randomValue(String propertyName) {
 
         String key = propertyName.toLowerCase();
 
@@ -27,10 +28,10 @@ public abstract class AbstractPropertyRandomValueAdapter<T> implements RandomPro
             return MAP.get(key).randomValue();
         }
 
-        return randomValueImpl(propertyName, objectType);
+        return randomValueDefault(propertyName);
     }
 
-    protected abstract T randomValueImpl(String propertyName, Class<?> objectType);
+    protected abstract T randomValueDefault(String propertyName);
 
     public Class<?> getValueType() {
 

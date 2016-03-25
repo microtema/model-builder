@@ -17,6 +17,7 @@ public class Person {
     private Date dob;
     private Date updateDate;
     private BigDecimal amount;
+    private Float phoneBill;
 
     public Long getId() {
         return id;
@@ -82,4 +83,11 @@ public class Person {
         this.amount = amount;
     }
 
+    public Float getPhoneBill() {
+        return phoneBill;
+    }
+
+    public void setPhoneBill(Float phoneBill) {
+        this.phoneBill = phoneBill;
+    }
 }

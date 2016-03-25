@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  */
 public class EmailRandomAdapterTest {
 
-    EmailRandomAdapter sut = new EmailRandomAdapter();
+    EmailPropertyRandomAdapter sut = new EmailPropertyRandomAdapter();
 
     @Test
     public void randomValue(){

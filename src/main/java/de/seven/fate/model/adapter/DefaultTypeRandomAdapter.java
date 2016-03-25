@@ -3,10 +3,10 @@ package de.seven.fate.model.adapter;
 /**
  * Created by Mario on 24.03.2016.
  */
-public class DefaultRandomValueAdapter implements  RandomPropertyValueAdapter<Object>  {
+public class DefaultTypeRandomAdapter extends AbstractTypeRandomAdapter<Object> {
 
     @Override
-    public Object randomValue(String propertyName, Class<?> objectType) {
+    protected Object randomValueDefault(String propertyName) {
         return null;
     }
 

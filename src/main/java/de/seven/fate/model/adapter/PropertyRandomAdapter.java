@@ -1,6 +1,6 @@
 package de.seven.fate.model.adapter;
 
-public interface RandomValueAdapter<T> {
+public interface PropertyRandomAdapter<T> {
 
     /**
      * @return random value for given propertyName

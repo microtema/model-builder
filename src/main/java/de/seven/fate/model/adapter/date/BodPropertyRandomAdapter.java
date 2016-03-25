@@ -1,6 +1,6 @@
 package de.seven.fate.model.adapter.date;
 
-import de.seven.fate.model.adapter.RandomValueAdapter;
+import de.seven.fate.model.adapter.PropertyRandomAdapter;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 /**
  * Created by Mario on 24.03.2016.
  */
-public class BodRandomAdapter implements RandomValueAdapter<Date> {
+public class BodPropertyRandomAdapter implements PropertyRandomAdapter<Date> {
 
     private static final GregorianCalendar CALENDAR = new GregorianCalendar();
 

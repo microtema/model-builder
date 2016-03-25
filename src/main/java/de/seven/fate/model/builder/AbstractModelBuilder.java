@@ -5,14 +5,14 @@ import de.seven.fate.model.util.ClassUtil;
 
 import java.util.*;
 
-import static de.seven.fate.model.adapter.RandomValueAdapterFactory.initPropertiesWithRandomValues;
+import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.initPropertiesWithRandomValues;
 
 
 public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
 
-	public static final int MIN_COLLECTION_SIZE = 1;
-	public static final int MAX_COLLECTION_SIZE = 10;
+	private static final int MIN_COLLECTION_SIZE = 1;
+	private static final int MAX_COLLECTION_SIZE = 10;
 
 	public Class<T> getGenericType() {
 
@@ -47,7 +47,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
 	public List<T> list(int size) {
 
-		List<T> list = new ArrayList<T>();
+		List<T> list = new ArrayList<>();
 
 		fillCollection(size, list);
 
@@ -56,7 +56,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
 	public Set<T> set(int size) {
 
-		Set<T> set = new HashSet<T>();
+		Set<T> set = new HashSet<>();
 
 		fillCollection(size, set);
 
@@ -73,7 +73,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 		initPropertiesWithRandomValues(model);
 	}
 
-	protected int randomCollectionSize() {
+	private int randomCollectionSize() {
 
 		return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
 	}
