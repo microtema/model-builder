@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
  */
 public class StringRandomPropertyValueAdapterTest {
 
-    StringRandomPropertyValueAdapter sut = new StringRandomPropertyValueAdapter();
+    StringPropertyRandomValueAdapter sut = new StringPropertyRandomValueAdapter();
 
     @Test
     public void randomValue() throws Exception {

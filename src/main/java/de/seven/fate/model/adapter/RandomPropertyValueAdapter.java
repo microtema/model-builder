@@ -9,5 +9,8 @@ public interface RandomPropertyValueAdapter<T> {
      */
     T randomValue(String propertyName, Class<?> objectType);
 
+    /**
+     * @return Type of property
+     */
     Class<?> getValueType();
 }

@@ -2,15 +2,17 @@ package de.seven.fate.model.builder;
 
 
 import de.seven.fate.model.util.ClassUtil;
-import de.seven.fate.model.util.NumberUtil;
 
 import java.util.*;
 
-import static de.seven.fate.model.adapter.ModelRandomAdapterFactory.initPropertiesWithRandomValues;
+import static de.seven.fate.model.adapter.RandomValueAdapterFactory.initPropertiesWithRandomValues;
 
 
 public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
+
+	public static final int MIN_COLLECTION_SIZE = 1;
+	public static final int MAX_COLLECTION_SIZE = 10;
 
 	public Class<T> getGenericType() {
 
@@ -34,12 +36,13 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 	}
 
 	public T random() {
+
 		return random(new Random().nextBoolean());
 	}
 
 	public List<T> list() {
 
-		return list(randomSize());
+		return list(randomCollectionSize());
 	}
 
 	public List<T> list(int size) {
@@ -62,7 +65,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
 	public Set<T> set() {
 
-		return set(randomSize());
+		return set(randomCollectionSize());
 	}
 
 	private void initWithRandomValues(T model) {
@@ -70,9 +73,9 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 		initPropertiesWithRandomValues(model);
 	}
 
-	protected int randomSize() {
+	protected int randomCollectionSize() {
 
-		return Math.max(1, new Random().nextInt(10));
+		return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
 	}
 
 	/*
@@ -80,12 +83,9 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 	 */
 	private void fillCollection(int size, Collection<T> collection) {
 
-		int randomModulo = Math.max(1, NumberUtil.random(0, size));
-
 		int count = 0;
 		while (count++ < size) {
-			boolean minOrMax = count % randomModulo == 0;
-			collection.add(random(minOrMax));
+			collection.add(random());
 		}
 	}
 

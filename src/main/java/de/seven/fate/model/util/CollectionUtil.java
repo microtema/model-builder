@@ -1,7 +1,6 @@
 package de.seven.fate.model.util;
 
-import org.apache.commons.collections4.CollectionUtils;
-
+import java.lang.reflect.Field;
 import java.util.*;
 
 public final class CollectionUtil {
@@ -35,7 +34,7 @@ public final class CollectionUtil {
 
     public static <E> E first(Collection<E> collection) {
 
-        if (CollectionUtils.isEmpty(collection)) {
+        if (isEmpty(collection)) {
             return null;
         }
 
@@ -44,6 +43,20 @@ public final class CollectionUtil {
         }
 
         throw new IllegalStateException("Should not happen");
+    }
+
+    private static <E> boolean isEmpty(Collection<E> collection) {
+        if (collection == null || collection.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    private static <E> boolean isEmpty(E[] array) {
+        if (array == null || array.length == 0) {
+            return true;
+        }
+        return false;
     }
 
     public static <E> E random(E[] values, E except) {
@@ -62,5 +75,13 @@ public final class CollectionUtil {
         }
 
         return null;
+    }
+
+    public static <E> List<E> asList(E[] array) {
+        if (isEmpty(array)) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.asList(array);
     }
 }

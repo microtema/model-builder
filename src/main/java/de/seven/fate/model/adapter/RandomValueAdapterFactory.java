@@ -1,13 +1,12 @@
 package de.seven.fate.model.adapter;
 
-import de.seven.fate.model.adapter.bool.BooleanRandomPropertyValueAdapter;
-import de.seven.fate.model.adapter.date.DateRandomPropertyValueAdapter;
-import de.seven.fate.model.adapter.decimal.BigDecimalRandomPropertyValueAdapter;
-import de.seven.fate.model.adapter.integer.IntegerRandomPropertyValueAdapter;
-import de.seven.fate.model.adapter.longv.LongRandomPropertyValueAdapter;
-import de.seven.fate.model.adapter.string.StringRandomPropertyValueAdapter;
+import de.seven.fate.model.adapter.bool.BooleanPropertyRandomValueAdapter;
+import de.seven.fate.model.adapter.date.DatePropertyRandomValueAdapter;
+import de.seven.fate.model.adapter.decimal.BigDecimalPropertyRandomValueAdapter;
+import de.seven.fate.model.adapter.integer.IntegerPropertyRandomValueAdapter;
+import de.seven.fate.model.adapter.longv.LongPropertyRandomValueAdapter;
+import de.seven.fate.model.adapter.string.StringPropertyRandomValueAdapter;
 import de.seven.fate.model.util.ClassUtil;
-import de.seven.fate.model.util.CollectionUtil;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.util.HashMap;
@@ -17,21 +16,21 @@ import java.util.Map;
 /**
  * Created by Mario on 24.03.2016.
  */
-public final class ModelRandomAdapterFactory {
+public final class RandomValueAdapterFactory {
 
     private static final Map<Class<?>, RandomPropertyValueAdapter<?>> MAP = new HashMap<>();
-    public static final RandomPropertyValueAdapter DEFAULT_ADAPTER = new NullRandomAdapter();
+    private static final RandomPropertyValueAdapter DEFAULT_ADAPTER = new DefaultRandomValueAdapter();
 
     static {
-        registerRandomAdapter(new StringRandomPropertyValueAdapter());
-        registerRandomAdapter(new BooleanRandomPropertyValueAdapter());
-        registerRandomAdapter(new IntegerRandomPropertyValueAdapter());
-        registerRandomAdapter(new DateRandomPropertyValueAdapter());
-        registerRandomAdapter(new BigDecimalRandomPropertyValueAdapter());
-        registerRandomAdapter(new LongRandomPropertyValueAdapter());
+        registerRandomAdapter(new StringPropertyRandomValueAdapter());
+        registerRandomAdapter(new BooleanPropertyRandomValueAdapter());
+        registerRandomAdapter(new IntegerPropertyRandomValueAdapter());
+        registerRandomAdapter(new DatePropertyRandomValueAdapter());
+        registerRandomAdapter(new BigDecimalPropertyRandomValueAdapter());
+        registerRandomAdapter(new LongPropertyRandomValueAdapter());
     }
 
-    private ModelRandomAdapterFactory() {
+    private RandomValueAdapterFactory() {
         throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
     }
 
@@ -48,7 +47,9 @@ public final class ModelRandomAdapterFactory {
     public static void registerRandomAdapter(RandomPropertyValueAdapter<?> valueAdapter) {
         assert valueAdapter != null;
 
-        MAP.put(valueAdapter.getValueType(), valueAdapter);
+        synchronized (MAP) {
+            MAP.put(valueAdapter.getValueType(), valueAdapter);
+        }
     }
 
     private static void setProperty(Object model, String propertyName) {
@@ -59,7 +60,9 @@ public final class ModelRandomAdapterFactory {
 
         Class<?> propertyType = ClassUtil.getPropertyType(propertyName, modelType);
 
-        Object propertyValue = getRandomPropertyValueAdapter(propertyType).randomValue(propertyName, modelType);
+        RandomPropertyValueAdapter<?> randomPropertyValueAdapter = getRandomPropertyValueAdapter(propertyType);
+
+        Object propertyValue = randomPropertyValueAdapter.randomValue(propertyName, modelType);
 
         try {
             BeanUtils.setProperty(model, propertyName, propertyValue);

@@ -1,7 +1,5 @@
 package de.seven.fate.model.person;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -84,8 +82,4 @@ public class Person {
         this.amount = amount;
     }
 
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
 }

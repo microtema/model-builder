@@ -1,9 +1,5 @@
 package de.seven.fate.model.util;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -12,9 +8,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public final class ClassUtil {
@@ -60,12 +54,14 @@ public final class ClassUtil {
 
         PropertyDescriptor[] propertyDescriptors = info.getPropertyDescriptors();
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-            if (StringUtils.equals(propertyDescriptor.getName(), "class")) {
+
+            if ("class".equals(propertyDescriptor.getName())) {
                 continue;
             }
+
             list.add(propertyDescriptor.getName());
         }
 
@@ -74,8 +70,10 @@ public final class ClassUtil {
 
     public static Class<?> getPropertyType(String propertyName, Class<?> objType) {
 
-        Field[] allFields = getAllFields(objType);
+        List<Field> allFields = getAllFields(objType);
+
         for (Field field : allFields) {
+
             if (field.getName().equals(propertyName)) {
                 return field.getType();
             }
@@ -84,12 +82,17 @@ public final class ClassUtil {
         return null;
     }
 
-    private static Field[] getAllFields(Class<?> type) {
+    private static List<Field> getAllFields(Class<?> type) {
 
         if (type.getSuperclass() != null) {
-            return ArrayUtils.addAll(getAllFields(type.getSuperclass()), type.getDeclaredFields());
+
+            List<Field> fields = getAllFields(type.getSuperclass());
+
+            fields.addAll(CollectionUtil.asList(type.getDeclaredFields()));
+
+            return fields;
         }
 
-        return type.getDeclaredFields();
+        return CollectionUtil.asList(type.getDeclaredFields());
     }
 }
