@@ -9,7 +9,7 @@ ModelBuilder<Person> builder = new PersonBuilder();
  
  or
  
- ModelBuilder<Person> sut = new PersonBuilder();
+PersonBuilder sut = new PersonBuilder();
 
 
 ## How to use
