@@ -9,8 +9,9 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>Model Builder</name>
+    <name>${project.groupId}:${project.artifactId}</name>
     <description>Model Builder with Random Values</description>
+    <url>https://github.com/sevenfate/model-builder.git</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -78,8 +79,18 @@
     </dependencies>
 
     <scm>
-        <connection>scm:git:https://github.com/sevenfate/model-builder</connection>
+        <connection>scm:git:https://github.com/sevenfate/model-builder.git</connection>
+        <developerConnection>scm:git:https://github.com/sevenfate/model-builder.git</developerConnection>
+        <url>https://github.com/sevenfate/model-builder.git</url>
     </scm>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
     <developers>
         <developer>
             <id>mtema</id>
