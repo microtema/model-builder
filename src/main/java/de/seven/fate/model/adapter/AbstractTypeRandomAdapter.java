@@ -9,24 +9,24 @@ import java.util.Set;
 
 public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<T> {
 
-    private final Map<String, PropertyRandomAdapter<T>> ADAPTERS = Collections.synchronizedMap(new HashMap<String, PropertyRandomAdapter<T>>());
+    private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<String, PropertyRandomAdapter<T>>());
 
     public void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
 
         for (PropertyRandomAdapter<T> valueAdapter : valueAdapters) {
-            ADAPTERS.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);
+            adapters.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);
         }
     }
 
     public void unregisterPropertyAdapter(String propertyName) {
         assert propertyName != null;
 
-        ADAPTERS.remove(propertyName.toLowerCase());
+        adapters.remove(propertyName.toLowerCase());
     }
 
     public void clearPropertyAdapters() {
 
-        ADAPTERS.clear();
+        adapters.clear();
     }
 
     @Override
@@ -35,8 +35,8 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
 
         String key = propertyName.toLowerCase();
 
-        if (ADAPTERS.containsKey(key)) {
-            return ADAPTERS.get(key).randomValue();
+        if (adapters.containsKey(key)) {
+            return adapters.get(key).randomValue();
         }
 
         return randomValueDefault(propertyName);
@@ -52,6 +52,6 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
 
     public Set<String> getAdapterNames() {
 
-        return ADAPTERS.keySet();
+        return adapters.keySet();
     }
 }

@@ -1,6 +1,5 @@
 package de.seven.fate.model.util;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 public final class CollectionUtil {
@@ -38,8 +37,10 @@ public final class CollectionUtil {
             return null;
         }
 
-        for (E entry : collection) {
-            return entry;
+        Iterator<E> iterator = collection.iterator();
+
+        if (iterator.hasNext()) {
+            return iterator.next();
         }
 
         throw new IllegalStateException("Should not happen");
@@ -62,9 +63,14 @@ public final class CollectionUtil {
 
     public static <E> E random(Collection<E> collection, E except) {
 
-        Collection<E> random = randomList(collection);
+        Collection<E> randomCollection = randomList(collection);
 
-        for (E entry : collection) {
+        Iterator<E> iterator = randomCollection.iterator();
+
+        if (iterator.hasNext()) {
+
+            E entry = iterator.next();
+
             if (!Objects.equals(entry, except)) {
                 return entry;
             }

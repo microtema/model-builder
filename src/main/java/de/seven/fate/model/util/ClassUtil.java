@@ -34,8 +34,6 @@ public final class ClassUtil {
     public static <T> T createInstance(Class<T> instanceType) {
         assert instanceType != null;
 
-        T instance = null;
-
         try {
             return instanceType.newInstance();
         } catch (Exception e) {

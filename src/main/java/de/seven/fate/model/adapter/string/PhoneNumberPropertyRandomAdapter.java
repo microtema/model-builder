@@ -4,9 +4,7 @@ import de.seven.fate.model.adapter.PropertyRandomAdapter;
 import de.seven.fate.model.util.NumberUtil;
 import de.seven.fate.model.util.StringUtil;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class PhoneNumberPropertyRandomAdapter implements PropertyRandomAdapter<String> {
 
     @Override

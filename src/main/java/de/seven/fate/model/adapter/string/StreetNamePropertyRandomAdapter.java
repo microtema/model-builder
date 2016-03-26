@@ -6,9 +6,7 @@ import de.seven.fate.model.util.CollectionUtil;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class StreetNamePropertyRandomAdapter implements PropertyRandomAdapter<String> {
 
     private static final List<String> STREETS = Arrays.asList("Leopoldstr", "Gottesauerstr", "Maximilianstr", "Pfinztstr");

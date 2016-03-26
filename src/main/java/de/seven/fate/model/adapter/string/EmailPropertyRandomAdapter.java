@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class EmailPropertyRandomAdapter implements PropertyRandomAdapter<String> {
 
     private static final List<String> DOMAINS = Arrays.asList("com", "de", "org", "al");

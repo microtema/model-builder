@@ -1,8 +1,6 @@
 package de.seven.fate.model.util;
 
-/**
- * Created by Mario on 25.03.2016.
- */
+
 public final class StringUtil {
 
 

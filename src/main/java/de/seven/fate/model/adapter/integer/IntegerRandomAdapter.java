@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
 
     private static final Map<String, PropertyRandomAdapter<Integer>> MAP = new HashMap<>();

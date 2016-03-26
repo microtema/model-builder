@@ -20,11 +20,12 @@ import java.util.logging.Logger;
 /**
  * Created by Mario on 24.03.2016.
  */
+@SuppressWarnings("ALL")
 public final class TypeRandomAdapterFactory {
 
     private static final Logger LOGGER = Logger.getLogger(TypeRandomAdapterFactory.class.getName());
 
-    private static final Map<Class<?>, AbstractTypeRandomAdapter<?>> MAP = Collections.synchronizedMap(new HashMap<Class<?>, AbstractTypeRandomAdapter<?>>());
+    private static final Map<Class<?>, AbstractTypeRandomAdapter<?>> ADAPTERS = Collections.synchronizedMap(new HashMap<Class<?>, AbstractTypeRandomAdapter<?>>());
 
     private static final AbstractTypeRandomAdapter DEFAULT_ADAPTER = new DefaultTypeRandomAdapter();
 
@@ -55,24 +56,24 @@ public final class TypeRandomAdapterFactory {
     public static void registerAdapter(AbstractTypeRandomAdapter<?> valueAdapter) {
         assert valueAdapter != null;
 
-        MAP.put(valueAdapter.getValueType(), valueAdapter);
+        ADAPTERS.put(valueAdapter.getValueType(), valueAdapter);
     }
 
-    public static <T> void unregisterAdapter(Class<T> valueType) {
+    public static void unregisterAdapter(Class<?> valueType) {
         assert valueType != null;
 
-        MAP.remove(valueType);
+        ADAPTERS.remove(valueType);
     }
 
     public static <T> void unregisterAdapters() {
 
-        MAP.clear();
+        ADAPTERS.clear();
     }
 
     public static <T> AbstractTypeRandomAdapter<T> lookupAdapter(Class<T> valueType) {
         assert valueType != null;
 
-        return (AbstractTypeRandomAdapter<T>) MAP.get(valueType);
+        return (AbstractTypeRandomAdapter<T>) ADAPTERS.get(valueType);
     }
 
     private static void setProperty(Object model, String propertyName) {
@@ -102,8 +103,8 @@ public final class TypeRandomAdapterFactory {
     private static TypeRandomAdapter<?> getRandomPropertyValueAdapter(Class<?> propertyType) {
         assert propertyType != null;
 
-        if (MAP.containsKey(propertyType)) {
-            return MAP.get(propertyType);
+        if (ADAPTERS.containsKey(propertyType)) {
+            return ADAPTERS.get(propertyType);
         }
 
         return DEFAULT_ADAPTER;

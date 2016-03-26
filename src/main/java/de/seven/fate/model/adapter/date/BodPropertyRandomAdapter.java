@@ -6,9 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class BodPropertyRandomAdapter implements PropertyRandomAdapter<Date> {
 
     private static final GregorianCalendar CALENDAR = new GregorianCalendar();

@@ -8,9 +8,7 @@ import java.util.UUID;
 
 import static de.seven.fate.model.util.CollectionUtil.random;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class LinkPropertyRandomAdapter implements PropertyRandomAdapter<String> {
 
     private static final List<String> PROTOCOLS = Arrays.asList("http", "https", "ftp", "ssh");
