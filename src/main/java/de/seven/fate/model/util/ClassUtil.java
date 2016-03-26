@@ -1,9 +1,5 @@
 package de.seven.fate.model.util;
 
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -12,22 +8,23 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@SuppressWarnings({"ALL", "unchecked"})
 public final class ClassUtil {
 
-    private static final Logger LOGGER = Logger.getLogger(ClassUtil.class.getCanonicalName());
+    private static final Logger LOGGER = Logger.getLogger(ClassUtil.class.getName());
 
     private ClassUtil() {
         throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
     }
 
-    public static <T> T getGenericType(Class<?> classType) {
+    public static <T> T getGenericType(Class<?> type) {
+        assert type != null;
 
-        ParameterizedType genericSuperclass = (ParameterizedType) classType.getGenericSuperclass();
+        ParameterizedType genericSuperclass = (ParameterizedType) type.getGenericSuperclass();
 
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
 
@@ -35,62 +32,53 @@ public final class ClassUtil {
     }
 
     public static <T> T createInstance(Class<T> instanceType) {
-
-        T instance = null;
+        assert instanceType != null;
 
         try {
-            instance = instanceType.newInstance();
+            return instanceType.newInstance();
         } catch (Exception e) {
-            LOGGER.warning("unable to create new instance of Type " + instanceType.getCanonicalName());
+            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + instanceType.getName(), e);
         }
 
-        return instance;
+        throw new IllegalArgumentException("unable to create new instance of Type " + instanceType.getName());
     }
 
-    public static Map<String, Object> getProperties(Object obj) {
 
-        Map<String, Object> describe = new HashMap<>();
-        List<String> propertyNames = getPropertyNames(obj.getClass());
-
-        for (String propertyName : propertyNames) {
-            try {
-                describe.put(propertyName, PropertyUtils.getProperty(obj, propertyName));
-            } catch (Exception e) {
-                LOGGER.warning("Unable to find Property " + propertyName + " in Object " + obj.getClass().getCanonicalName());
-            }
-        }
-
-        return describe;
-    }
-
-    public static List<String> getPropertyNames(Class<?> objectClass) {
+    public static List<String> getPropertyNames(Class<?> type) {
+        assert type != null;
 
         BeanInfo info;
 
         try {
-            info = Introspector.getBeanInfo(objectClass);
+            info = Introspector.getBeanInfo(type);
         } catch (IntrospectionException e) {
             throw new IllegalArgumentException(e);
         }
 
         PropertyDescriptor[] propertyDescriptors = info.getPropertyDescriptors();
 
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-            if (StringUtils.equals(propertyDescriptor.getName(), "class")) {
+
+            if ("class".equals(propertyDescriptor.getName())) {
                 continue;
             }
+
             list.add(propertyDescriptor.getName());
         }
 
         return list;
     }
 
-    public static Class<?> getPropertyType(String propertyName, Class<?> objType) {
+    public static Class<?> getPropertyType(String propertyName, Class<?> type) {
+        assert propertyName != null;
+        assert type != null;
 
-        Field[] allFields = getAllFields(objType);
+        List<Field> allFields = getAllFields(type);
+
         for (Field field : allFields) {
+
             if (field.getName().equals(propertyName)) {
                 return field.getType();
             }
@@ -99,12 +87,18 @@ public final class ClassUtil {
         return null;
     }
 
-    private static Field[] getAllFields(Class<?> type) {
+    private static List<Field> getAllFields(Class<?> type) {
+        assert type != null;
 
         if (type.getSuperclass() != null) {
-            return ArrayUtils.addAll(getAllFields(type.getSuperclass()), type.getDeclaredFields());
+
+            List<Field> fields = getAllFields(type.getSuperclass());
+
+            fields.addAll(CollectionUtil.asList(type.getDeclaredFields()));
+
+            return fields;
         }
 
-        return type.getDeclaredFields();
+        return CollectionUtil.asList(type.getDeclaredFields());
     }
 }

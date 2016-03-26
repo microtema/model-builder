@@ -1,7 +1,5 @@
 package de.seven.fate.model.util;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.*;
 
 public final class CollectionUtil {
@@ -35,15 +33,27 @@ public final class CollectionUtil {
 
     public static <E> E first(Collection<E> collection) {
 
-        if (CollectionUtils.isEmpty(collection)) {
+        if (isEmpty(collection)) {
             return null;
         }
 
-        for (E entry : collection) {
-            return entry;
+        Iterator<E> iterator = collection.iterator();
+
+        if (iterator.hasNext()) {
+            return iterator.next();
         }
 
         throw new IllegalStateException("Should not happen");
+    }
+
+    private static <E> boolean isEmpty(Collection<E> collection) {
+
+        return (collection == null || collection.isEmpty());
+    }
+
+    private static <E> boolean isEmpty(E[] array) {
+
+        return (array == null || array.length == 0);
     }
 
     public static <E> E random(E[] values, E except) {
@@ -53,14 +63,27 @@ public final class CollectionUtil {
 
     public static <E> E random(Collection<E> collection, E except) {
 
-        Collection<E> random = randomList(collection);
+        Collection<E> randomCollection = randomList(collection);
 
-        for (E entry : collection) {
+        Iterator<E> iterator = randomCollection.iterator();
+
+        if (iterator.hasNext()) {
+
+            E entry = iterator.next();
+
             if (!Objects.equals(entry, except)) {
                 return entry;
             }
         }
 
         return null;
+    }
+
+    public static <E> List<E> asList(E[] array) {
+        if (isEmpty(array)) {
+            return new ArrayList<>();
+        }
+
+        return Arrays.asList(array);
     }
 }
