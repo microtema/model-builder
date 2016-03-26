@@ -3,6 +3,7 @@ package de.seven.fate.model.adapter;
 import de.seven.fate.model.adapter.bool.BooleanRandomAdapter;
 import de.seven.fate.model.adapter.date.DateRandomAdapter;
 import de.seven.fate.model.adapter.decimal.BigDecimalRandomAdapter;
+import de.seven.fate.model.adapter.doublev.DoubleTypeRandomAdapter;
 import de.seven.fate.model.adapter.integer.IntegerRandomAdapter;
 import de.seven.fate.model.adapter.longv.LongRandomAdapter;
 import de.seven.fate.model.adapter.string.StringRandomAdapter;
@@ -33,6 +34,7 @@ public final class TypeRandomAdapterFactory {
         registerAdapter(new IntegerRandomAdapter());
         registerAdapter(new DateRandomAdapter());
         registerAdapter(new BigDecimalRandomAdapter());
+        registerAdapter(new DoubleTypeRandomAdapter());
         registerAdapter(new LongRandomAdapter());
     }
 
@@ -41,7 +43,7 @@ public final class TypeRandomAdapterFactory {
     }
 
     public static void initPropertiesWithRandomValues(Object model) {
-//        assert model != null;
+        assert model != null;
 
         List<String> propertyNames = ClassUtil.getPropertyNames(model.getClass());
 
@@ -54,17 +56,20 @@ public final class TypeRandomAdapterFactory {
         assert valueAdapter != null;
 
         MAP.put(valueAdapter.getValueType(), valueAdapter);
-
     }
 
-    public static void unregisterAdapter(Class<?> valueAdapterType) {
-        assert valueAdapterType != null;
+    public static <T> void unregisterAdapter(Class<T> valueType) {
+        assert valueType != null;
 
-        MAP.remove(valueAdapterType);
-
+        MAP.remove(valueType);
     }
 
-    public static <T> AbstractTypeRandomAdapter<T> lookupRandomAdapter(Class<T> valueType) {
+    public static <T> void unregisterAdapters() {
+
+        MAP.clear();
+    }
+
+    public static <T> AbstractTypeRandomAdapter<T> lookupAdapter(Class<T> valueType) {
         assert valueType != null;
 
         return (AbstractTypeRandomAdapter<T>) MAP.get(valueType);
@@ -87,6 +92,7 @@ public final class TypeRandomAdapterFactory {
         }
 
         try {
+
             BeanUtils.setProperty(model, propertyName, propertyValue);
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to set property: " + propertyName + " on model: " + model, e);

@@ -15,7 +15,10 @@ public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
     private static final Map<String, PropertyRandomAdapter<Integer>> MAP = new HashMap<>();
 
     public IntegerRandomAdapter() {
-        registerPropertyRandomAdapter(new PositionPropertyRandomAdapter());
+
+        registerPropertyAdapter(
+                new PositionPropertyRandomAdapter(),
+                new ZipCodePropertyRandomAdapter());
     }
 
 

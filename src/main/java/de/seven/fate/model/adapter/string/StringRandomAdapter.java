@@ -10,7 +10,13 @@ import java.util.UUID;
 public class StringRandomAdapter extends AbstractTypeRandomAdapter<String> {
 
     public StringRandomAdapter() {
-        registerPropertyRandomAdapter(new NamePropertyRandomAdapter(), new EmailPropertyRandomAdapter(), new PhoneNumberPropertyRandomAdapter(), new LinkPropertyRandomAdapter());
+        registerPropertyAdapter(
+                new NamePropertyRandomAdapter(),
+                new EmailPropertyRandomAdapter(),
+                new PhoneNumberPropertyRandomAdapter(),
+                new LinkPropertyRandomAdapter(),
+                new StreetNamePropertyRandomAdapter(),
+                new StreetNumberPropertyRandomAdapter());
     }
 
 

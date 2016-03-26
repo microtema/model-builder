@@ -1,18 +1,21 @@
 package de.seven.fate.model.person;
 
+import de.seven.fate.model.address.Address;
+import de.seven.fate.model.address.AddressBuilder;
+import de.seven.fate.model.geo.GeoData;
+import de.seven.fate.model.geo.GeoDataBuilder;
 import org.junit.Test;
 
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by Mario on 24.03.2016.
  */
-public class PersonBuilderTest {
+public class AddressBuilderTest {
 
-    PersonBuilder sut = new PersonBuilder();
+    PersonBuilder sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
 
     @Test
     public void testGenericType() {
@@ -56,6 +59,21 @@ public class PersonBuilderTest {
 
         assertNotNull(person.getUpdateDate());
         assertNotNull(person.getAmount());
+
+        Address address = person.getAddress();
+
+        assertNotNull(address);
+
+        assertNotNull(address.getStreetName());
+        assertNotNull(address.getStreetNumber());
+        assertNotNull(address.getZipCode());
+
+        GeoData geoData = address.getGeoData();
+
+        assertNotNull(geoData);
+
+        assertNotNull(geoData.getLatitude());
+        assertNotNull(geoData.getLongitude());
     }
 
     @Test

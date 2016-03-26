@@ -1,6 +1,8 @@
 package de.seven.fate.model.person;
 
 
+import de.seven.fate.model.address.Address;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,14 +12,22 @@ import java.util.Date;
 public class Person {
 
     private Long id;
+
     private String name;
+
     private String email;
     private String phoneNumber;
     private Integer position;
+
     private Date dob;
+
     private Date updateDate;
+
     private BigDecimal amount;
+
     private Float phoneBill;
+
+    private Address address;
 
     public Long getId() {
         return id;
@@ -89,5 +99,13 @@ public class Person {
 
     public void setPhoneBill(Float phoneBill) {
         this.phoneBill = phoneBill;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

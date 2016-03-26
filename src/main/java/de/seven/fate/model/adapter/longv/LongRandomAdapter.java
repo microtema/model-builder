@@ -10,7 +10,7 @@ import java.util.Random;
 public class LongRandomAdapter extends AbstractTypeRandomAdapter<Long> {
 
     public LongRandomAdapter() {
-        registerPropertyRandomAdapter(new IdPropertyRandomAdapter());
+        registerPropertyAdapter(new IdPropertyRandomAdapter());
     }
 
 

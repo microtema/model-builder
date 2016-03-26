@@ -1,5 +1,7 @@
 package de.seven.fate.model.adapter;
 
+import de.seven.fate.model.address.AddressBuilder;
+import de.seven.fate.model.geo.GeoDataBuilder;
 import de.seven.fate.model.person.Person;
 import de.seven.fate.model.person.PersonBuilder;
 import org.junit.Test;
@@ -15,7 +17,7 @@ public class TypeRandomAdapterFactoryTest {
 
     TypeRandomAdapterFactory sut;
 
-    PersonBuilder builder = new PersonBuilder();
+    PersonBuilder builder = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
 
     FloatRandomTypeAdapter floatRandomPropertyValueAdapter = new FloatRandomTypeAdapter();
 
@@ -30,27 +32,28 @@ public class TypeRandomAdapterFactoryTest {
 
         assertNull(person.getPhoneBill());
 
-        sut.registerAdapter(floatRandomPropertyValueAdapter);
+        TypeRandomAdapterFactory.registerAdapter(floatRandomPropertyValueAdapter);
 
         person = builder.max();
 
         assertEquals(Float.valueOf(Float.MIN_NORMAL), person.getPhoneBill());
     }
 
-    @Test
-    public void registerRandomAdapter2() throws Exception {
 
-        sut.registerAdapter(floatRandomPropertyValueAdapter);
+    @Test
+    public void registerPropertyAdapterToTypeAdapter() throws Exception {
+
+        TypeRandomAdapterFactory.registerAdapter(floatRandomPropertyValueAdapter);
 
         Person person = builder.max();
 
         assertEquals(Float.valueOf(Float.MIN_NORMAL), person.getPhoneBill());
 
-        AbstractTypeRandomAdapter<Float> floatAbstractTypeRandomValueAdapter = sut.lookupRandomAdapter(Float.class);
+        AbstractTypeRandomAdapter<Float> floatAbstractTypeRandomValueAdapter = TypeRandomAdapterFactory.lookupAdapter(Float.class);
 
-        floatAbstractTypeRandomValueAdapter.registerPropertyRandomAdapter(phoneBillNullValueAdapter);
+        floatAbstractTypeRandomValueAdapter.registerPropertyAdapter(phoneBillNullValueAdapter);
 
-        floatAbstractTypeRandomValueAdapter.registerPropertyRandomAdapter(houseBillNullValueAdapter);
+        floatAbstractTypeRandomValueAdapter.registerPropertyAdapter(houseBillNullValueAdapter);
 
         person = builder.max();
 
@@ -82,8 +85,6 @@ public class TypeRandomAdapterFactoryTest {
         }
     }
 
-    ;
-
     static class HouseBillNullAdapterProperty implements PropertyRandomAdapter<Float> {
         @Override
         public Float randomValue() {
@@ -95,7 +96,5 @@ public class TypeRandomAdapterFactoryTest {
             return "HouseBill";
         }
     }
-
-    ;
 
 }

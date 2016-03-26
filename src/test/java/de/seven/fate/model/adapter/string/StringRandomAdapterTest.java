@@ -5,7 +5,8 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Mario on 24.03.2016.
@@ -25,6 +26,6 @@ public class StringRandomAdapterTest {
     @Test
     public void randomValueForEmail() {
 
-        assertEquals(new HashSet<String>(Arrays.asList("name", "email", "link", "phonenumber")), sut.getAdapterNames());
+        assertEquals(new HashSet<String>(Arrays.asList("name", "email", "link", "phonenumber", "streetnumber", "streetname")), sut.getAdapterNames());
     }
 }

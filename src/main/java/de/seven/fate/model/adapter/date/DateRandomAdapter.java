@@ -10,7 +10,7 @@ import java.util.Date;
 public class DateRandomAdapter extends AbstractTypeRandomAdapter<Date> {
 
     public DateRandomAdapter() {
-        registerPropertyRandomAdapter(new BodPropertyRandomAdapter());
+        registerPropertyAdapter(new BodPropertyRandomAdapter());
     }
 
     @Override
