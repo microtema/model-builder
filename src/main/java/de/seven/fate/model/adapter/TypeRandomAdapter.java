@@ -3,8 +3,8 @@ package de.seven.fate.model.adapter;
 public interface TypeRandomAdapter<T> {
 
     /**
-     * @param propertyName
-     * @return @return random value for given propertyName
+     * @param propertyName Model property name
+     * @return random value for given propertyName
      */
     T randomValue(String propertyName);
 
