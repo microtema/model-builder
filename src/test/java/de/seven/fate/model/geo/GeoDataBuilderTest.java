@@ -20,5 +20,6 @@ public class GeoDataBuilderTest {
 
         assertNotNull(min.getLatitude());
         assertNotNull(min.getLongitude());
+        assertNotNull(min.getType());
     }
 }

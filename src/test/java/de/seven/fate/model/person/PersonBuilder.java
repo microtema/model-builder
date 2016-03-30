@@ -16,9 +16,10 @@ public class PersonBuilder extends AbstractModelBuilder<Person> {
 
     @Override
     public Person min() {
+
         Person min = super.min();
 
-        min.setAddress(addressBuilder.min());
+        min.setAddresses(addressBuilder.list());
 
         return min;
     }

@@ -32,7 +32,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
 		T model = ClassUtil.createInstance(modelType);
 
-		initWithRandomValues(model);
+		initPropertiesWithRandomValues(model);
 
 		return model;
 	}
@@ -79,11 +79,6 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 	public Set<T> set() {
 
 		return set(randomCollectionSize());
-	}
-
-	private void initWithRandomValues(T model) {
-
-		initPropertiesWithRandomValues(model);
 	}
 
 	/*

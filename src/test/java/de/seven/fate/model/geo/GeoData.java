@@ -7,6 +7,7 @@ public class GeoData {
 
     private Double latitude;
     private Double longitude;
+    private GeoFormat type;
 
     public Double getLongitude() {
         return longitude;
@@ -22,5 +23,13 @@ public class GeoData {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
+    }
+
+    public GeoFormat getType() {
+        return type;
+    }
+
+    public void setType(GeoFormat type) {
+        this.type = type;
     }
 }

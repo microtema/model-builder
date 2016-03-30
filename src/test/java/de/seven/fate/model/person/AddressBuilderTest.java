@@ -7,6 +7,7 @@ import de.seven.fate.model.geo.GeoDataBuilder;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -60,20 +61,24 @@ public class AddressBuilderTest {
         assertNotNull(person.getUpdateDate());
         assertNotNull(person.getAmount());
 
-        Address address = person.getAddress();
+        List<Address> addresses = person.getAddresses();
+        assertNotNull(addresses);
 
-        assertNotNull(address);
+        for (Address address : addresses) {
 
-        assertNotNull(address.getStreetName());
-        assertNotNull(address.getStreetNumber());
-        assertNotNull(address.getZipCode());
+            assertNotNull(address);
 
-        GeoData geoData = address.getGeoData();
+            assertNotNull(address.getStreetName());
+            assertNotNull(address.getStreetNumber());
+            assertNotNull(address.getZipCode());
 
-        assertNotNull(geoData);
+            GeoData geoData = address.getGeoData();
 
-        assertNotNull(geoData.getLatitude());
-        assertNotNull(geoData.getLongitude());
+            assertNotNull(geoData);
+
+            assertNotNull(geoData.getLatitude());
+            assertNotNull(geoData.getLongitude());
+        }
     }
 
     @Test

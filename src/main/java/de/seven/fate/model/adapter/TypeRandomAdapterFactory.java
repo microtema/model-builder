@@ -8,12 +8,12 @@ import de.seven.fate.model.adapter.integer.IntegerRandomAdapter;
 import de.seven.fate.model.adapter.longv.LongRandomAdapter;
 import de.seven.fate.model.adapter.string.StringRandomAdapter;
 import de.seven.fate.model.util.ClassUtil;
+import de.seven.fate.model.util.CollectionUtil;
+import de.seven.fate.model.util.NumberUtil;
 import org.apache.commons.beanutils.BeanUtils;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,8 +48,10 @@ public final class TypeRandomAdapterFactory {
 
         List<String> propertyNames = ClassUtil.getPropertyNames(model.getClass());
 
-        for (String propertyName : propertyNames) {
-            setProperty(model, propertyName);
+        List<Field> fields = ClassUtil.getAllFields(model.getClass());
+
+        for (Field field : fields) {
+            setProperty(field, model);
         }
     }
 
@@ -76,29 +78,60 @@ public final class TypeRandomAdapterFactory {
         return (AbstractTypeRandomAdapter<T>) ADAPTERS.get(valueType);
     }
 
-    private static void setProperty(Object model, String propertyName) {
+    private static void setProperty(Field field, Object model) {
+        assert field != null;
         assert model != null;
-        assert propertyName != null;
 
-        Class<?> modelType = model.getClass();
+        String propertyName = field.getName();
 
-        Class<?> propertyType = ClassUtil.getPropertyType(propertyName, modelType);
-
-        TypeRandomAdapter<?> typeRandomAdapter = getRandomPropertyValueAdapter(propertyType);
-
-        Object propertyValue = typeRandomAdapter.randomValue(propertyName);
+        Object propertyValue = getPropertyValue(field);
 
         if (propertyValue == null) {
             return;
         }
 
         try {
-
             BeanUtils.setProperty(model, propertyName, propertyValue);
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, "Unable to set property: " + propertyName + " on model: " + model, e);
         }
     }
+
+    private static Object getPropertyValue(Field field) {
+        assert field != null;
+
+        String propertyName = field.getName();
+        Class<?> fieldType = field.getType();
+        TypeRandomAdapter<?> typeRandomAdapter = getRandomPropertyValueAdapter(fieldType);
+
+        if (typeRandomAdapter != null) {
+            return typeRandomAdapter.randomValue(propertyName);
+        }
+
+        if (fieldType.isEnum()) {
+            return CollectionUtil.random(fieldType.getEnumConstants());
+        }
+
+        if (List.class.isAssignableFrom(fieldType)) {
+
+            List list = new ArrayList();
+
+            Class<?> genericType = ClassUtil.getActualTypeArgument(field.getGenericType());
+
+            TypeRandomAdapter<?> randomAdapter = getRandomPropertyValueAdapter(genericType);
+
+            if (randomAdapter == null) {
+                return null;
+            }
+
+            fillCollection(list, randomAdapter, propertyName);
+
+            return list;
+        }
+
+        return null;
+    }
+
 
     private static TypeRandomAdapter<?> getRandomPropertyValueAdapter(Class<?> propertyType) {
         assert propertyType != null;
@@ -107,6 +140,16 @@ public final class TypeRandomAdapterFactory {
             return ADAPTERS.get(propertyType);
         }
 
-        return DEFAULT_ADAPTER;
+        return null;
+    }
+
+    private static <E> void fillCollection(Collection<E> collection, TypeRandomAdapter<E> adapter, String propertyName) {
+
+        int randomSize = NumberUtil.random(1, 10);
+        int count = 0;
+
+        while (count++ < randomSize) {
+            collection.add(adapter.randomValue(propertyName));
+        }
     }
 }

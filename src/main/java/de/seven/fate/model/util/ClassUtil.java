@@ -31,6 +31,22 @@ public final class ClassUtil {
         return (T) actualTypeArguments[0];
     }
 
+    public static <T> Class<T> getActualTypeArgument(Type genericType) {
+        assert genericType != null;
+
+        if (genericType instanceof ParameterizedType) {
+
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            Type actualTypeArgument = actualTypeArguments[0];
+
+            return (Class<T>) actualTypeArgument;
+        }
+
+        return null;
+    }
+
     public static <T> T createInstance(Class<T> instanceType) {
         assert instanceType != null;
 
@@ -87,7 +103,7 @@ public final class ClassUtil {
         return null;
     }
 
-    private static List<Field> getAllFields(Class<?> type) {
+    public static List<Field> getAllFields(Class<?> type) {
         assert type != null;
 
         if (type.getSuperclass() != null) {
