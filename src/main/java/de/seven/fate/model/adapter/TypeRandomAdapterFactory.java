@@ -7,6 +7,7 @@ import de.seven.fate.model.adapter.doublev.DoubleTypeRandomAdapter;
 import de.seven.fate.model.adapter.integer.IntegerRandomAdapter;
 import de.seven.fate.model.adapter.longv.LongRandomAdapter;
 import de.seven.fate.model.adapter.string.StringRandomAdapter;
+import de.seven.fate.model.adapter.url.UrlRandomAdapter;
 import de.seven.fate.model.util.ClassUtil;
 import de.seven.fate.model.util.CollectionUtil;
 import de.seven.fate.model.util.NumberUtil;
@@ -31,6 +32,7 @@ public final class TypeRandomAdapterFactory {
 
     static {
         registerAdapter(new StringRandomAdapter());
+        registerAdapter(new UrlRandomAdapter());
         registerAdapter(new BooleanRandomAdapter());
         registerAdapter(new IntegerRandomAdapter());
         registerAdapter(new DateRandomAdapter());
