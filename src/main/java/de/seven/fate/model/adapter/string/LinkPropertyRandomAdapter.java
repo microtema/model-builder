@@ -11,7 +11,7 @@ import static de.seven.fate.model.util.CollectionUtil.random;
 
 public class LinkPropertyRandomAdapter implements PropertyRandomAdapter<String> {
 
-    private static final List<String> PROTOCOLS = Arrays.asList("http", "https", "ftp", "ssh");
+    private static final List<String> PROTOCOLS = Arrays.asList("http", "https", "ftp");
     private static final List<String> DOMAINS = Arrays.asList("com", "de", "org", "al");
 
     public static String randomLink() {
