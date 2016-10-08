@@ -1,21 +1,21 @@
 # model-builder
 
 ## How to implement
-public class PersonBuilder extends AbstractModelBuilder<Person> { }
+public class PersonBuilder extends AbstractModelBuilder< Person > { }
 
 ## How to initialize
 
-ModelBuilder<Person> builder = new PersonBuilder();
+> ModelBuilder < Person > builder = new PersonBuilder();
  
  or
  
-PersonBuilder sut = new PersonBuilder();
+> PersonBuilder sut = new PersonBuilder();
 
 
 ## How to use
  
 * create person instance within filled required fields
-    **Person person = builder.min();**
+**Person person = builder.min();**
  
 * create person instance within all required fields
 **Person person = builder.max();**
