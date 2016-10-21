@@ -1,5 +1,6 @@
 package de.seven.fate.model.geo;
 
+import de.seven.fate.model.builder.ModelBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
@@ -9,7 +10,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class GeoDataBuilderTest {
 
-    GeoDataBuilder sut = new GeoDataBuilder();
+    ModelBuilder<GeoData> sut = new GeoDataBuilder();
 
     @Test
     public void min() {

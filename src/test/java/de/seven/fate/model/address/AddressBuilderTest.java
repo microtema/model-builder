@@ -1,5 +1,6 @@
 package de.seven.fate.model.address;
 
+import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.geo.GeoData;
 import de.seven.fate.model.geo.GeoDataBuilder;
 import org.junit.Test;
@@ -11,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AddressBuilderTest {
 
-    AddressBuilder sut = new AddressBuilder(new GeoDataBuilder());
+    ModelBuilder<Address> sut = new AddressBuilder(new GeoDataBuilder());
 
     @Test
     public void min() throws Exception {

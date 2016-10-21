@@ -2,6 +2,7 @@ package de.seven.fate.model.person;
 
 import de.seven.fate.model.address.Address;
 import de.seven.fate.model.address.AddressBuilder;
+import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.geo.GeoData;
 import de.seven.fate.model.geo.GeoDataBuilder;
 import org.junit.Test;
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class AddressBuilderTest {
 
-    PersonBuilder sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
+    ModelBuilder<Person> sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
 
     @Test
     public void testGenericType() {
