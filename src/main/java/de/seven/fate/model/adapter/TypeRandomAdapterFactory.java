@@ -8,18 +8,20 @@ import de.seven.fate.model.adapter.integer.IntegerRandomAdapter;
 import de.seven.fate.model.adapter.longv.LongRandomAdapter;
 import de.seven.fate.model.adapter.string.StringRandomAdapter;
 import de.seven.fate.model.adapter.url.UrlRandomAdapter;
+import de.seven.fate.model.builder.AbstractModelBuilder;
 import de.seven.fate.model.builder.CreateModelAction;
+import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.util.ClassUtil;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static de.seven.fate.model.builder.ModelBuilderFactory.createBuilder;
 
 /**
  * Created by Mario on 24.03.2016.
@@ -69,17 +71,49 @@ public final class TypeRandomAdapterFactory {
         return null;
     }
 
+    public static <T> T getCollection(Class<T> modelType, Type propertyType, boolean skip) {
 
-    public static <T> void generateRandomFieldValues(T model, CreateModelAction createAction) {
+        if (List.class.isAssignableFrom(modelType)) {
+
+            Class<?> genericType = ClassUtil.getActualTypeArgument(propertyType);
+
+            ModelBuilder<?> builder = createBuilder(genericType);
+
+            return (T) ((AbstractModelBuilder) builder).list(skip);
+
+        } else if (Set.class.isAssignableFrom(modelType)) {
+
+            Class<?> genericType = ClassUtil.getActualTypeArgument(propertyType);
+
+            ModelBuilder<?> builder = createBuilder(genericType);
+
+            return (T) ((AbstractModelBuilder) builder).set(skip);
+
+        }
+
+        return null;
+    }
+
+    public static <T> void generateRandomFieldValues(T model, CreateModelAction createAction, boolean skip) {
         assert model != null;
         assert createAction != null;
 
-        List<Field> fields = ClassUtil.getAllFields(model.getClass());
+        Class<?> modelClass = model.getClass();
+        List<Field> fields = ClassUtil.getAllFields(modelClass);
 
         for (Field field : fields) {
 
             String fieldName = field.getName();
-            Object propertyValue = createAction.execute(field);
+            Class<?> fieldType = field.getType();
+            Class<?> fieldGenericType = ClassUtil.getActualTypeArgument(field.getGenericType());
+
+            boolean overFlow = fieldGenericType == modelClass;
+
+            if (overFlow && skip) {
+                continue;
+            }
+
+            Object propertyValue = createAction.execute(field, overFlow);
 
             try {
                 BeanUtils.setProperty(model, fieldName, propertyValue);

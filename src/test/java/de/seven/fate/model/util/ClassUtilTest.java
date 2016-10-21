@@ -5,6 +5,8 @@ import de.seven.fate.model.person.Person;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class ClassUtilTest {
 
     ClassUtil sut;
@@ -58,5 +60,12 @@ public class ClassUtilTest {
     public void geoFormatIsComplexType() {
         Assert.assertTrue(ClassUtil.isComplexType(GeoFormat.class));
     }
+
+
+    @Test
+    public void isCollectionType() throws Exception {
+        Assert.assertTrue(ClassUtil.isCollectionType(List.class));
+    }
+
 
 }
