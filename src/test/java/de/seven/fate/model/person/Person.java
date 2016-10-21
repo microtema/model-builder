@@ -7,9 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class Person {
 
     private Long id;

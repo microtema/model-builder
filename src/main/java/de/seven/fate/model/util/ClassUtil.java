@@ -1,5 +1,7 @@
 package de.seven.fate.model.util;
 
+import org.apache.commons.lang3.ClassUtils;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -7,7 +9,9 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,10 +57,11 @@ public final class ClassUtil {
         try {
             return instanceType.newInstance();
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + instanceType.getName(), e);
+
+            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + instanceType, e);
         }
 
-        throw new IllegalArgumentException("unable to create new instance of Type " + instanceType.getName());
+        throw new IllegalArgumentException("unable to create new instance of Type " + instanceType);
     }
 
 
@@ -116,5 +121,10 @@ public final class ClassUtil {
         }
 
         return CollectionUtil.asList(type.getDeclaredFields());
+    }
+
+    public static boolean isComplexType(Class<?> type) {
+
+        return !type.isPrimitive() && type != String.class && !ClassUtils.isPrimitiveOrWrapper(type) && type != Date.class && type != BigDecimal.class;
     }
 }

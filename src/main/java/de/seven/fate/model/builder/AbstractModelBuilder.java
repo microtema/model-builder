@@ -2,98 +2,146 @@ package de.seven.fate.model.builder;
 
 
 import de.seven.fate.model.util.ClassUtil;
+import de.seven.fate.model.util.CollectionUtil;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.*;
 
-import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.initPropertiesWithRandomValues;
+import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.generateRandomFieldValues;
+import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.getRandomPropertyValue;
+import static de.seven.fate.model.builder.ModelBuilderFactory.createBuilder;
 
 
 public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
+    private static final int MIN_COLLECTION_SIZE = 1;
+    private static final int MAX_COLLECTION_SIZE = 10;
 
-	private static final int MIN_COLLECTION_SIZE = 1;
-	private static final int MAX_COLLECTION_SIZE = 10;
+    private static int randomCollectionSize() {
 
-	private static int randomCollectionSize() {
+        return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
+    }
 
-		return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
-	}
+    @Override
+    public Class<T> getGenericType() {
 
-	@Override
-	public Class<T> getGenericType() {
+        return ClassUtil.getGenericType(getClass());
+    }
 
-		return ClassUtil.getGenericType(getClass());
-	}
+    @Override
+    public T min() {
 
-	@Override
-	public T min() {
+        return min(null);
+    }
 
-		Class<T> modelType = getGenericType();
+    protected T min(Field rootField) {
 
-		T model = ClassUtil.createInstance(modelType);
+        Class<T> modelType = getGenericType();
+        String propertyName = rootField != null ? rootField.getName() : null;
+        Type propertyType = rootField != null ? rootField.getGenericType() : null;
 
-		initPropertiesWithRandomValues(model);
+        if (!ClassUtil.isComplexType(modelType)) {
 
-		return model;
-	}
+            return getRandomPropertyValue(modelType, propertyName);
 
-	@Override
-	public T max() {
+        } else if (modelType.isEnum()) {
 
-		return min();
-	}
+            return CollectionUtil.random(modelType.getEnumConstants());
 
-	@Override
-	public T random() {
+        } else if (List.class.isAssignableFrom(modelType)) {
 
-		return random(new Random().nextBoolean());
-	}
+            Class<?> genericType = ClassUtil.getActualTypeArgument(propertyType);
 
-	@Override
-	public List<T> list() {
+            ModelBuilder<?> builder = createBuilder(genericType);
 
-		return list(randomCollectionSize());
-	}
+            return (T) builder.list();
 
-	@Override
-	public List<T> list(int size) {
+        } else if (Set.class.isAssignableFrom(modelType)) {
 
-		List<T> list = new ArrayList<>();
+            Class<?> genericType = ClassUtil.getActualTypeArgument(propertyType);
 
-		fillCollection(size, list);
+            ModelBuilder<?> builder = createBuilder(genericType);
 
-		return list;
-	}
+            return (T) builder.set();
 
-	@Override
-	public Set<T> set(int size) {
+        } else if (boolean[].class.isAssignableFrom(modelType)) {
 
-		Set<T> set = new HashSet<>();
+            return null; //ignore this
+        }
 
-		fillCollection(size, set);
+        T model = ClassUtil.createInstance(modelType);
 
-		return set;
-	}
+        generateRandomFieldValues(model, new CreateModelAction() {
+            @Override
+            public Object execute(Field field) {
 
-	@Override
-	public Set<T> set() {
+                ModelBuilder<?> modelBuilder = createBuilder(field.getType());
 
-		return set(randomCollectionSize());
-	}
+                return ((AbstractModelBuilder) modelBuilder).min(field);
+            }
+        });
 
-	/*
-	 * ATTENTION! Size of Collection of type Set can be less than size, when adding multiple the same Object
-	 */
-	private void fillCollection(int size, Collection<T> collection) {
+        return model;
+    }
 
-		int count = 0;
-		while (count++ < size) {
-			collection.add(random());
-		}
-	}
+    @Override
+    public T max() {
 
-	private T random(boolean minOrMax) {
-		return minOrMax ? min() : max();
-	}
+        return min();
+    }
+
+    @Override
+    public T random() {
+
+        return random(getRandomPropertyValue(Boolean.class));
+    }
+
+    @Override
+    public List<T> list() {
+
+        return list(randomCollectionSize());
+    }
+
+    @Override
+    public List<T> list(int size) {
+
+        List<T> list = new ArrayList<>();
+
+        fillCollection(size, list);
+
+        return list;
+    }
+
+    @Override
+    public Set<T> set(int size) {
+
+        Set<T> set = new HashSet<>();
+
+        fillCollection(size, set);
+
+        return set;
+    }
+
+    @Override
+    public Set<T> set() {
+
+        return set(randomCollectionSize());
+    }
+
+    /*
+     * ATTENTION! Size of Collection of type Set can be less than size, when adding multiple the same Object
+     */
+    private void fillCollection(int size, Collection<T> collection) {
+
+        int count = 0;
+        while (count++ < size) {
+            collection.add(random());
+        }
+    }
+
+    private T random(boolean minOrMax) {
+        return minOrMax ? min() : max();
+    }
 
 }

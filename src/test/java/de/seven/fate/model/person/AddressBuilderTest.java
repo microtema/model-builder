@@ -12,9 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class AddressBuilderTest {
 
     ModelBuilder<Person> sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
@@ -51,7 +49,7 @@ public class AddressBuilderTest {
         assertNotNull(person);
 
         assertNotNull(person.getId());
-        assertTrue(person.getId() >= 1000);
+        assertNotNull(person.getId());
 
         assertNotNull(person.getName());
         assertNotNull(person.getEmail());

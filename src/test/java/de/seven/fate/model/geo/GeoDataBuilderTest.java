@@ -1,16 +1,26 @@
 package de.seven.fate.model.geo;
 
 import de.seven.fate.model.builder.ModelBuilder;
+import de.seven.fate.model.builder.ModelBuilderFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by Mario on 26.03.2016.
- */
 public class GeoDataBuilderTest {
 
     ModelBuilder<GeoData> sut = new GeoDataBuilder();
+
+    @Test
+    public void shouldGenerateMin() {
+
+        GeoData min = ModelBuilderFactory.createBuilder(GeoData.class).min();
+
+        assertNotNull(min);
+
+        assertNotNull(min.getLatitude());
+        assertNotNull(min.getLongitude());
+        assertNotNull(min.getType());
+    }
 
     @Test
     public void min() {

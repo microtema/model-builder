@@ -3,13 +3,12 @@ package de.seven.fate.model.address;
 import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.geo.GeoData;
 import de.seven.fate.model.geo.GeoDataBuilder;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by Mario on 26.03.2016.
- */
+@Ignore
 public class AddressBuilderTest {
 
     ModelBuilder<Address> sut = new AddressBuilder(new GeoDataBuilder());

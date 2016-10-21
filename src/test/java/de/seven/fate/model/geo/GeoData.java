@@ -25,6 +25,7 @@ public class GeoData {
         this.latitude = latitude;
     }
 
+
     public GeoFormat getType() {
         return type;
     }
@@ -32,4 +33,5 @@ public class GeoData {
     public void setType(GeoFormat type) {
         this.type = type;
     }
+
 }
