@@ -115,6 +115,10 @@ public final class TypeRandomAdapterFactory {
 
             Object propertyValue = createAction.execute(field, overFlow);
 
+            if(propertyValue == null){
+                continue;
+            }
+
             try {
                 BeanUtils.setProperty(model, fieldName, propertyValue);
             } catch (IllegalAccessException | InvocationTargetException e) {

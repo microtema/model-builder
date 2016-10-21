@@ -3,14 +3,21 @@ package de.seven.fate.model.order;
 import de.seven.fate.model.address.Address;
 import de.seven.fate.model.person.Person;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Set;
 
 public class PurchaseOrder {
 
+    @NotNull
     private Address address;
+
+    @NotNull
     private Person person;
+
+    @NotNull
     private List<PurchaseItem> orderItems;
+
     private Set<PurchaseItem> orderItemSet;
 
     public Address getAddress() {

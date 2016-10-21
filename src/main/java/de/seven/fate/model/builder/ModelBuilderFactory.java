@@ -1,7 +1,9 @@
 package de.seven.fate.model.builder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public final class ModelBuilderFactory {
 
@@ -28,5 +30,30 @@ public final class ModelBuilderFactory {
         }
 
         return modelBuilder;
+    }
+
+    public static <T> T min(final Class<T> modelType) {
+
+        return createBuilder(modelType).min();
+    }
+
+    public static <T> T max(final Class<T> modelType) {
+
+        return createBuilder(modelType).max();
+    }
+
+    public static <T> T random(final Class<T> modelType) {
+
+        return createBuilder(modelType).random();
+    }
+
+    public static <T> List<T> list(final Class<T> modelType) {
+
+        return createBuilder(modelType).list();
+    }
+
+    public static <T> Set<T> set(final Class<T> modelType) {
+
+        return createBuilder(modelType).set();
     }
 }

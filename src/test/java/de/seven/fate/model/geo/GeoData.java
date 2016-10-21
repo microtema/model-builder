@@ -1,12 +1,19 @@
 package de.seven.fate.model.geo;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Mario on 25.03.2016.
  */
 public class GeoData {
 
+    @NotNull
     private Double latitude;
+
+    @NotNull
     private Double longitude;
+
+    @NotNull
     private GeoFormat type;
 
     public Double getLongitude() {

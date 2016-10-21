@@ -31,10 +31,10 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     @Override
     public T min() {
 
-        return min(null, false);
+        return min(null, false, false);
     }
 
-    protected T min(Field rootField, final boolean skip) {
+    protected T min(Field rootField, final boolean skip, final boolean required) {
 
         Class<T> modelType = getGenericType();
         String propertyName = rootField != null ? rootField.getName() : null;
@@ -63,9 +63,13 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
             @Override
             public Object execute(Field field, boolean overflow) {
 
+                if(!required && !ClassUtil.isFieldRequired(field)){
+                    return null;
+                }
+
                 ModelBuilder<?> modelBuilder = createBuilder(field.getType());
 
-                return ((AbstractModelBuilder) modelBuilder).min(field, overflow);
+                return ((AbstractModelBuilder) modelBuilder).min(field, overflow, required);
             }
         }, skip);
 
@@ -75,12 +79,12 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     @Override
     public T max() {
 
-        return min();
+        return max(false);
     }
 
     public T max(boolean skip) {
 
-        return min(null, skip);
+        return min(null, skip, true);
     }
 
     @Override
@@ -160,7 +164,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     }
 
     private T random(boolean minOrMax, boolean skip) {
-        return minOrMax ? min(null, skip) : max(skip);
+        return minOrMax ? min(null, skip, false) : max(skip);
     }
 
 }

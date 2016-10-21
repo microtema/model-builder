@@ -57,8 +57,8 @@ public class AddressBuilderTest {
         assertNotNull(person.getPhoneNumber());
         assertNotNull(person.getPosition());
 
-        assertNotNull(person.getUpdateDate());
-        assertNotNull(person.getAmount());
+        assertNull(person.getUpdateDate());
+        assertNull(person.getAmount());
 
         List<Address> addresses = person.getAddresses();
         assertNotNull(addresses);
@@ -77,6 +77,7 @@ public class AddressBuilderTest {
 
             assertNotNull(geoData.getLatitude());
             assertNotNull(geoData.getLongitude());
+            assertNotNull(geoData.getType());
         }
     }
 

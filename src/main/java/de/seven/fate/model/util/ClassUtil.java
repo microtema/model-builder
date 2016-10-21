@@ -2,6 +2,9 @@ package de.seven.fate.model.util;
 
 import org.apache.commons.lang3.ClassUtils;
 
+import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -128,5 +131,29 @@ public final class ClassUtil {
 
     public static <T> boolean isCollectionType(Class<T> type) {
         return Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
+    }
+
+    public static boolean isFieldRequired(Field field) {
+        assert field != null;
+
+        NotNull annotation = field.getAnnotation(NotNull.class);
+
+        if (annotation != null) {
+            return true;
+        }
+
+        XmlAttribute xmlAttribute = field.getAnnotation(XmlAttribute.class);
+
+        if (xmlAttribute != null) {
+            return xmlAttribute.required();
+        }
+
+        XmlElement xmlElement = field.getAnnotation(XmlElement.class);
+
+        if (xmlElement != null) {
+            return xmlAttribute.required();
+        }
+
+        return false;
     }
 }
