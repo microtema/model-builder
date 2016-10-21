@@ -1,18 +1,18 @@
 package de.seven.fate.model.adapter.date;
 
+import de.seven.fate.model.adapter.AbstractTypeRandomAdapter;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by Mario on 25.03.2016.
- */
 public class DatePropertyPropertyRandomAdapterTest {
 
-    DateRandomAdapter sut = new DateRandomAdapter();
+    AbstractTypeRandomAdapter<Date> sut = new DateRandomAdapter();
 
     @Test
     public void randomValue() throws Exception {
@@ -23,6 +23,6 @@ public class DatePropertyPropertyRandomAdapterTest {
     @Test
     public void randomValueForEmail() {
 
-        assertEquals(new HashSet<String>(Arrays.asList("dob")), sut.getAdapterNames());
+        assertEquals(new HashSet<>(Arrays.asList("dob")), sut.getAdapterNames());
     }
 }

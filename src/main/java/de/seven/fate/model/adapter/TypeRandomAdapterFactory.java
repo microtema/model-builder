@@ -31,14 +31,12 @@ public final class TypeRandomAdapterFactory {
 
     private static final Map<Class<?>, AbstractTypeRandomAdapter<?>> ADAPTERS = Collections.synchronizedMap(new HashMap<Class<?>, AbstractTypeRandomAdapter<?>>());
 
-    private static final AbstractTypeRandomAdapter DEFAULT_ADAPTER = new DefaultTypeRandomAdapter();
-
     static {
         registerAdapter(new StringRandomAdapter());
         registerAdapter(new UrlRandomAdapter());
         registerAdapter(new BooleanRandomAdapter());
-        registerAdapter(new IntegerRandomAdapter());
         registerAdapter(new DateRandomAdapter());
+        registerAdapter(new IntegerRandomAdapter());
         registerAdapter(new BigDecimalRandomAdapter());
         registerAdapter(new DoubleTypeRandomAdapter());
         registerAdapter(new LongRandomAdapter());
@@ -73,13 +71,14 @@ public final class TypeRandomAdapterFactory {
 
 
     public static <T> void generateRandomFieldValues(T model, CreateModelAction createAction) {
+        assert model != null;
+        assert createAction != null;
 
         List<Field> fields = ClassUtil.getAllFields(model.getClass());
 
         for (Field field : fields) {
 
             String fieldName = field.getName();
-
             Object propertyValue = createAction.execute(field);
 
             try {

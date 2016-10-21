@@ -1,7 +1,11 @@
 package de.seven.fate.model.builder;
 
+import de.seven.fate.model.order.PurchaseItem;
+import de.seven.fate.model.order.PurchaseOrder;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 @Ignore
 public class ModelBuilderFactoryTest {
@@ -11,7 +15,6 @@ public class ModelBuilderFactoryTest {
     @Test
     public void createPurchaseItemBuilder() {
 
-        /*
         ModelBuilder<PurchaseItem> builder = ModelBuilderFactory.createBuilder(PurchaseItem.class);
 
         PurchaseItem purchaseItem = builder.min();
@@ -22,14 +25,11 @@ public class ModelBuilderFactoryTest {
         assertNotNull(purchaseItem.getPrice());
         assertNotNull(purchaseItem.getProductName());
         assertNotNull(purchaseItem.getQuantity());
-
-        */
     }
 
     @Test
     public void createPurchaseOrderBuilder() {
 
-        /**
         ModelBuilder<PurchaseOrder> builder = ModelBuilderFactory.createBuilder(PurchaseOrder.class);
 
         PurchaseOrder purchaseOrder = builder.min();
@@ -38,8 +38,6 @@ public class ModelBuilderFactoryTest {
         assertNotNull(purchaseOrder.getAddress());
         assertNotNull(purchaseOrder.getPerson());
         assertNotNull(purchaseOrder.getOrderItems());
-
-         */
     }
 
 }
