@@ -9,7 +9,7 @@ import de.seven.fate.model.adapter.longv.LongRandomAdapter;
 import de.seven.fate.model.adapter.string.StringRandomAdapter;
 import de.seven.fate.model.adapter.url.UrlRandomAdapter;
 import de.seven.fate.model.builder.AbstractModelBuilder;
-import de.seven.fate.model.builder.CreateModelAction;
+import de.seven.fate.model.builder.ModelAction;
 import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.util.ClassUtil;
 import org.apache.commons.beanutils.BeanUtils;
@@ -22,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static de.seven.fate.model.builder.ModelBuilderFactory.createBuilder;
+import static de.seven.fate.model.util.FieldUtil.getAllFields;
 
 /**
  * Created by Mario on 24.03.2016.
@@ -56,12 +57,12 @@ public final class TypeRandomAdapterFactory {
     }
 
 
-    public static <T> T getRandomPropertyValue(Class<T> propertyType) {
+    public static <T> T getRandomValue(Class<T> propertyType) {
 
-        return getRandomPropertyValue(propertyType, null);
+        return getRandomValue(propertyType, null);
     }
 
-    public static <T> T getRandomPropertyValue(Class<T> propertyType, String propertyName) {
+    public static <T> T getRandomValue(Class<T> propertyType, String propertyName) {
         assert propertyType != null;
 
         if (ADAPTERS.containsKey(propertyType)) {
@@ -69,6 +70,17 @@ public final class TypeRandomAdapterFactory {
         }
 
         return null;
+    }
+
+    public static Object[] getRandomParameters(Class<?>[] parameterTypes) {
+
+        Object[] args = new Object[parameterTypes.length];
+
+        for (int index = 0; index < args.length; index++) {
+            args[index] = getRandomValue(parameterTypes[index]);
+        }
+
+        return args;
     }
 
     public static <T> T getCollection(Class<T> modelType, Type propertyType, boolean skip) {
@@ -94,12 +106,12 @@ public final class TypeRandomAdapterFactory {
         return null;
     }
 
-    public static <T> void generateRandomFieldValues(T model, CreateModelAction createAction, boolean skip) {
+    public static <T> void generateRandomFieldValues(T model, ModelAction createAction, boolean skip) {
         assert model != null;
         assert createAction != null;
 
         Class<?> modelClass = model.getClass();
-        List<Field> fields = ClassUtil.getAllFields(modelClass);
+        List<Field> fields = getAllFields(modelClass);
 
         for (Field field : fields) {
 

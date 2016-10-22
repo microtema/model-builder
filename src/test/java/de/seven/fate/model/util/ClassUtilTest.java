@@ -12,36 +12,6 @@ public class ClassUtilTest {
     ClassUtil sut;
 
     @Test
-    public void getGenericType() throws Exception {
-
-    }
-
-    @Test
-    public void getActualTypeArgument() {
-
-    }
-
-    @Test
-    public void createInstance() {
-
-    }
-
-    @Test
-    public void getPropertyNames() {
-
-    }
-
-    @Test
-    public void getPropertyType() {
-
-    }
-
-    @Test
-    public void getAllFields() {
-
-    }
-
-    @Test
     public void stringISsNotComplexType() {
         Assert.assertFalse(ClassUtil.isComplexType(String.class));
     }
@@ -66,6 +36,5 @@ public class ClassUtilTest {
     public void isCollectionType() throws Exception {
         Assert.assertTrue(ClassUtil.isCollectionType(List.class));
     }
-
 
 }

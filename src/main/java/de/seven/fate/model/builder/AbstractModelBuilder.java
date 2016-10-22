@@ -4,12 +4,12 @@ package de.seven.fate.model.builder;
 import de.seven.fate.model.util.ClassUtil;
 import de.seven.fate.model.util.CollectionUtil;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.*;
 
 import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.*;
-import static de.seven.fate.model.builder.ModelBuilderFactory.createBuilder;
 
 
 public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
@@ -18,7 +18,6 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     private static final int MAX_COLLECTION_SIZE = 10;
 
     private static int randomCollectionSize() {
-
         return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
     }
 
@@ -36,19 +35,26 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
     protected T min(Field rootField, final boolean skip, final boolean required) {
 
+        return build(rootField, new MinModelAction(required), skip);
+    }
+
+    private T build(Field rootField, ModelAction modelAction, boolean skip) {
+
         Class<T> modelType = getGenericType();
-        String propertyName = rootField != null ? rootField.getName() : null;
-        Type propertyType = rootField != null ? rootField.getGenericType() : null;
 
         if (!ClassUtil.isComplexType(modelType)) {
 
-            return getRandomPropertyValue(modelType, propertyName);
+            String propertyName = rootField != null ? rootField.getName() : null;
+
+            return getRandomValue(modelType, propertyName);
 
         } else if (modelType.isEnum()) {
 
             return CollectionUtil.random(modelType.getEnumConstants());
 
         } else if (ClassUtil.isCollectionType(modelType)) {
+
+            Type propertyType = rootField != null ? rootField.getGenericType() : null;
 
             return getCollection(modelType, propertyType, skip);
 
@@ -57,24 +63,13 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
             return null; //ignore this
         }
 
-        T model = ClassUtil.createInstance(modelType);
+        T model = createModel();
 
-        generateRandomFieldValues(model, new CreateModelAction() {
-            @Override
-            public Object execute(Field field, boolean overflow) {
-
-                if(!required && !ClassUtil.isFieldRequired(field)){
-                    return null;
-                }
-
-                ModelBuilder<?> modelBuilder = createBuilder(field.getType());
-
-                return ((AbstractModelBuilder) modelBuilder).min(field, overflow, required);
-            }
-        }, skip);
+        generateRandomFieldValues(model, modelAction, skip);
 
         return model;
     }
+
 
     @Override
     public T max() {
@@ -82,34 +77,16 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
         return max(false);
     }
 
-    public T max(boolean skip) {
-
-        return min(null, skip, true);
-    }
-
     @Override
     public T random() {
 
-        return random(getRandomPropertyValue(Boolean.class));
+        return random(getRandomValue(Boolean.class));
     }
 
     @Override
     public List<T> list() {
 
         return list(randomCollectionSize());
-    }
-
-    public List<T> list(boolean skip) {
-
-        return list(randomCollectionSize(), skip);
-    }
-
-    public List<T> list(int size, boolean skip) {
-        List<T> list = new ArrayList<>();
-
-        fillCollection(size, list, skip);
-
-        return list;
     }
 
     @Override
@@ -122,6 +99,11 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
         return list;
     }
 
+    @Override
+    public Set<T> set() {
+
+        return set(randomCollectionSize());
+    }
 
     @Override
     public Set<T> set(int size) {
@@ -129,7 +111,20 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
         return set(size, false);
     }
 
-    public Set<T> set(int size, boolean skip) {
+    public List<T> list(boolean skip) {
+
+        return list(randomCollectionSize(), skip);
+    }
+
+    protected List<T> list(int size, boolean skip) {
+        List<T> list = new ArrayList<>();
+
+        fillCollection(size, list, skip);
+
+        return list;
+    }
+
+    protected Set<T> set(int size, boolean skip) {
         Set<T> set = new HashSet<>();
 
         fillCollection(size, set, skip);
@@ -142,12 +137,6 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
         return set(randomCollectionSize(), skip);
     }
 
-    @Override
-    public Set<T> set() {
-
-        return set(randomCollectionSize());
-    }
-
     /*
      * ATTENTION! Size of Collection of type Set can be less than size, when adding multiple the same Object
      */
@@ -155,7 +144,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
         int count = 0;
         while (count++ < size) {
-            collection.add(random(getRandomPropertyValue(Boolean.class), skip));
+            collection.add(random(getRandomValue(Boolean.class), skip));
         }
     }
 
@@ -165,6 +154,20 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
     private T random(boolean minOrMax, boolean skip) {
         return minOrMax ? min(null, skip, false) : max(skip);
+    }
+
+    private T createModel() {
+
+        Constructor<T> constructor = ClassUtil.getConstructor(getGenericType());
+
+        Object[] args = getRandomParameters(constructor.getParameterTypes());
+
+        return ClassUtil.createInstance(constructor, args);
+    }
+
+    private T max(boolean skip) {
+
+        return min(null, skip, true);
     }
 
 }
