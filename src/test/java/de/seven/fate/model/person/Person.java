@@ -3,22 +3,30 @@ package de.seven.fate.model.person;
 
 import de.seven.fate.model.address.Address;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class Person {
 
+    @NotNull
     private Long id;
 
+    @NotNull
     private String name;
 
+    @NotNull
     private String email;
+
+    @NotNull
     private String phoneNumber;
+
+    @NotNull
     private Integer position;
 
+    @NotNull
     private Date dob;
 
     private Date updateDate;
@@ -27,7 +35,7 @@ public class Person {
 
     private Float phoneBill;
 
-    private Address address;
+    private List<Address> addresses;
 
     public Long getId() {
         return id;
@@ -101,11 +109,11 @@ public class Person {
         this.phoneBill = phoneBill;
     }
 
-    public Address getAddress() {
-        return address;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 }

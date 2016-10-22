@@ -1,9 +1,8 @@
 package de.seven.fate.model.util;
 
-import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Mario on 25.03.2016.
@@ -14,16 +13,16 @@ public class StringUtilTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldThrowNullPointerException() {
-        sut.leftPad(null, 7, '0');
+        StringUtil.leftPad(null, 7, '0');
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentException() {
-        sut.leftPad("1234567", 5, ' ');
+        StringUtil.leftPad("1234567", 5, ' ');
     }
 
     @Test
     public void leftPad() {
-        assertEquals("0012345", sut.leftPad("12345", 7, '0'));
+        assertEquals("0012345", StringUtil.leftPad("12345", 7, '0'));
     }
 }

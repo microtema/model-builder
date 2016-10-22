@@ -86,4 +86,22 @@ public final class CollectionUtil {
 
         return Arrays.asList(array);
     }
+
+    public static <K, V> Map<K, V> createMap(Object... objects) {
+        if (isEmpty(objects)) {
+            return Collections.emptyMap();
+        }
+
+        if (objects.length % 2 != 0) {
+            throw new IllegalArgumentException("objects should be even");
+        }
+
+        Map<K, V> map = new HashMap<>();
+
+        for (int i = 0; i < objects.length; i++) {
+            map.put((K) objects[i], (V) objects[++i]);
+        }
+
+        return map;
+    }
 }

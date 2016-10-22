@@ -2,103 +2,172 @@ package de.seven.fate.model.builder;
 
 
 import de.seven.fate.model.util.ClassUtil;
+import de.seven.fate.model.util.CollectionUtil;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.*;
 
-import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.initPropertiesWithRandomValues;
+import static de.seven.fate.model.adapter.TypeRandomAdapterFactory.*;
 
 
 public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
+    private static final int MIN_COLLECTION_SIZE = 1;
+    private static final int MAX_COLLECTION_SIZE = 10;
 
-	private static final int MIN_COLLECTION_SIZE = 1;
-	private static final int MAX_COLLECTION_SIZE = 10;
+    private static int randomCollectionSize() {
+        return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
+    }
 
-	private static int randomCollectionSize() {
+    @Override
+    public Class<T> getGenericType() {
 
-		return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
-	}
+        return ClassUtil.getGenericType(getClass());
+    }
 
-	@Override
-	public Class<T> getGenericType() {
+    @Override
+    public T min() {
 
-		return ClassUtil.getGenericType(getClass());
-	}
+        return min(null, false, false);
+    }
 
-	@Override
-	public T min() {
+    protected T min(Field rootField, final boolean skip, final boolean required) {
 
-		Class<T> modelType = getGenericType();
+        return build(rootField, new MinModelAction(required), skip);
+    }
 
-		T model = ClassUtil.createInstance(modelType);
+    private T build(Field rootField, ModelAction modelAction, boolean skip) {
 
-		initWithRandomValues(model);
+        Class<T> modelType = getGenericType();
 
-		return model;
-	}
+        if (!ClassUtil.isComplexType(modelType)) {
 
-	@Override
-	public T max() {
+            String propertyName = rootField != null ? rootField.getName() : null;
 
-		return min();
-	}
+            return getRandomValue(modelType, propertyName);
 
-	@Override
-	public T random() {
+        } else if (modelType.isEnum()) {
 
-		return random(new Random().nextBoolean());
-	}
+            return CollectionUtil.random(modelType.getEnumConstants());
 
-	@Override
-	public List<T> list() {
+        } else if (ClassUtil.isCollectionType(modelType)) {
 
-		return list(randomCollectionSize());
-	}
+            Type propertyType = rootField != null ? rootField.getGenericType() : null;
 
-	@Override
-	public List<T> list(int size) {
+            return getCollection(modelType, propertyType, skip);
 
-		List<T> list = new ArrayList<>();
+        } else if (boolean[].class.isAssignableFrom(modelType)) {
 
-		fillCollection(size, list);
+            return null; //ignore this
+        }
 
-		return list;
-	}
+        T model = createModel();
 
-	@Override
-	public Set<T> set(int size) {
+        generateRandomFieldValues(model, modelAction, skip);
 
-		Set<T> set = new HashSet<>();
+        return model;
+    }
 
-		fillCollection(size, set);
 
-		return set;
-	}
+    @Override
+    public T max() {
 
-	@Override
-	public Set<T> set() {
+        return max(false);
+    }
 
-		return set(randomCollectionSize());
-	}
+    @Override
+    public T random() {
 
-	private void initWithRandomValues(T model) {
+        return random(getRandomValue(Boolean.class));
+    }
 
-		initPropertiesWithRandomValues(model);
-	}
+    @Override
+    public List<T> list() {
 
-	/*
-	 * ATTENTION! Size of Collection of type Set can be less than size, when adding multiple the same Object
-	 */
-	private void fillCollection(int size, Collection<T> collection) {
+        return list(randomCollectionSize());
+    }
 
-		int count = 0;
-		while (count++ < size) {
-			collection.add(random());
-		}
-	}
+    @Override
+    public List<T> list(int size) {
 
-	private T random(boolean minOrMax) {
-		return minOrMax ? min() : max();
-	}
+        List<T> list = new ArrayList<>();
+
+        fillCollection(size, list, false);
+
+        return list;
+    }
+
+    @Override
+    public Set<T> set() {
+
+        return set(randomCollectionSize());
+    }
+
+    @Override
+    public Set<T> set(int size) {
+
+        return set(size, false);
+    }
+
+    public List<T> list(boolean skip) {
+
+        return list(randomCollectionSize(), skip);
+    }
+
+    protected List<T> list(int size, boolean skip) {
+        List<T> list = new ArrayList<>();
+
+        fillCollection(size, list, skip);
+
+        return list;
+    }
+
+    protected Set<T> set(int size, boolean skip) {
+        Set<T> set = new HashSet<>();
+
+        fillCollection(size, set, skip);
+
+        return set;
+    }
+
+    public Set<T> set(boolean skip) {
+
+        return set(randomCollectionSize(), skip);
+    }
+
+    /*
+     * ATTENTION! Size of Collection of type Set can be less than size, when adding multiple the same Object
+     */
+    private void fillCollection(int size, Collection<T> collection, boolean skip) {
+
+        int count = 0;
+        while (count++ < size) {
+            collection.add(random(getRandomValue(Boolean.class), skip));
+        }
+    }
+
+    private T random(boolean minOrMax) {
+        return minOrMax ? min() : max();
+    }
+
+    private T random(boolean minOrMax, boolean skip) {
+        return minOrMax ? min(null, skip, false) : max(skip);
+    }
+
+    private T createModel() {
+
+        Constructor<T> constructor = ClassUtil.getConstructor(getGenericType());
+
+        Object[] args = getRandomParameters(constructor.getParameterTypes());
+
+        return ClassUtil.createInstance(constructor, args);
+    }
+
+    private T max(boolean skip) {
+
+        return min(null, skip, true);
+    }
 
 }

@@ -13,6 +13,7 @@ public class StringRandomAdapter extends AbstractTypeRandomAdapter<String> {
                 new EmailPropertyRandomAdapter(),
                 new PhoneNumberPropertyRandomAdapter(),
                 new LinkPropertyRandomAdapter(),
+                new UrlPropertyRandomAdapter(),
                 new StreetNamePropertyRandomAdapter(),
                 new StreetNumberPropertyRandomAdapter());
     }

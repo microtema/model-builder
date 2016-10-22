@@ -9,10 +9,10 @@ import java.util.GregorianCalendar;
 
 public class BodPropertyRandomAdapter implements PropertyRandomAdapter<Date> {
 
-    private static final GregorianCalendar CALENDAR = new GregorianCalendar();
-
     @Override
     public Date randomValue() {
+
+        GregorianCalendar CALENDAR = new GregorianCalendar();
 
         CALENDAR.setTime(new Date());
         CALENDAR.set(Calendar.HOUR_OF_DAY, 0);

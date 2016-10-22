@@ -1,14 +1,15 @@
 package de.seven.fate.model.util;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
+import org.apache.commons.lang3.ClassUtils;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,74 +32,70 @@ public final class ClassUtil {
         return (T) actualTypeArguments[0];
     }
 
-    public static <T> T createInstance(Class<T> instanceType) {
-        assert instanceType != null;
+    public static <T> Class<T> getActualTypeArgument(Type genericType) {
+        assert genericType != null;
 
-        try {
-            return instanceType.newInstance();
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + instanceType.getName(), e);
+        if (genericType instanceof ParameterizedType) {
+
+            ParameterizedType parameterizedType = (ParameterizedType) genericType;
+
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            Type actualTypeArgument = actualTypeArguments[0];
+
+            return (Class<T>) actualTypeArgument;
         }
 
-        throw new IllegalArgumentException("unable to create new instance of Type " + instanceType.getName());
+        return null;
     }
 
+    public static <T> Constructor<T> getConstructor(Class<T> instanceType) {
 
-    public static List<String> getPropertyNames(Class<?> type) {
-        assert type != null;
+        Constructor<?>[] constructors = instanceType.getConstructors();
 
-        BeanInfo info;
+        for (Constructor<?> constructor : constructors) {
 
-        try {
-            info = Introspector.getBeanInfo(type);
-        } catch (IntrospectionException e) {
-            throw new IllegalArgumentException(e);
-        }
-
-        PropertyDescriptor[] propertyDescriptors = info.getPropertyDescriptors();
-
-        List<String> list = new ArrayList<>();
-
-        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
-
-            if ("class".equals(propertyDescriptor.getName())) {
-                continue;
-            }
-
-            list.add(propertyDescriptor.getName());
-        }
-
-        return list;
-    }
-
-    public static Class<?> getPropertyType(String propertyName, Class<?> type) {
-        assert propertyName != null;
-        assert type != null;
-
-        List<Field> allFields = getAllFields(type);
-
-        for (Field field : allFields) {
-
-            if (field.getName().equals(propertyName)) {
-                return field.getType();
+            if (constructor.getModifiers() == Modifier.PUBLIC) {
+                return (Constructor<T>) constructor;
             }
         }
 
         return null;
     }
 
-    private static List<Field> getAllFields(Class<?> type) {
-        assert type != null;
+    public static <T> T createInstance(Class<T> instanceType) {
+        assert instanceType != null;
 
-        if (type.getSuperclass() != null) {
+        try {
+            return instanceType.newInstance();
+        } catch (Exception e) {
 
-            List<Field> fields = getAllFields(type.getSuperclass());
-
-            fields.addAll(CollectionUtil.asList(type.getDeclaredFields()));
-
-            return fields;
+            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + instanceType, e);
         }
 
-        return CollectionUtil.asList(type.getDeclaredFields());
+        throw new IllegalArgumentException("unable to create new instance of Type " + instanceType);
     }
+
+    public static <T> T createInstance(Constructor<T> constructor, Object... args) {
+        assert constructor != null;
+
+        try {
+            return constructor.newInstance(args);
+        } catch (Exception e) {
+
+            LOGGER.log(Level.SEVERE, "unable to create new instance of Type " + constructor, e);
+        }
+
+        throw new IllegalArgumentException("unable to create new instance of Type " + constructor);
+    }
+
+    public static boolean isComplexType(Class<?> type) {
+
+        return !type.isPrimitive() && type != String.class && !ClassUtils.isPrimitiveOrWrapper(type) && type != Date.class && type != BigDecimal.class;
+    }
+
+    public static <T> boolean isCollectionType(Class<T> type) {
+        return Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
+    }
+
+
 }

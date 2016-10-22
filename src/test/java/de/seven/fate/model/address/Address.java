@@ -2,15 +2,23 @@ package de.seven.fate.model.address;
 
 import de.seven.fate.model.geo.GeoData;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by Mario on 25.03.2016.
  */
 public class Address {
 
+    @NotNull
     private String streetName;
+
+    @NotNull
     private String streetNumber;
+
+    @NotNull
     private Integer zipCode;
 
+    @NotNull
     private GeoData geoData;
 
     public String getStreetName() {

@@ -2,20 +2,20 @@ package de.seven.fate.model.person;
 
 import de.seven.fate.model.address.Address;
 import de.seven.fate.model.address.AddressBuilder;
+import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.geo.GeoData;
 import de.seven.fate.model.geo.GeoDataBuilder;
 import org.junit.Test;
 
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Mario on 24.03.2016.
- */
+
 public class AddressBuilderTest {
 
-    PersonBuilder sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
+    ModelBuilder<Person> sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
 
     @Test
     public void testGenericType() {
@@ -49,7 +49,7 @@ public class AddressBuilderTest {
         assertNotNull(person);
 
         assertNotNull(person.getId());
-        assertTrue(person.getId() >= 1000);
+        assertNotNull(person.getId());
 
         assertNotNull(person.getName());
         assertNotNull(person.getEmail());
@@ -57,23 +57,28 @@ public class AddressBuilderTest {
         assertNotNull(person.getPhoneNumber());
         assertNotNull(person.getPosition());
 
-        assertNotNull(person.getUpdateDate());
-        assertNotNull(person.getAmount());
+        assertNull(person.getUpdateDate());
+        assertNull(person.getAmount());
 
-        Address address = person.getAddress();
+        List<Address> addresses = person.getAddresses();
+        assertNotNull(addresses);
 
-        assertNotNull(address);
+        for (Address address : addresses) {
 
-        assertNotNull(address.getStreetName());
-        assertNotNull(address.getStreetNumber());
-        assertNotNull(address.getZipCode());
+            assertNotNull(address);
 
-        GeoData geoData = address.getGeoData();
+            assertNotNull(address.getStreetName());
+            assertNotNull(address.getStreetNumber());
+            assertNotNull(address.getZipCode());
 
-        assertNotNull(geoData);
+            GeoData geoData = address.getGeoData();
 
-        assertNotNull(geoData.getLatitude());
-        assertNotNull(geoData.getLongitude());
+            assertNotNull(geoData);
+
+            assertNotNull(geoData.getLatitude());
+            assertNotNull(geoData.getLongitude());
+            assertNotNull(geoData.getType());
+        }
     }
 
     @Test

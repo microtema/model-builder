@@ -11,23 +11,7 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
 
     private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<String, PropertyRandomAdapter<T>>());
 
-    public void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
 
-        for (PropertyRandomAdapter<T> valueAdapter : valueAdapters) {
-            adapters.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);
-        }
-    }
-
-    public void unregisterPropertyAdapter(String propertyName) {
-        assert propertyName != null;
-
-        adapters.remove(propertyName.toLowerCase());
-    }
-
-    public void clearPropertyAdapters() {
-
-        adapters.clear();
-    }
 
     @Override
     public T randomValue(String propertyName) {
@@ -53,5 +37,12 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
     public Set<String> getAdapterNames() {
 
         return adapters.keySet();
+    }
+
+    protected void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
+
+        for (PropertyRandomAdapter<T> valueAdapter : valueAdapters) {
+            adapters.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);
+        }
     }
 }

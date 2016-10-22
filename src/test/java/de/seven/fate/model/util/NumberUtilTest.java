@@ -1,13 +1,11 @@
 package de.seven.fate.model.util;
 
-import junit.framework.Assert;
 import org.junit.Test;
 
-import java.rmi.server.ExportException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Mario on 24.03.2016.
@@ -19,20 +17,20 @@ public class NumberUtilTest {
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionOnSameMinAndMax()  {
 
-        sut.random(0, 0);
+        NumberUtil.random(0, 0);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionOnMinGreaterThanMax()  {
 
-        sut.random(1, 0);
+        NumberUtil.random(1, 0);
     }
 
 
     @Test
     public void testRandom()  {
 
-        int random = sut.random(0, 100);
+        int random = NumberUtil.random(0, 100);
         assertTrue(random >= 0);
         assertTrue(random <= 100);
     }
@@ -48,7 +46,7 @@ public class NumberUtilTest {
         int maxCount = 5;
 
         while (count++ < maxCount) {
-            integers.add(sut.randomInteger());
+            integers.add(NumberUtil.randomInteger());
         }
 
         assertTrue(integers.size() > 1);

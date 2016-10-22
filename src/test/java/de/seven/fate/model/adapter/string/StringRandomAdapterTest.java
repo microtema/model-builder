@@ -26,6 +26,6 @@ public class StringRandomAdapterTest {
     @Test
     public void randomValueForEmail() {
 
-        assertEquals(new HashSet<String>(Arrays.asList("name", "email", "link", "phonenumber", "streetnumber", "streetname")), sut.getAdapterNames());
+        assertEquals(new HashSet<>(Arrays.asList("name", "email", "link", "url", "phonenumber", "streetnumber", "streetname")), sut.getAdapterNames());
     }
 }

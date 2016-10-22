@@ -14,7 +14,6 @@ public class CollectionUtilTest {
     CollectionUtil sut;
 
     List<String> list = Arrays.asList("Foo", "Bar", "World", "Java", "JUnit", "Maven", "JavaEE", "Git", "EJB");
-    Set<String> set = new HashSet<>(list);
 
     @Test
     public void testRandomList() {
