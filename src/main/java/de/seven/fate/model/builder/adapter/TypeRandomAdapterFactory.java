@@ -8,6 +8,7 @@ import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.builder.ModelBuilderFactory;
 import de.seven.fate.model.builder.adapter.binary.BinaryTypeRandomAdapter;
 import de.seven.fate.model.builder.adapter.bool.BooleanRandomAdapter;
+import de.seven.fate.model.builder.adapter.chars.CharRandomAdapter;
 import de.seven.fate.model.builder.adapter.date.DateRandomAdapter;
 import de.seven.fate.model.builder.adapter.date.LocalDateRandomAdapter;
 import de.seven.fate.model.builder.adapter.date.LocalDateTimeRandomAdapter;
@@ -24,7 +25,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -45,6 +50,7 @@ public final class TypeRandomAdapterFactory {
         BOX_TYPE.put(boolean.class, Boolean.class);
         BOX_TYPE.put(float.class, Float.class);
         BOX_TYPE.put(byte.class, Byte.class);
+        BOX_TYPE.put(char.class, Character.class);
     }
 
     static {
@@ -61,6 +67,7 @@ public final class TypeRandomAdapterFactory {
         registerAdapter(ClassUtil.createInstance(FloatTypeRandomAdapter.class));
         registerAdapter(ClassUtil.createInstance(BinaryTypeRandomAdapter.class));
         registerAdapter(ClassUtil.createInstance(MapTypeRandomAdapter.class));
+        registerAdapter(ClassUtil.createInstance(CharRandomAdapter.class));
     }
 
     private TypeRandomAdapterFactory() {

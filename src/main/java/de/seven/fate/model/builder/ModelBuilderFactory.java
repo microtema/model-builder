@@ -15,22 +15,13 @@ public final class ModelBuilderFactory {
     @SuppressWarnings("unchecked")
     public static <T> ModelBuilder<T> createBuilder(final Class<T> modelType) {
 
-        ModelBuilder<T> modelBuilder = BUILDERS.get(modelType);
+        return BUILDERS.computeIfAbsent(modelType, it -> new AbstractModelBuilder<T>() {
 
-        if (modelBuilder == null) {
-
-            modelBuilder = new AbstractModelBuilder<T>() {
-
-                @Override
-                public Class<T> getGenericType() {
-                    return modelType;
-                }
-            };
-
-            BUILDERS.put(modelType, modelBuilder);
-        }
-
-        return modelBuilder;
+            @Override
+            public Class<T> getGenericType() {
+                return it;
+            }
+        });
     }
 
     public static <T> T min(final Class<T> modelType) {
