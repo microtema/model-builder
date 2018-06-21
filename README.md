@@ -17,11 +17,17 @@ public class PersonBuilder extends AbstractModelBuilder< Person > { }
 * create person instance within filled required fields
 **Person person = builder.min();**
  
-* create person instance within all required fields
+* create person instance within all fields
 **Person person = builder.max();**
   
 * create person instance within filled required or all fields
 **Person person = builder.random();**
+
+* create person within fix values
+**Person person = builder.fix();**
+
+* create person from Resource
+**Person person = builder.fromResource(""file://var/person.xml");**
 
 * create a List of person instances within filled required or all fields with random**[1..10]** size
 **List<Person> persons = builder.list();**
