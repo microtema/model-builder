@@ -5,7 +5,7 @@ import de.seven.fate.model.builder.adapter.AbstractTypeRandomAdapter;
 
 public class LongRandomAdapter extends AbstractTypeRandomAdapter<Long> {
 
-    LongRandomAdapter() {
+    public LongRandomAdapter() {
         registerPropertyAdapter(new IdPropertyRandomAdapter());
     }
 

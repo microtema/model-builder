@@ -5,9 +5,11 @@ import de.seven.fate.model.builder.adapter.AbstractTypeRandomAdapter;
 
 public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
 
-    IntegerRandomAdapter() {
+    public IntegerRandomAdapter() {
 
-        registerPropertyAdapter(new PositionPropertyRandomAdapter(), new ZipCodePropertyRandomAdapter());
+        registerPropertyAdapter(
+                new PositionPropertyRandomAdapter(),
+                new ZipCodePropertyRandomAdapter());
     }
 
 
