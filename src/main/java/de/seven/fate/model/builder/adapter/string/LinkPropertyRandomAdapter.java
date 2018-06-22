@@ -12,12 +12,14 @@ public class LinkPropertyRandomAdapter implements PropertyRandomAdapter<String> 
 
     private static final List<String> PROTOCOLS = Arrays.asList("http", "https", "ftp");
     private static final List<String> DOMAINS = Arrays.asList("com", "de", "org", "al");
+    private static final int BEGIN_INDEX = 10;
+    private static final int END_INDEX = 20;
 
     public static String randomLink() {
 
         String string = UUID.randomUUID().toString();
 
-        return CollectionUtil.random(PROTOCOLS) + "://" + string.substring(10, 20) + "." + CollectionUtil.random(DOMAINS);
+        return CollectionUtil.random(PROTOCOLS) + "://" + string.substring(BEGIN_INDEX, END_INDEX) + "." + CollectionUtil.random(DOMAINS);
     }
 
     @Override

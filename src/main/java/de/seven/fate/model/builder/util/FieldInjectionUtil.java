@@ -16,7 +16,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static de.seven.fate.commons.utils.FieldUtil.*;
+import static de.seven.fate.commons.utils.FieldUtil.doWithFields;
+import static de.seven.fate.commons.utils.FieldUtil.makeAccessible;
+import static de.seven.fate.commons.utils.FieldUtil.setFieldValue;
 
 /**
  * Field Injection Util
@@ -51,7 +53,7 @@ public final class FieldInjectionUtil {
 
             makeAccessible(field);
 
-            de.seven.fate.model.builder.ModelBuilder<?> modelBuilder = getOrCreateModelBuilder(field.getType());
+            ModelBuilder<?> modelBuilder = getOrCreateModelBuilder(field.getType());
 
             Model annotation = field.getAnnotation(Model.class);
 
@@ -68,7 +70,7 @@ public final class FieldInjectionUtil {
 
             Class<?> genericType = ClassUtil.getGenericType(field.getGenericType());
 
-            de.seven.fate.model.builder.ModelBuilder<?> modelBuilder = getOrCreateModelBuilder(genericType);
+            ModelBuilder<?> modelBuilder = getOrCreateModelBuilder(genericType);
 
             Models annotation = field.getAnnotation(Models.class);
 
@@ -93,7 +95,7 @@ public final class FieldInjectionUtil {
         BUILDERS.put(modelBuilder.getGenericType(), modelBuilder);
     }
 
-    private static Object getValue(de.seven.fate.model.builder.ModelBuilder<?> modelBuilder, ModelType modelType, String resource) {
+    private static Object getValue(ModelBuilder<?> modelBuilder, ModelType modelType, String resource) {
 
         switch (modelType) {
             case MIN:
@@ -112,7 +114,7 @@ public final class FieldInjectionUtil {
 
     }
 
-    private static Object getValue(de.seven.fate.model.builder.ModelBuilder<?> modelBuilder, ModelsType modelsType, int size) {
+    private static Object getValue(ModelBuilder<?> modelBuilder, ModelsType modelsType, int size) {
 
         switch (modelsType) {
             case LIST:

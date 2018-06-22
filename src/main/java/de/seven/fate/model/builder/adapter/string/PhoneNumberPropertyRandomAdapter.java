@@ -7,10 +7,14 @@ import org.apache.commons.lang3.StringUtils;
 
 public class PhoneNumberPropertyRandomAdapter implements PropertyRandomAdapter<String> {
 
+    private static final int MAX_SIZE = 123456789;
+    private static final int MIN_SIZE = 12345678;
+    private static final int MAX_WORD_SIZE = 10;
+
     @Override
     public String randomValue() {
 
-        return StringUtils.leftPad(String.valueOf(NumberUtil.random(12345678, 123456789)), 10, '0');
+        return StringUtils.leftPad(String.valueOf(NumberUtil.random(MIN_SIZE, MAX_SIZE)), MAX_WORD_SIZE, '0');
     }
 
     @Override

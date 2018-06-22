@@ -2,12 +2,10 @@ package de.seven.fate.model.builder.adapter.longv;
 
 import de.seven.fate.model.builder.adapter.AbstractTypeRandomAdapter;
 
-import java.util.Random;
-
 
 public class LongRandomAdapter extends AbstractTypeRandomAdapter<Long> {
 
-    public LongRandomAdapter() {
+    LongRandomAdapter() {
         registerPropertyAdapter(new IdPropertyRandomAdapter());
     }
 
@@ -15,7 +13,7 @@ public class LongRandomAdapter extends AbstractTypeRandomAdapter<Long> {
     @Override
     protected Long randomValueDefault(String propertyName) {
 
-        return new Random().nextLong();
+        return RANDOM.nextLong();
     }
 
 

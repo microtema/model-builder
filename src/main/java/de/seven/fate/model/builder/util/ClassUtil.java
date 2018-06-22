@@ -11,30 +11,30 @@ import java.util.Map;
 @SuppressWarnings({"ALL", "unchecked"})
 public final class ClassUtil {
 
-    private static final Map<Class<?>, Class<?>> primitiveWrapperMap = new HashMap<>();
-    private static final Map<Class<?>, Class<?>> wrapperPrimitiveMap = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> CLASS_CLASS_HASH_MAP = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> WRAPPER_PRIMITIVE_MAP = new HashMap<>();
 
     static {
-        primitiveWrapperMap.put(Boolean.TYPE, Boolean.class);
-        primitiveWrapperMap.put(Byte.TYPE, Byte.class);
-        primitiveWrapperMap.put(Character.TYPE, Character.class);
-        primitiveWrapperMap.put(Short.TYPE, Short.class);
-        primitiveWrapperMap.put(Integer.TYPE, Integer.class);
-        primitiveWrapperMap.put(Long.TYPE, Long.class);
-        primitiveWrapperMap.put(Double.TYPE, Double.class);
-        primitiveWrapperMap.put(Float.TYPE, Float.class);
-        primitiveWrapperMap.put(Void.TYPE, Void.TYPE);
+        CLASS_CLASS_HASH_MAP.put(Boolean.TYPE, Boolean.class);
+        CLASS_CLASS_HASH_MAP.put(Byte.TYPE, Byte.class);
+        CLASS_CLASS_HASH_MAP.put(Character.TYPE, Character.class);
+        CLASS_CLASS_HASH_MAP.put(Short.TYPE, Short.class);
+        CLASS_CLASS_HASH_MAP.put(Integer.TYPE, Integer.class);
+        CLASS_CLASS_HASH_MAP.put(Long.TYPE, Long.class);
+        CLASS_CLASS_HASH_MAP.put(Double.TYPE, Double.class);
+        CLASS_CLASS_HASH_MAP.put(Float.TYPE, Float.class);
+        CLASS_CLASS_HASH_MAP.put(Void.TYPE, Void.TYPE);
     }
 
     static {
-        for (Map.Entry<Class<?>, Class<?>> entry : primitiveWrapperMap.entrySet()) {
+        for (Map.Entry<Class<?>, Class<?>> entry : CLASS_CLASS_HASH_MAP.entrySet()) {
 
             Class<?> primitiveClass = entry.getKey();
 
             Class<?> wrapperClass = entry.getValue();
 
             if (!primitiveClass.equals(wrapperClass)) {
-                wrapperPrimitiveMap.put(wrapperClass, primitiveClass);
+                WRAPPER_PRIMITIVE_MAP.put(wrapperClass, primitiveClass);
             }
         }
     }
@@ -66,7 +66,7 @@ public final class ClassUtil {
     }
 
     public static boolean isPrimitiveWrapper(Class<?> type) {
-        return wrapperPrimitiveMap.containsKey(type);
+        return WRAPPER_PRIMITIVE_MAP.containsKey(type);
     }
 
     private static boolean isDateType(Class<?> type) {

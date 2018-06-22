@@ -7,11 +7,14 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<T> {
 
-    private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<String, PropertyRandomAdapter<T>>());
+    protected static final Random RANDOM = new Random();
+
+    private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<>());
 
 
     @Override
@@ -39,7 +42,8 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
         return adapters.keySet();
     }
 
-    protected void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
+    @SafeVarargs
+    protected final void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
 
         for (PropertyRandomAdapter<T> valueAdapter : valueAdapters) {
             adapters.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);

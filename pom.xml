@@ -30,6 +30,7 @@
         <commons.beanutils.version>1.9.2</commons.beanutils.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.utils.version>${project.version}</commons.utils.version>
+        <powermock.version>1.7.1</powermock.version>
     </properties>
 
     <build>
@@ -124,6 +125,19 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
