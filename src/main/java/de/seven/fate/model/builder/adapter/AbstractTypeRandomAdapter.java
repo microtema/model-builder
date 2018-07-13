@@ -23,6 +23,7 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
         String key = StringUtils.trimToEmpty(propertyName).toLowerCase();
 
         if (adapters.containsKey(key)) {
+
             return adapters.get(key).randomValue();
         }
 
