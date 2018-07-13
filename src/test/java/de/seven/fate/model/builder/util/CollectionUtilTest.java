@@ -6,8 +6,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static de.seven.fate.commons.utils.CollectionUtil.first;
-import static org.junit.Assert.*;
+import static de.seven.fate.model.builder.util.CollectionUtil.first;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by Mario on 24.03.2016.

@@ -5,7 +5,6 @@ import de.seven.fate.model.builder.annotation.Inject;
 import de.seven.fate.model.builder.annotation.Model;
 import de.seven.fate.model.builder.annotation.Models;
 import de.seven.fate.model.builder.enums.ModelType;
-import de.seven.fate.model.builder.enums.ModelsType;
 import de.seven.fate.model.builder.util.FieldInjectionUtil;
 import org.junit.Assert;
 import org.junit.Before;
@@ -35,10 +34,10 @@ public class IntegerModelBuilderTest {
     @Models(size = 5)
     List<Integer> modelsWithFixedSize;
 
-    @Models(type = ModelsType.SET)
+    @Models
     Set<Integer> modelsAsSet;
 
-    @Models(type = ModelsType.SET, size = 3)
+    @Models(size = 3)
     Set<Integer> modelsAsSetWithFixedSize;
 
     @Before

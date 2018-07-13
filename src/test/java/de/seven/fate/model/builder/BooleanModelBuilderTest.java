@@ -1,12 +1,9 @@
 package de.seven.fate.model.builder;
 
-import de.seven.fate.model.builder.adapter.string.StringRandomAdapter;
-import de.seven.fate.model.builder.annotation.Inject;
 import de.seven.fate.model.builder.annotation.Model;
 import de.seven.fate.model.builder.annotation.Models;
 import de.seven.fate.model.builder.enums.ModelType;
 import de.seven.fate.model.builder.util.FieldInjectionUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,30 +13,31 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class StringModelBuilderTest {
-
-    @Inject
-    StringRandomAdapter sut;
+public class BooleanModelBuilderTest {
 
     @Model
-    String min;
+    boolean min;
 
     @Model(type = ModelType.MAX)
-    String max;
+    boolean max;
 
     @Models
-    List<String> models;
+    List<Boolean> models;
+
+    @Models
+    Boolean[] arrays;
 
     @Models(size = 5)
-    List<String> modelsWithFixedSize;
+    List<Boolean> modelsWithFixedSize;
 
     @Models
-    Set<String> modelsAsSet;
+    Set<Boolean> modelsAsSet;
 
-    @Models(size = 3)
-    Set<String> modelsAsSetWithFixedSize;
+    @Models(size = 2)
+    Set<Boolean> modelsAsSetWithFixedSize;
 
     @Before
     public void setUp() {
@@ -51,14 +49,12 @@ public class StringModelBuilderTest {
     public void min() {
 
         assertNotNull(min);
-        assertFalse(StringUtils.isBlank(min));
     }
 
     @Test
     public void max() {
 
         assertNotNull(max);
-        assertFalse(StringUtils.isBlank(max));
     }
 
     @Test
@@ -90,8 +86,14 @@ public class StringModelBuilderTest {
     public void setWithFixedSize() {
 
         assertNotNull(modelsAsSetWithFixedSize);
-        assertEquals(3, modelsAsSetWithFixedSize.size());
         assertFalse(modelsAsSetWithFixedSize.isEmpty());
         models.forEach(Assert::assertNotNull);
+    }
+
+    @Test
+    public void arrays() {
+
+        assertNotNull(arrays);
+        assertNotEquals(0, arrays.length);
     }
 }

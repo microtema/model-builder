@@ -11,6 +11,13 @@ public interface ModelBuilder<T> {
     Class<T> getGenericType();
 
     /**
+     * @return field
+     */
+    default Class[] getActualTypeArguments() {
+        return new Class[0];
+    }
+
+    /**
      * @return new Instance of Model and init only required fields
      */
     T min();

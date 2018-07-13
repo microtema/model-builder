@@ -1,8 +1,13 @@
 package de.seven.fate.model.builder.util;
 
-import java.util.*;
+import org.apache.commons.collections.CollectionUtils;
 
-import static de.seven.fate.commons.utils.CollectionUtil.first;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public final class CollectionUtil {
 
@@ -50,5 +55,42 @@ public final class CollectionUtil {
         }
 
         return null;
+    }
+
+    /**
+     * Return first entry of collection
+     *
+     * @param collection may be null
+     * @param <E>        required type
+     * @return first entry of collection or throw IllegalStateException
+     */
+    public static <E> E first(Collection<E> collection) {
+
+        if (CollectionUtils.isEmpty(collection)) {
+            return null;
+        }
+
+        Iterator<E> iterator = collection.iterator();
+
+        if (iterator.hasNext()) {
+            return iterator.next();
+        }
+
+        throw new IllegalStateException("Should not happen");
+    }
+
+    /**
+     * Return last entry of collection
+     *
+     * @param collection may be null
+     * @param <E>        required type
+     * @return last entry of collection or throw IllegalStateException
+     */
+    public static <E> E last(List<E> collection) {
+        if (CollectionUtils.isEmpty(collection)) {
+            return null;
+        }
+
+        return collection.get(collection.size() - 1);
     }
 }

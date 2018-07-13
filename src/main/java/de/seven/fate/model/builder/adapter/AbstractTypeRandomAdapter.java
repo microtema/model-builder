@@ -1,7 +1,7 @@
 package de.seven.fate.model.builder.adapter;
 
 
-import de.seven.fate.commons.utils.ClassUtil;
+import de.seven.fate.model.builder.util.ClassUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;

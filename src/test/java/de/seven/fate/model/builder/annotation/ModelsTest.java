@@ -1,6 +1,5 @@
 package de.seven.fate.model.builder.annotation;
 
-import de.seven.fate.model.builder.enums.ModelsType;
 import org.junit.Test;
 
 import java.util.List;
@@ -23,6 +22,5 @@ public class ModelsTest {
         assertNotNull(annotation);
 
         assertEquals(-1, annotation.size());
-        assertEquals(ModelsType.LIST, annotation.type());
     }
 }

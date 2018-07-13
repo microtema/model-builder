@@ -1,7 +1,5 @@
 package de.seven.fate.model.builder.adapter;
 
-import de.seven.fate.commons.utils.ClassUtil;
-import de.seven.fate.commons.utils.FieldUtil;
 import de.seven.fate.model.builder.AbstractModelBuilder;
 import de.seven.fate.model.builder.ModelAction;
 import de.seven.fate.model.builder.ModelBuilder;
@@ -20,17 +18,18 @@ import de.seven.fate.model.builder.adapter.longv.LongRandomAdapter;
 import de.seven.fate.model.builder.adapter.map.MapTypeRandomAdapter;
 import de.seven.fate.model.builder.adapter.string.StringRandomAdapter;
 import de.seven.fate.model.builder.adapter.url.UrlRandomAdapter;
-import org.apache.commons.beanutils.BeanUtils;
+import de.seven.fate.model.builder.util.ClassUtil;
+import de.seven.fate.model.builder.util.MethodUtil;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -108,11 +107,11 @@ public final class TypeRandomAdapterFactory {
         return args;
     }
 
-    public static <T> T getCollection(Class<T> modelType, Type propertyType, boolean skip) {
+    public static <T> T getCollection(Class<T> modelType, Type propertyType, boolean skip, Class[] actualTypeArguments) {
 
         if (List.class.isAssignableFrom(modelType)) {
 
-            Class<?> genericType = ClassUtil.getGenericType(propertyType);
+            Class<?> genericType = getGenericType(propertyType);
 
             ModelBuilder<?> builder = ModelBuilderFactory.createBuilder(genericType);
 
@@ -120,7 +119,7 @@ public final class TypeRandomAdapterFactory {
 
         } else if (Set.class.isAssignableFrom(modelType)) {
 
-            Class<?> genericType = ClassUtil.getGenericType(propertyType);
+            Class<?> genericType = getGenericType(propertyType);
 
             ModelBuilder<?> builder = ModelBuilderFactory.createBuilder(genericType);
 
@@ -128,8 +127,8 @@ public final class TypeRandomAdapterFactory {
 
         } else if (Map.class.isAssignableFrom(modelType)) {
 
-            Class<?> keyGenericType = propertyType != null ? ClassUtil.getGenericType(propertyType) : String.class;
-            Class<?> valueGenericType = propertyType != null ? ClassUtil.getGenericType(propertyType, 1) : String.class;
+            Class<?> keyGenericType = actualTypeArguments[0];
+            Class<?> valueGenericType = actualTypeArguments[1];
 
             ModelBuilder<?> keyBuilder = ModelBuilderFactory.createBuilder(keyGenericType);
             ModelBuilder<?> valueBuilder = ModelBuilderFactory.createBuilder(valueGenericType);
@@ -142,13 +141,22 @@ public final class TypeRandomAdapterFactory {
         return null;
     }
 
+    private static Class<?> getGenericType(Type propertyType) {
+
+        Class<?> modelType = ClassUtil.getGenericType(propertyType);
+
+        return modelType == null ? (Class<?>) propertyType : modelType;
+    }
+
     public static <T> T getArray(Class<?> modelType, boolean skip) {
 
         ModelBuilder<?> builder = ModelBuilderFactory.createBuilder(modelType);
 
         List list = ((AbstractModelBuilder) builder).list(skip);
 
-        return (T) list.toArray();
+        Object[] array = (Object[]) Array.newInstance(modelType, list.size());
+
+        return (T) list.toArray(array);
     }
 
     public static <T> void generateRandomFieldValues(T model, ModelAction createAction, boolean skip) {
@@ -156,12 +164,13 @@ public final class TypeRandomAdapterFactory {
         assert createAction != null;
 
         Class<?> modelClass = model.getClass();
-        List<Field> fields = FieldUtil.getPropertyFields(modelClass);
+        Set<String> properties = MethodUtil.getProperties(modelClass);
 
-        for (Field field : fields) {
+        for (String property : properties) {
 
-            String fieldName = field.getName();
-            Class<?> fieldGenericType = ClassUtil.getGenericType(field.getGenericType());
+            Method method = MethodUtil.getGetterMethod(modelClass, property);
+
+            Class<?> fieldGenericType = ClassUtil.getGenericType(method.getGenericReturnType());
 
             boolean overFlow = fieldGenericType == modelClass;
 
@@ -169,19 +178,11 @@ public final class TypeRandomAdapterFactory {
                 continue;
             }
 
-            Object propertyValue = createAction.execute(field, overFlow);
+            Object propertyValue = createAction.execute(method, overFlow);
 
-            if (propertyValue != null) {
-
-                try {
-                    BeanUtils.setProperty(model, fieldName, propertyValue);
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    LOGGER.log(Level.WARNING, "Unable to set property: " + fieldName + " on model: " + model, e);
-                }
-            }
+            Optional.ofNullable(propertyValue).ifPresent(it -> MethodUtil.setProperties(model, property, it));
         }
     }
-
 
     private static void registerAdapter(AbstractTypeRandomAdapter<?> valueAdapter) {
         assert valueAdapter != null;

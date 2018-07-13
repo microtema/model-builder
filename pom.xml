@@ -11,7 +11,7 @@
 
     <name>Model Builder</name>
     <description>Model Builder with Random Values</description>
-    <url>https://github.com/sevenfate/model-builder.git</url>
+    <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder.git</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -88,12 +88,6 @@
     </build>
 
     <dependencies>
-
-        <dependency>
-            <groupId>de.seven.fate</groupId>
-            <artifactId>commons-utils</artifactId>
-            <version>${commons.utils.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>commons-beanutils</groupId>
