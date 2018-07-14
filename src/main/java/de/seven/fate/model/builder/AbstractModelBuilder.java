@@ -29,6 +29,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     private static final int MAX_COLLECTION_SIZE = 10;
 
     private static int randomCollectionSize() {
+
         return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
     }
 
@@ -46,7 +47,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
     protected T min(Method rootMethod, final boolean skip, final boolean required) {
 
-        return build(rootMethod, new MinModelAction(required), skip);
+        return build(rootMethod, new DefaultModelAction(required), skip);
     }
 
     @SuppressWarnings("unchecked")
@@ -54,7 +55,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
         Class<T> modelType = getGenericType();
 
-        if (!de.seven.fate.model.builder.util.ClassUtil.isComplexType(modelType)) {
+        if (!ClassUtil.isComplexType(modelType)) {
 
             String propertyName = rootMethod != null ? MethodUtil.getPropertyName(rootMethod.getName()) : null;
 
@@ -64,7 +65,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
             return CollectionUtil.random(modelType.getEnumConstants());
 
-        } else if (de.seven.fate.model.builder.util.ClassUtil.isCollectionType(modelType)) {
+        } else if (ClassUtil.isCollectionType(modelType)) {
 
             Type propertyType = rootMethod != null ? ClassUtil.getGenericType(rootMethod.getGenericReturnType()) : null;
 
@@ -75,10 +76,6 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
             Class propertyType = modelType.getComponentType();
 
             return TypeRandomAdapterFactory.getArray(propertyType, skip);
-
-        } else if (boolean[].class.isAssignableFrom(modelType)) {
-
-            return null; //ignore this
 
         } else if (Class.class.equals(modelType)) {
 
@@ -100,9 +97,9 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     }
 
     @Override
-    public T random() {
+    public T mix() {
 
-        return random(TypeRandomAdapterFactory.getRandomValue(Boolean.class));
+        return mix(TypeRandomAdapterFactory.getRandomValue(Boolean.class));
     }
 
     @Override
@@ -112,6 +109,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public T fromResource(String resourceLocation) {
         Validate.notNull(resourceLocation);
 
@@ -158,7 +156,9 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     @Override
     public List<T> list() {
 
-        return list(randomCollectionSize());
+        int size = randomCollectionSize();
+
+        return list(size);
     }
 
     @Override
@@ -174,7 +174,9 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
     @Override
     public Set<T> set() {
 
-        return set(randomCollectionSize());
+        int size = randomCollectionSize();
+
+        return set(size);
     }
 
     @Override
@@ -185,7 +187,9 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
     public List<T> list(boolean skip) {
 
-        return list(randomCollectionSize(), skip);
+        int size = randomCollectionSize();
+
+        return list(size, skip);
     }
 
     protected List<T> list(int size, boolean skip) {
@@ -223,7 +227,7 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
             Boolean minOrMax = TypeRandomAdapterFactory.getRandomValue(Boolean.class);
 
-            T randomModel = random(minOrMax, skip);
+            T randomModel = mix(minOrMax, skip);
 
             collection.add(randomModel);
         }
@@ -236,15 +240,16 @@ public abstract class AbstractModelBuilder<T> implements ModelBuilder<T> {
 
         int count = 0;
         while (count++ < size) {
-            collection.add(random());
+
+            collection.add(mix());
         }
     }
 
-    private T random(boolean minOrMax) {
+    private T mix(boolean minOrMax) {
         return minOrMax ? min() : max();
     }
 
-    private T random(boolean minOrMax, boolean skip) {
+    private T mix(boolean minOrMax, boolean skip) {
         return minOrMax ? min(null, skip, false) : max(skip);
     }
 

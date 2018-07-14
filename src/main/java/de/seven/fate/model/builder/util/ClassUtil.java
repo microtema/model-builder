@@ -67,6 +67,7 @@ public final class ClassUtil {
     }
 
     public static <T> boolean isCollectionType(Class<T> type) {
+
         return Collection.class.isAssignableFrom(type) || Map.class.isAssignableFrom(type);
     }
 
@@ -79,6 +80,7 @@ public final class ClassUtil {
     }
 
     public static boolean isPrimitiveWrapper(Class<?> type) {
+
         return WRAPPER_PRIMITIVE_MAP.containsKey(type);
     }
 
@@ -92,6 +94,7 @@ public final class ClassUtil {
         notNull(instanceType);
 
         if (args == null || args.length == 0) {
+
             return createInstanceImpl(instanceType);
         }
 
@@ -104,6 +107,7 @@ public final class ClassUtil {
             return constructor.newInstance(arguments);
 
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+
             throw new IllegalArgumentException("Unable to create new instance of Type " + instanceType, e);
         }
     }
@@ -152,6 +156,7 @@ public final class ClassUtil {
         Class<?>[] parameterTypes = findParameterTypes(instanceType);
 
         if (parameterTypes.length == 0) {
+
             throw new IllegalArgumentException("unable to get ParameterType for " + instanceType);
         }
 
@@ -274,6 +279,7 @@ public final class ClassUtil {
      * @return Generic Type or null
      */
     public static <T> T getGenericType(Class<?> type) {
+
         return getGenericType(type, 0);
     }
 

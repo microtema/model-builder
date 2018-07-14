@@ -11,6 +11,8 @@ public interface ModelBuilder<T> {
     Class<T> getGenericType();
 
     /**
+     * return Actual Type Arguments from Map
+     *
      * @return field
      */
     default Class[] getActualTypeArguments() {
@@ -30,7 +32,7 @@ public interface ModelBuilder<T> {
     /**
      * @return new Instance of Model and init as Min or Max
      */
-    T random();
+    T mix();
 
     /**
      * @return new Instance of Model and init as Fix
@@ -44,18 +46,18 @@ public interface ModelBuilder<T> {
     T fromResource(String resourceLocation);
 
     /**
-     * @return new List by random size with new Instances of Models and init as Min or Max
+     * @return new List by mix size with new Instances of Models and init as Min or Max
      */
     List<T> list();
 
     /**
      * @param size of Collection
-     * @return new Set by random size with new Instances of Models and init as Min or Max
+     * @return new Set by mix size with new Instances of Models and init as Min or Max
      */
     List<T> list(int size);
 
     /**
-     * @return new Set by random size with new Instances of Models and init as Min or Max
+     * @return new Set by mix size with new Instances of Models and init as Min or Max
      */
     Set<T> set();
 

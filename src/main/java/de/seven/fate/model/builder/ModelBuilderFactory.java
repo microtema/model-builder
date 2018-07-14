@@ -29,7 +29,9 @@ public final class ModelBuilderFactory {
     @SuppressWarnings("unchecked")
     public static <T> ModelBuilder<T> createBuilder(final Class<T> modelType, final Class[] actualTypeArguments) {
 
-        Optional<ModelBuilder> optionalModelBuilder = BUILDERS.stream().filter(it -> it.getGenericType() == modelType && Arrays.equals(it.getActualTypeArguments(), actualTypeArguments)).findAny();
+        Optional<ModelBuilder> optionalModelBuilder = BUILDERS.stream()
+                .filter(it -> it.getGenericType() == modelType && Arrays.equals(it.getActualTypeArguments(), actualTypeArguments))
+                .findAny();
 
         if (optionalModelBuilder.isPresent()) {
 
@@ -64,9 +66,9 @@ public final class ModelBuilderFactory {
         return createBuilder(modelType).max();
     }
 
-    public static <T> T random(final Class<T> modelType) {
+    public static <T> T mix(final Class<T> modelType) {
 
-        return createBuilder(modelType).random();
+        return createBuilder(modelType).mix();
     }
 
     public static <T> T fromResource(final Class<T> modelType, String fromResource) {

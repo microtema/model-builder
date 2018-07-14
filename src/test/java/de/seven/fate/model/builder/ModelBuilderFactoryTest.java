@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class ModelBuilderFactoryTest {
@@ -53,7 +56,7 @@ public class ModelBuilderFactoryTest {
 
         assertTrue(ModelBuilderFactory.createBuilder(modelType).min() != 0);
         assertFalse(ModelBuilderFactory.createBuilder(modelType).list().isEmpty());
-        assertTrue(ModelBuilderFactory.random(modelType) != 0);
+        assertTrue(ModelBuilderFactory.mix(modelType) != 0);
     }
 
     @Test
@@ -62,7 +65,7 @@ public class ModelBuilderFactoryTest {
 
         assertTrue(ModelBuilderFactory.createBuilder(modelType).min() != 0);
         assertFalse(ModelBuilderFactory.createBuilder(modelType).list().isEmpty());
-        assertTrue(ModelBuilderFactory.random(modelType) != 0);
+        assertTrue(ModelBuilderFactory.mix(modelType) != 0);
     }
 
     @Test
@@ -71,7 +74,7 @@ public class ModelBuilderFactoryTest {
 
         assertTrue(ModelBuilderFactory.createBuilder(modelType).min() != 0);
         assertFalse(ModelBuilderFactory.createBuilder(modelType).list().isEmpty());
-        assertTrue(ModelBuilderFactory.random(modelType) != 0);
+        assertTrue(ModelBuilderFactory.mix(modelType) != 0);
     }
 
     @Test
@@ -80,7 +83,7 @@ public class ModelBuilderFactoryTest {
 
         assertTrue(ModelBuilderFactory.createBuilder(modelType).min() != 0);
         assertFalse(ModelBuilderFactory.createBuilder(modelType).list().isEmpty());
-        assertTrue(ModelBuilderFactory.random(modelType) != 0);
+        assertTrue(ModelBuilderFactory.mix(modelType) != 0);
     }
 
     @Test

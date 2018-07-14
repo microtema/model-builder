@@ -9,11 +9,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
-public class MinModelAction implements ModelAction {
+public class DefaultModelAction implements ModelAction {
 
     private final boolean required;
 
-    public MinModelAction(boolean required) {
+    public DefaultModelAction(boolean required) {
         this.required = required;
     }
 

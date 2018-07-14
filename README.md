@@ -20,7 +20,7 @@ or
     * **Person person = builder.max();**
   
 * create person instance within filled required or all fields
-    * **Person person = builder.random();**
+    * **Person person = builder.mix();**
 
 * create person within fix values
     * **Person person = builder.fix();**

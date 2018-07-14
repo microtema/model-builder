@@ -10,7 +10,10 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 
 
 public class AddressBuilderTest {
@@ -96,7 +99,7 @@ public class AddressBuilderTest {
     @Test
     public void testRandom() {
 
-        Person person = sut.random();
+        Person person = sut.mix();
 
         assertNotNull(person);
         assertNotNull(person.getName());

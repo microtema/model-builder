@@ -30,14 +30,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
 @SuppressWarnings("ALL")
 public final class TypeRandomAdapterFactory {
-
-    private static final Logger LOGGER = Logger.getLogger(TypeRandomAdapterFactory.class.getName());
 
     private static final Map<Class<?>, AbstractTypeRandomAdapter<?>> ADAPTERS = Collections.synchronizedMap(new HashMap<Class<?>, AbstractTypeRandomAdapter<?>>());
     private static final Map<Class, Class> BOX_TYPE = new HashMap<>();

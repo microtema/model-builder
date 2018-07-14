@@ -14,7 +14,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -94,11 +93,6 @@ public final class FieldInjectionUtil {
             return ModelsType.SET;
         }
 
-        if (List.class.isAssignableFrom(fieldType)) {
-
-            return ModelsType.LIST;
-        }
-
         if (Collection.class.isAssignableFrom(fieldType)) {
 
             return ModelsType.LIST;
@@ -151,7 +145,7 @@ public final class FieldInjectionUtil {
             case MAX:
                 return modelBuilder.max();
             case RANDOM:
-                return modelBuilder.random();
+                return modelBuilder.mix();
             case FIX:
                 return modelBuilder.fix();
             case SOURCE:
