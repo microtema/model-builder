@@ -2,12 +2,16 @@ package de.seven.fate.model.builder;
 
 import de.seven.fate.model.builder.order.PurchaseItem;
 import de.seven.fate.model.builder.order.PurchaseOrder;
+import de.seven.fate.model.builder.person.Person;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +22,18 @@ import static org.junit.Assert.assertTrue;
 public class ModelBuilderFactoryTest {
 
     ModelBuilderFactory sut;
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void utilityClassTest() throws Exception {
+
+        Constructor<ModelBuilderFactory> constructor = ModelBuilderFactory.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch (InvocationTargetException e) {
+            throw (UnsupportedOperationException) e.getTargetException();
+        }
+    }
 
     @Test
     public void createPurchaseItemBuilder() {
@@ -137,6 +153,96 @@ public class ModelBuilderFactoryTest {
 
         assertFalse(properties.isEmpty());
         assertEquals("xml", properties.get("key"));
+    }
+
+    @Test
+    public void min() {
+
+        Class<Person> modelType = Person.class;
+
+        Person model = ModelBuilderFactory.min(modelType);
+
+        assertNotNull(model);
+    }
+
+    @Test
+    public void max() {
+
+        Class<Person> modelType = Person.class;
+
+        Person model = ModelBuilderFactory.max(modelType);
+
+        assertNotNull(model);
+    }
+
+    @Test
+    public void mix() {
+
+        Class<Person> modelType = Person.class;
+
+        Person model = ModelBuilderFactory.mix(modelType);
+
+        assertNotNull(model);
+    }
+
+    @Test
+    public void list() {
+
+        Class<Person> modelType = Person.class;
+
+        List<Person> models = ModelBuilderFactory.list(modelType);
+
+        assertNotNull(models);
+
+        assertFalse(models.isEmpty());
+    }
+
+    @Test
+    public void listWithSize() {
+
+        Class<Person> modelType = Person.class;
+
+        List<Person> models = ModelBuilderFactory.list(modelType, 1);
+
+        assertNotNull(models);
+
+        assertEquals(1, models.size());
+    }
+
+
+    @Test
+    public void set() {
+
+        Class<Person> modelType = Person.class;
+
+        Set<Person> models = ModelBuilderFactory.set(modelType);
+
+        assertNotNull(models);
+
+        assertFalse(models.isEmpty());
+    }
+
+    @Test
+    public void setWithSize() {
+
+        Class<Person> modelType = Person.class;
+
+        Set<Person> models = ModelBuilderFactory.set(modelType, 1);
+
+        assertNotNull(models);
+
+        assertEquals(1, models.size());
+    }
+
+    @Test
+    public void fromPropertiesResourceWithFactory() {
+
+        Class<Properties> modelType = Properties.class;
+
+        Properties properties = ModelBuilderFactory.fromResource(modelType, "messages.properties");
+
+        assertFalse(properties.isEmpty());
+        assertEquals("properties", properties.get("key"));
     }
 
 }
