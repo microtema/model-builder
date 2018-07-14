@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 public final class CollectionUtil {
@@ -18,6 +17,7 @@ public final class CollectionUtil {
     public static <E> List<E> randomList(Collection<E> collection) {
 
         List<E> list = new ArrayList<>(collection);
+
         Collections.shuffle(list);
 
         return list;
@@ -70,13 +70,7 @@ public final class CollectionUtil {
             return null;
         }
 
-        Iterator<E> iterator = collection.iterator();
-
-        if (iterator.hasNext()) {
-            return iterator.next();
-        }
-
-        throw new IllegalStateException("Should not happen");
+        return collection.stream().findFirst().orElse(null);
     }
 
     /**
