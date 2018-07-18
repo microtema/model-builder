@@ -1,5 +1,7 @@
 package de.seven.fate.model.builder;
 
+import org.apache.commons.lang3.Validate;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -7,12 +9,27 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import static de.seven.fate.model.builder.constants.Constants.MAY_NOT_BE_NULL;
+
 public final class ModelBuilderFactory {
 
     private static final Set<ModelBuilder> BUILDERS = new HashSet<>();
 
     private ModelBuilderFactory() {
         throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
+    }
+
+    public static <T> void registerModelBuilder(ModelBuilder<T> modelBuilder) {
+        Validate.notNull(modelBuilder, MAY_NOT_BE_NULL, "modelBuilder");
+
+        Optional<ModelBuilder> optionalModelBuilder = findModelBuilder(modelBuilder.getGenericType(), modelBuilder.getActualTypeArguments());
+
+        if (optionalModelBuilder.isPresent()) {
+
+            return;
+        }
+
+        BUILDERS.add(modelBuilder);
     }
 
     @SuppressWarnings("unchecked")
@@ -29,9 +46,7 @@ public final class ModelBuilderFactory {
     @SuppressWarnings("unchecked")
     public static <T> ModelBuilder<T> createBuilder(final Class<T> modelType, final Class[] actualTypeArguments) {
 
-        Optional<ModelBuilder> optionalModelBuilder = BUILDERS.stream()
-                .filter(it -> it.getGenericType() == modelType && Arrays.equals(it.getActualTypeArguments(), actualTypeArguments))
-                .findAny();
+        Optional<ModelBuilder> optionalModelBuilder = findModelBuilder(modelType, actualTypeArguments);
 
         if (optionalModelBuilder.isPresent()) {
 
@@ -51,9 +66,16 @@ public final class ModelBuilderFactory {
             }
         };
 
-        BUILDERS.add(modelBuilder);
+        registerModelBuilder(modelBuilder);
 
         return modelBuilder;
+    }
+
+    private static <T> Optional<ModelBuilder> findModelBuilder(Class<T> modelType, Class[] actualTypeArguments) {
+
+        return BUILDERS.stream()
+                .filter(it -> (it.getGenericType() == modelType) && Arrays.equals(it.getActualTypeArguments(), actualTypeArguments))
+                .findAny();
     }
 
     public static <T> T min(final Class<T> modelType) {

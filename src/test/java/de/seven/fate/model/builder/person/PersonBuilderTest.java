@@ -1,10 +1,10 @@
 package de.seven.fate.model.builder.person;
 
-import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.builder.address.Address;
-import de.seven.fate.model.builder.address.AddressBuilder;
+import de.seven.fate.model.builder.annotation.Inject;
 import de.seven.fate.model.builder.geo.GeoData;
-import de.seven.fate.model.builder.geo.GeoDataBuilder;
+import de.seven.fate.model.builder.util.FieldInjectionUtil;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collection;
@@ -15,10 +15,15 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
+public class PersonBuilderTest {
 
-public class AddressBuilderTest {
+    @Inject
+    PersonBuilder sut;
 
-    ModelBuilder<Person> sut = new PersonBuilder(new AddressBuilder(new GeoDataBuilder()));
+    @Before
+    public void setUp() {
+        FieldInjectionUtil.injectFields(this);
+    }
 
     @Test
     public void testGenericType() {

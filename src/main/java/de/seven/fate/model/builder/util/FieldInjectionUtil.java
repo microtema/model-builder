@@ -81,6 +81,7 @@ public final class FieldInjectionUtil {
     }
 
     private static ModelsType getModelsType(Field field) {
+        assert field != null;
 
         Class<?> fieldType = field.getType();
 
@@ -129,6 +130,11 @@ public final class FieldInjectionUtil {
 
             Object value = ClassUtil.createInstance(field.getType());
 
+            if (value instanceof ModelBuilder) {
+
+                ModelBuilderFactory.registerModelBuilder((ModelBuilder<?>) value);
+            }
+
             setFieldValue(field, obj, value);
 
         }, FieldInjectionUtil::isInjectionField);
@@ -144,7 +150,7 @@ public final class FieldInjectionUtil {
                 return modelBuilder.min();
             case MAX:
                 return modelBuilder.max();
-            case RANDOM:
+            case MIX:
                 return modelBuilder.mix();
             case FIX:
                 return modelBuilder.fix();
@@ -157,6 +163,8 @@ public final class FieldInjectionUtil {
     }
 
     private static Object getValue(ModelBuilder<?> modelBuilder, ModelsType modelsType, int size) {
+        assert modelBuilder != null;
+        assert modelsType != null;
 
         switch (modelsType) {
             case LIST:
