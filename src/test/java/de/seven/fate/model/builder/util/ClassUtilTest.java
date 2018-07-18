@@ -5,6 +5,8 @@ import de.seven.fate.model.builder.person.Person;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
@@ -22,6 +25,18 @@ public class ClassUtilTest {
     List<String> list;
 
     Map<String, Integer> map;
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void utilityClassTest() throws Exception {
+
+        Constructor<ClassUtil> constructor = ClassUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch (InvocationTargetException e) {
+            throw (UnsupportedOperationException) e.getTargetException();
+        }
+    }
 
     @Test
     public void stringISsNotComplexType() {
@@ -151,6 +166,12 @@ public class ClassUtilTest {
         Class genericType = ClassUtil.getGenericType(BarFoo.class);
 
         assertSame(Person.class, genericType);
+    }
+
+    @Test
+    public void isPrimitiveOrWrapper() {
+
+        assertFalse(ClassUtil.isPrimitiveOrWrapper(null));
     }
 
     public interface FooBar<T> {

@@ -136,12 +136,32 @@
         </dependency>
     </dependencies>
 
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Mario Tema</name>
+        <url>http://www.7fate.de</url>
+    </organization>
+
+    <scm>
+        <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder</url>
+        <connection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</connection>
+        <developerConnection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
     <developers>
         <developer>
             <id>mtema</id>
             <name>Mario Tema</name>
             <email>7fate@web.com</email>
             <organization>Mario Tema</organization>
+            <organizationUrl>http://www.7fate.de</organizationUrl>
             <roles>
                 <role>developer</role>
             </roles>
