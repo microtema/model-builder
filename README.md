@@ -3,26 +3,21 @@ Reducing Boilerplate Code with Annotation Driven Tests
 > More Time for Feature functionality
   Through a simple set of annotations and saving 60% of development time 
 
-## How to implement
-public class PersonBuilder extends AbstractModelBuilder< Person > { }
-
-## How to initialize
+## How to use programmatically
 
 > ModelBuilder < Person > builder = new PersonBuilder();
 
-or on the fly
+> or on the fly
 
 > ModelBuilder < Person > builder = ModelBuilderFactory.createBuilder(Person.class);
-
-## How to use programmatically
  
-* create person instance within filled required fields
+* create person instance within filled required properties
     * **Person person = builder.min();**
  
-* create person instance within all fields
+* create person instance within all properties
     * **Person person = builder.max();**
   
-* create person instance within filled required or all fields
+* create person instance within filled required or all properties
     * **Person person = builder.mix();**
 
 * create person within fix values
@@ -31,23 +26,35 @@ or on the fly
 * create person from Resource
     * **Person person = builder.fromResource("file://var/person.xml");**
 
-* create a List of person instances within filled required or all fields with random **[1..10]** size
-    * **List<Person> persons = builder.list();**
+* create a List of person instances within filled required with properties random **[1..10]** size
+    * **List< Person > persons = builder.list();**
 
-* create a List of person instances within filled required or all fields with fixed size
-    * **List<Person> persons =  builder.list(100);**
+* create a List of person instances within filled required properties with fixed size
+    * **List< Person > persons =  builder.list(100);**
 
-* create a Set of person instances within filled required or all fields with random **[1..10]** size
-    * **Set<Person> persons =  builder.set();**
+* create a Set of person instances within filled required properties with random **[1..10]** size
+    * **Set< Person > persons =  builder.set();**
 
-* create a Set of person instances within filled required or all fields with fixed size
-    * **Set<Person> persons = builder.set(100);**
+* create a Set of person instances within filled required properties with fixed size
+    * **Set< Person > persons = builder.set(100);**
     
-## How to use with annotations
+## How to use with annotations?
 
-*  @Model Person person; // create person instance within filled required fields
-*  @Models Collection<Person> persons; // create a List of person instances within filled required or all fields with random **[1..10]** size
+*  @Model Person person; // create person instance within filled required properties
+*  @Models Collection< Person > persons; // create a List of person instances with random **[1..10]** size
   
+## How to use with annotations but with custom builder?
+
+*  @Resource PersonModelBuilder builder; //custom model builder
+*  @Model Person person; // create person instance within filled required properties
+*  @Models Collection< Person > persons; // create a List of person instances with random **[1..10]** size
+
+## How Annotated fields are injected?
+
+>  @Before public void setUp() {
+>      FieldInjectionUtil.injectFields(this);
+>  }
+
 ## Supported out of the box types
 
 * @Model Byte byte;
