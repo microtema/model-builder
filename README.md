@@ -69,6 +69,7 @@ Reducing Boilerplate Code with Annotation Driven Tests
 * @Model String string;
 * @Model URL url;
 * @Model Map<K, V> map;
+* @Model Enum enum;
     
 ## Technology Stack
 
