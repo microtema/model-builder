@@ -83,5 +83,9 @@ Reducing Boilerplate Code with Annotation Driven Tests
 * Code-Analyses
     * Sonar
     * Jacoco
+    
+## License
+
+MIT (unless noted otherwise)
 
  
