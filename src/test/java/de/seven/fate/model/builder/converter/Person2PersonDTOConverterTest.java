@@ -1,6 +1,7 @@
 package de.seven.fate.model.builder.converter;
 
 import de.seven.fate.model.builder.address.Address;
+import de.seven.fate.model.builder.dto.AddressDTO;
 import de.seven.fate.model.builder.dto.PersonDTO;
 import de.seven.fate.model.builder.geo.GeoData;
 import de.seven.fate.model.builder.geo.GeoFormat;
@@ -20,6 +21,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class Person2PersonDTOConverterTest {
@@ -43,11 +45,15 @@ public class Person2PersonDTOConverterTest {
     static final double LONGITUDE1 = 2100D;
     static final GeoFormat WGS_641 = GeoFormat.WGS64;
     static Date DOB;
+
     @InjectMocks
     Person2PersonDTOConverter sut;
 
     @Mock
     Address2AddressDTOConverter address2AddressDTOConverter;
+
+    @Mock
+    List<AddressDTO> addressDTOS;
 
     Person person;
 
@@ -97,6 +103,8 @@ public class Person2PersonDTOConverterTest {
         addresses.add(address);
 
         person.setAddresses(addresses);
+
+        when(address2AddressDTOConverter.convertToList(person.getAddresses())).thenReturn(addressDTOS);
     }
 
     @Test
@@ -113,6 +121,8 @@ public class Person2PersonDTOConverterTest {
         assertEquals(person.getPosition(), personDTO.getPosition());
         assertEquals(person.getUpdateDate(), personDTO.getUpdateDate());
         assertEquals(person.getDob(), personDTO.getDob());
+
+        assertEquals(addressDTOS, personDTO.getAddresses());
 
         verify(address2AddressDTOConverter).convertToList(person.getAddresses());
     }
