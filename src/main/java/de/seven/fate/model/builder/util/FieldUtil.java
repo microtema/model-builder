@@ -237,6 +237,7 @@ public final class FieldUtil {
          * Perform an operation using the given field.
          *
          * @param field the field to operate on
+         * throws IllegalAccessException
          */
         void doWith(Field field) throws IllegalAccessException;
     }
@@ -251,6 +252,7 @@ public final class FieldUtil {
          * Determine whether the given field matches.
          *
          * @param field the field to check
+         * @return boolean
          */
         boolean matches(Field field);
     }
