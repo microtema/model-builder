@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNull;
 public class AppBuilderTest {
 
     @Test
-    public void name() {
+    public void shouldPreventStackOverflowError() {
 
         ModelBuilder<App> builder = ModelBuilderFactory.createBuilder(App.class);
 

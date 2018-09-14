@@ -3,7 +3,7 @@ package de.seven.fate.model.builder.adapter.date;
 import de.seven.fate.model.builder.adapter.AbstractTypeRandomAdapter;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -23,6 +23,6 @@ public class DatePropertyPropertyRandomAdapterTest {
     @Test
     public void randomValueForEmail() {
 
-        assertEquals(new HashSet<>(Arrays.asList("dob")), sut.getAdapterNames());
+        assertEquals(new HashSet<>(Collections.singletonList("dob")), sut.getAdapterNames());
     }
 }

@@ -2,8 +2,6 @@ package de.seven.fate.model.builder.adapter.integer;
 
 import de.seven.fate.model.builder.adapter.AbstractTypeRandomAdapter;
 
-import java.util.Random;
-
 
 public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
 
@@ -18,7 +16,7 @@ public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
     @Override
     protected Integer randomValueDefault(String propertyName) {
 
-        return new Random().nextInt();
+        return RANDOM.nextInt();
     }
 
 }

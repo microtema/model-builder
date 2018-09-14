@@ -8,6 +8,8 @@ import java.util.Map;
 
 public class MapTypeRandomAdapter extends AbstractTypeRandomAdapter<Map> {
 
+    private static final int MAX_SIZE = 5;
+
     private final StringRandomAdapter stringRandomAdapter;
 
     public MapTypeRandomAdapter(StringRandomAdapter stringRandomAdapter) {
@@ -19,7 +21,7 @@ public class MapTypeRandomAdapter extends AbstractTypeRandomAdapter<Map> {
 
         Map<String, Object> map = new HashMap<>();
 
-        for (int index = 0; index < 5; index++) {
+        for (int index = 0; index < MAX_SIZE; index++) {
             map.put("key-" + index, stringRandomAdapter.randomValueDefault(propertyName));
         }
 

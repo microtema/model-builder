@@ -1,5 +1,19 @@
 package de.seven.fate.model.builder.enums;
 
 public enum ModelsType {
-    LIST, SET
+
+    /**
+     * List of models
+     */
+    LIST,
+
+    /**
+     * Set of models
+     */
+    SET,
+
+    /**
+     * Array of models
+     */
+    ARRAY
 }

@@ -6,10 +6,13 @@ import de.seven.fate.model.builder.util.NumberUtil;
 
 public class ZipCodePropertyRandomAdapter implements PropertyRandomAdapter<Integer> {
 
+    private static final int MIN_SIZE = 1000;
+    private static final int MAX_SIZE = 9000;
+
     @Override
     public Integer randomValue() {
 
-        return NumberUtil.random(1000, 9000);
+        return NumberUtil.random(MIN_SIZE, MAX_SIZE);
     }
 
     @Override

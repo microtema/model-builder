@@ -1,17 +1,20 @@
 package de.seven.fate.model.builder.adapter;
 
 
-import de.seven.fate.commons.utils.ClassUtil;
+import de.seven.fate.model.builder.util.ClassUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<T> {
 
-    private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<String, PropertyRandomAdapter<T>>());
+    protected static final Random RANDOM = new Random();
+
+    private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<>());
 
 
     @Override
@@ -20,6 +23,7 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
         String key = StringUtils.trimToEmpty(propertyName).toLowerCase();
 
         if (adapters.containsKey(key)) {
+
             return adapters.get(key).randomValue();
         }
 
@@ -39,7 +43,8 @@ public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<
         return adapters.keySet();
     }
 
-    protected void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
+    @SafeVarargs
+    protected final void registerPropertyAdapter(PropertyRandomAdapter<T>... valueAdapters) {
 
         for (PropertyRandomAdapter<T> valueAdapter : valueAdapters) {
             adapters.put(valueAdapter.getPropertyName().toLowerCase(), valueAdapter);

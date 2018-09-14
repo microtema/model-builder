@@ -2,6 +2,8 @@ package de.seven.fate.model.builder.util;
 
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +15,18 @@ import static org.junit.Assert.assertTrue;
 public class NumberUtilTest {
 
     NumberUtil sut;
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void utilityClassTest() throws Exception {
+
+        Constructor<NumberUtil> constructor = NumberUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch (InvocationTargetException e) {
+            throw (UnsupportedOperationException) e.getTargetException();
+        }
+    }
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowIllegalArgumentExceptionOnSameMinAndMax() {

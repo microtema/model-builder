@@ -4,7 +4,7 @@ public interface TypeRandomAdapter<T> {
 
     /**
      * @param propertyName Model property name
-     * @return random value for given propertyName
+     * @return mix value for given propertyName
      */
     T randomValue(String propertyName);
 

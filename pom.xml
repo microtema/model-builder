@@ -11,7 +11,7 @@
 
     <name>Model Builder</name>
     <description>Model Builder with Random Values</description>
-    <url>https://github.com/sevenfate/model-builder.git</url>
+    <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder.git</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +30,7 @@
         <commons.beanutils.version>1.9.3</commons.beanutils.version>
         <commons.io.version>2.4</commons.io.version>
         <commons.utils.version>${project.version}</commons.utils.version>
+        <powermock.version>1.7.1</powermock.version>
     </properties>
 
     <build>
@@ -89,12 +90,6 @@
     <dependencies>
 
         <dependency>
-            <groupId>de.seven.fate</groupId>
-            <artifactId>commons-utils</artifactId>
-            <version>${commons.utils.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>${commons.beanutils.version}</version>
@@ -126,7 +121,39 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <organization>
+        <name>Mario Tema</name>
+        <url>http://www.7fate.de</url>
+    </organization>
+
+    <scm>
+        <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder</url>
+        <connection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</connection>
+        <developerConnection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <developers>
         <developer>
@@ -134,6 +161,7 @@
             <name>Mario Tema</name>
             <email>7fate@web.com</email>
             <organization>Mario Tema</organization>
+            <organizationUrl>http://www.7fate.de</organizationUrl>
             <roles>
                 <role>developer</role>
             </roles>
