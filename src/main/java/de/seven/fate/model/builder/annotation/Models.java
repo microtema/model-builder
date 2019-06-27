@@ -1,5 +1,7 @@
 package de.seven.fate.model.builder.annotation;
 
+import de.seven.fate.model.builder.enums.ModelType;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,4 +17,6 @@ import java.lang.annotation.Target;
 public @interface Models {
 
     int size() default -1;
+
+    ModelType type() default ModelType.MIX;
 }

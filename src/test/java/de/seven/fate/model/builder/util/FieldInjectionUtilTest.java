@@ -5,13 +5,18 @@ import de.seven.fate.model.builder.annotation.Inject;
 import de.seven.fate.model.builder.annotation.Model;
 import de.seven.fate.model.builder.annotation.Models;
 import de.seven.fate.model.builder.enums.ModelType;
+import de.seven.fate.model.builder.person.Person;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Properties;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 public class FieldInjectionUtilTest {
 
@@ -31,6 +36,12 @@ public class FieldInjectionUtilTest {
 
     @Model(type = ModelType.SOURCE, resource = "messages.xml")
     Properties xmlProperties;
+
+    @Models(type = ModelType.MIN)
+    List<Person> minPersons;
+
+    @Models(type = ModelType.MAX)
+    List<Person> maxPersons;
 
     @Before
     public void setUp() {
@@ -71,5 +82,25 @@ public class FieldInjectionUtilTest {
 
         assertFalse(xmlProperties.isEmpty());
         assertEquals("xml", xmlProperties.get("key"));
+    }
+
+    @Test
+    public void minPersons() {
+
+        assertNotNull(minPersons);
+
+        Person person = CollectionUtil.random(minPersons);
+
+        assertNull(person.getUpdateDate());
+    }
+
+    @Test
+    public void maxPersons() {
+
+        assertNotNull(maxPersons);
+
+        Person person = CollectionUtil.random(maxPersons);
+
+        assertNotNull(person.getUpdateDate());
     }
 }

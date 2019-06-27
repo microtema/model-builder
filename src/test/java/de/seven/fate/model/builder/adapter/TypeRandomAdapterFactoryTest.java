@@ -11,10 +11,9 @@ import static org.junit.Assert.assertNotNull;
 
 public class TypeRandomAdapterFactoryTest {
 
-
     TypeRandomAdapterFactory sut;
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = NullPointerException.class)
     public void lookupAdapterAdapterThrowAssertionErrorOnNull() {
         TypeRandomAdapterFactory.lookupAdapter(null);
     }

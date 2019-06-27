@@ -1,5 +1,6 @@
 package de.seven.fate.model.builder.util;
 
+import de.seven.fate.model.builder.AbstractModelBuilder;
 import de.seven.fate.model.builder.ModelBuilder;
 import de.seven.fate.model.builder.ModelBuilderFactory;
 import de.seven.fate.model.builder.annotation.Model;
@@ -22,6 +23,7 @@ import java.util.stream.Stream;
 import static de.seven.fate.model.builder.util.FieldUtil.doWithFields;
 import static de.seven.fate.model.builder.util.FieldUtil.makeAccessible;
 import static de.seven.fate.model.builder.util.FieldUtil.setFieldValue;
+import static de.seven.fate.model.builder.util.ModelBuilderUtil.randomCollectionSize;
 
 
 /**
@@ -65,11 +67,9 @@ public final class FieldInjectionUtil {
 
             ModelBuilder<?> modelBuilder = getOrCreateModelBuilder(field);
 
-            Models annotation = field.getAnnotation(Models.class);
+            Models modelsAnnotation = field.getAnnotation(Models.class);
 
-            int size = annotation.size();
-
-            Object value = getValue(modelBuilder, modelsType, size);
+            Object value = getValue((AbstractModelBuilder<?>) modelBuilder, modelsType, modelsAnnotation);
 
             if ((field.getType().isArray())) {
                 value = Array.newInstance(genericType, ((Collection) value).size());
@@ -162,16 +162,20 @@ public final class FieldInjectionUtil {
 
     }
 
-    private static Object getValue(ModelBuilder<?> modelBuilder, ModelsType modelsType, int size) {
+    private static Object getValue(AbstractModelBuilder<?> modelBuilder, ModelsType modelsType, Models models) {
         assert modelBuilder != null;
         assert modelsType != null;
+
+        int size = models.size() == -1 ? randomCollectionSize() : models.size();
+        ModelType modelType = models.type();
+        boolean required = (modelType == ModelType.MAX);
 
         switch (modelsType) {
             case LIST:
             case ARRAY:
-                return size > -1 ? modelBuilder.list(size) : modelBuilder.list();
+                return modelBuilder.list(size, false, required);
             case SET:
-                return size > -1 ? modelBuilder.set(size) : modelBuilder.set();
+                return modelBuilder.set(size, false, required);
             default:
                 throw new IllegalArgumentException("Unsupported modelsType: " + modelsType);
         }
