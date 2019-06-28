@@ -9,6 +9,8 @@ import de.seven.fate.model.builder.person.Person;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Properties;
 
@@ -42,6 +44,18 @@ public class FieldInjectionUtilTest {
 
     @Models(type = ModelType.MAX)
     List<Person> maxPersons;
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void utilityClassTest() throws Exception {
+
+        Constructor<FieldInjectionUtil> constructor = FieldInjectionUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch (InvocationTargetException e) {
+            throw (UnsupportedOperationException) e.getTargetException();
+        }
+    }
 
     @Before
     public void setUp() {

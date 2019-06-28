@@ -4,6 +4,7 @@ package de.seven.fate.model.builder.adapter;
 import de.seven.fate.model.builder.util.ClassUtil;
 import org.apache.commons.lang3.StringUtils;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 public abstract class AbstractTypeRandomAdapter<T> implements TypeRandomAdapter<T> {
 
-    protected static final Random RANDOM = new Random();
+    protected static final Random RANDOM = new SecureRandom();
 
     private final Map<String, PropertyRandomAdapter<T>> adapters = Collections.synchronizedMap(new HashMap<>());
 

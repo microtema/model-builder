@@ -4,8 +4,8 @@ import org.apache.commons.lang3.Validate;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.SecureRandom;
 import java.util.Properties;
-import java.util.Random;
 
 import static de.seven.fate.model.builder.constants.Constants.MAX_COLLECTION_SIZE;
 import static de.seven.fate.model.builder.constants.Constants.MIN_COLLECTION_SIZE;
@@ -24,7 +24,7 @@ public final class ModelBuilderUtil {
      */
     public static int randomCollectionSize() {
 
-        return Math.max(MIN_COLLECTION_SIZE, new Random().nextInt(MAX_COLLECTION_SIZE));
+        return Math.max(MIN_COLLECTION_SIZE, new SecureRandom().nextInt(MAX_COLLECTION_SIZE));
     }
 
     /**
@@ -38,8 +38,8 @@ public final class ModelBuilderUtil {
 
         try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
 
-            properties.load(resourceAsStream);
-        } catch (IOException e) {
+            properties.load(Validate.notNull(resourceAsStream));
+        } catch (IOException | NullPointerException e) {
 
             throw new IllegalArgumentException(e);
         }
@@ -59,7 +59,7 @@ public final class ModelBuilderUtil {
         try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
 
             properties.loadFromXML(Validate.notNull(resourceAsStream));
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
 
             throw new IllegalArgumentException(e);
         }

@@ -5,8 +5,11 @@ import org.junit.Test;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -25,6 +28,26 @@ public class AnnotationUtilTest {
 
     @XmlAttribute(required = true)
     String requiredXmlAttribute;
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void utilityClassTest() throws Exception {
+
+        Constructor<AnnotationUtil> constructor = AnnotationUtil.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch (InvocationTargetException e) {
+            throw (UnsupportedOperationException) e.getTargetException();
+        }
+    }
+
+    @Test
+    public void isAnyRequiredAnnotationOnNull() {
+
+        boolean requiredAnnotation = AnnotationUtil.isAnyRequiredAnnotation(null);
+
+        assertFalse(requiredAnnotation);
+    }
 
     @Test
     public void isAnyRequiredAnnotationOnXmlElement() {

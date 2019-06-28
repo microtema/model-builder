@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static de.seven.fate.model.builder.util.FieldUtil.doWithFields;
-import static de.seven.fate.model.builder.util.FieldUtil.makeAccessible;
 import static de.seven.fate.model.builder.util.FieldUtil.setFieldValue;
 import static de.seven.fate.model.builder.util.ModelBuilderUtil.randomCollectionSize;
 
@@ -55,8 +54,6 @@ public final class FieldInjectionUtil {
         assert obj != null;
 
         doWithFields(obj.getClass(), field -> {
-
-            makeAccessible(field);
 
             Class<?> genericType = ClassUtil.getGenericType(field.getGenericType());
 
@@ -108,8 +105,6 @@ public final class FieldInjectionUtil {
 
         doWithFields(obj.getClass(), field -> {
 
-            makeAccessible(field);
-
             ModelBuilder<?> modelBuilder = getOrCreateModelBuilder(field);
 
             Model annotation = field.getAnnotation(Model.class);
@@ -126,8 +121,6 @@ public final class FieldInjectionUtil {
         assert obj != null;
 
         doWithFields(obj.getClass(), field -> {
-
-            makeAccessible(field);
 
             Object value = ClassUtil.createInstance(field.getType());
 

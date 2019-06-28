@@ -1,6 +1,7 @@
 package de.seven.fate.model.builder.util;
 
 import org.apache.commons.lang3.Validate;
+import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -8,7 +9,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 public final class FieldUtil {
 
     private static final Set<String> IGNORE_PROPERTIES = Stream.of("class").collect(Collectors.toSet());
-    private static final Set<String> NOT_NULL_CONSTRAINTS = Stream.of("javax.validation.constraints.NotNull").collect(Collectors.toSet());
 
     private static final Field[] NO_FIELDS = {};
     /**
@@ -100,8 +99,11 @@ public final class FieldUtil {
      * @param value  the value to set (may be {@code null})
      */
     public static void setFieldValue(Field field, Object target, Object value) {
+
         try {
-            field.set(target, value);
+
+            FieldUtils.writeField(field, target, value, true);
+
         } catch (IllegalAccessException ex) {
             throw new IllegalStateException("Unexpected reflection exception - " + ex.getClass().getName() + ": " + ex.getMessage());
         }
@@ -134,23 +136,6 @@ public final class FieldUtil {
             targetClass = targetClass.getSuperclass();
         }
         while (targetClass != null && targetClass != Object.class);
-    }
-
-    /**
-     * Make the given field accessible, explicitly setting it accessible if
-     * necessary. The {@code setAccessible(true)} method is only called
-     * when actually necessary, to avoid unnecessary conflicts with a JVM
-     * SecurityManager (if active).
-     *
-     * @param field the field to make accessible
-     * @see Field#setAccessible
-     */
-    public static void makeAccessible(Field field) {
-        if ((!Modifier.isPublic(field.getModifiers()) ||
-                !Modifier.isPublic(field.getDeclaringClass().getModifiers()) ||
-                Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
-            field.setAccessible(true);
-        }
     }
 
     private static boolean isValid(PropertyDescriptor descriptor) {
@@ -217,7 +202,7 @@ public final class FieldUtil {
          * Perform an operation using the given field.
          *
          * @param field the field to operate on
-         * throws IllegalAccessException
+         *              throws IllegalAccessException
          */
         void doWith(Field field) throws IllegalAccessException;
     }

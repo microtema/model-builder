@@ -6,7 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
@@ -14,7 +14,7 @@ import java.util.stream.Stream;
  */
 public final class AnnotationUtil {
 
-    private static final Map<String, Function<Object, Boolean>> PREDICATES = new HashMap<>();
+    private static final Map<String, Predicate<Object>> PREDICATES = new HashMap<>();
 
     static {
 
@@ -35,7 +35,7 @@ public final class AnnotationUtil {
      * @return the previous value associated with predicateName, or
      * predicateName if there was no mapping for predicateName.
      */
-    public static Function<Object, Boolean> addPredicate(String predicateName, Function<Object, Boolean> predicate) {
+    public static Predicate<Object> addPredicate(String predicateName, Predicate<Object> predicate) {
 
         return PREDICATES.put(predicateName, predicate);
     }
@@ -66,14 +66,14 @@ public final class AnnotationUtil {
 
         String annotationName = getAnnotationName(annotation);
 
-        Function<Object, Boolean> function = PREDICATES.get(annotationName);
+        Predicate<Object> function = PREDICATES.get(annotationName);
 
         if (function == null) {
 
             return false;
         }
 
-        return function.apply(annotation);
+        return function.test(annotation);
     }
 
     private static String getAnnotationName(Object annotation) {

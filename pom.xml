@@ -203,9 +203,9 @@
     </organization>
 
     <scm>
-        <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder</url>
-        <connection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</connection>
-        <developerConnection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</developerConnection>
+        <url>https://github.com/microtema/model-builder</url>
+        <connection>scm:git:git@github.com:microtema/model-builder.git</connection>
+        <developerConnection>scm:git:git@github.com:microtema/model-builder.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
