@@ -7,6 +7,7 @@ import de.seven.fate.model.builder.annotation.Model;
 import de.seven.fate.model.builder.annotation.Models;
 import de.seven.fate.model.builder.enums.ModelType;
 import de.seven.fate.model.builder.enums.ModelsType;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.lang.annotation.Annotation;
@@ -143,7 +144,11 @@ public final class FieldInjectionUtil {
     private static Object getValue(ModelBuilder<?> modelBuilder, ModelType modelType, String resource) {
         assert modelBuilder != null;
         assert modelType != null;
-        assert resource != null;
+
+        if (StringUtils.isNotEmpty(resource)) {
+
+            return modelBuilder.fromResource(resource);
+        }
 
         switch (modelType) {
             case MIN:

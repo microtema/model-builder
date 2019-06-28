@@ -98,7 +98,6 @@ public class PersonBuilderTest {
         assertNotNull(person.getName());
         assertNotNull(person.getEmail());
         assertNotNull(person.getPhoneNumber());
-
     }
 
     @Test
@@ -110,7 +109,6 @@ public class PersonBuilderTest {
         assertNotNull(person.getName());
         assertNotNull(person.getEmail());
         assertNotNull(person.getPhoneNumber());
-
     }
 
     @Test
@@ -122,6 +120,5 @@ public class PersonBuilderTest {
         assertNotNull(person.getName());
         assertNotNull(person.getEmail());
         assertNotNull(person.getPhoneNumber());
-
     }
 }

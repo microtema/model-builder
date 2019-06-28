@@ -2,8 +2,6 @@ package de.seven.fate.model.builder.util;
 
 import org.apache.commons.lang3.Validate;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -65,25 +63,7 @@ public final class FieldUtil {
 
         Annotation[] annotations = field.getAnnotations();
 
-        for (Annotation annotation : annotations) {
-
-            Class<? extends Annotation> annotationType = annotation.annotationType();
-            String annotationTypeName = annotationType.getName();
-
-            if (NOT_NULL_CONSTRAINTS.contains(annotationTypeName)) {
-                return true;
-            }
-        }
-
-        XmlAttribute xmlAttribute = field.getAnnotation(XmlAttribute.class);
-
-        if (xmlAttribute != null) {
-            return xmlAttribute.required();
-        }
-
-        XmlElement xmlElement = field.getAnnotation(XmlElement.class);
-
-        return xmlElement != null && xmlElement.required();
+        return AnnotationUtil.isAnyRequiredAnnotation(annotations);
     }
 
     /**

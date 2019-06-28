@@ -4,6 +4,8 @@ import de.seven.fate.model.builder.adapter.TypeRandomAdapterFactory;
 import de.seven.fate.model.builder.util.ClassUtil;
 import de.seven.fate.model.builder.util.CollectionUtil;
 import de.seven.fate.model.builder.util.MethodUtil;
+import de.seven.fate.model.builder.util.ModelBuilderUtil;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.lang.reflect.Constructor;
@@ -12,9 +14,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 import static de.seven.fate.model.builder.adapter.TypeRandomAdapterFactory.getRandomValue;
+import static de.seven.fate.model.builder.constants.Constants.MAY_NOT_BE_EMPTY;
 import static de.seven.fate.model.builder.util.ModelBuilderUtil.randomCollectionSize;
 
 /**
@@ -60,7 +64,27 @@ public interface ModelBuilder<T> {
      * @param resourceLocation may not be empty
      * @return @return new Instance of Model created from Resource
      */
-    T fromResource(String resourceLocation);
+    @SuppressWarnings("unchecked")
+    default T fromResource(String resourceLocation) {
+        Validate.notEmpty(resourceLocation, MAY_NOT_BE_EMPTY, "resourceLocation");
+
+        Class<T> genericType = getGenericType();
+
+        if (Properties.class.isAssignableFrom(genericType)) {
+
+            if (FilenameUtils.isExtension(resourceLocation, "properties")) {
+
+                return (T) ModelBuilderUtil.fromProperties(resourceLocation);
+            }
+
+            if (FilenameUtils.isExtension(resourceLocation, "xml")) {
+
+                return (T) ModelBuilderUtil.fromXml(resourceLocation);
+            }
+        }
+
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * @return new List by mix size with new Instances of Models and init as Min or Max
