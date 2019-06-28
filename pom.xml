@@ -6,12 +6,12 @@
 
     <groupId>de.7fate</groupId>
     <artifactId>model-builder</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <packaging>jar</packaging>
 
     <name>Model Builder</name>
     <description>Model Builder with Random Values</description>
-    <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder.git</url>
+    <url>https://github.com/microtema/model-builder.git</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -203,9 +203,9 @@
     </organization>
 
     <scm>
-        <url>https://github.com/sdfsadfasdfgsadfgsdf/model-builder</url>
-        <connection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</connection>
-        <developerConnection>scm:git:git@github.com:sdfsadfasdfgsadfgsdf/model-builder.git</developerConnection>
+        <url>https://github.com/microtema/model-builder</url>
+        <connection>scm:git:git@github.com:microtema/model-builder.git</connection>
+        <developerConnection>scm:git:git@github.com:microtema/model-builder.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 

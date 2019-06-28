@@ -1,5 +1,6 @@
 package de.seven.fate.model.builder.util;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 public final class NumberUtil {
@@ -18,7 +19,7 @@ public final class NumberUtil {
             throw new IllegalArgumentException("min should not be equal to max");
         }
 
-        Random rn = new Random();
+        Random rn = new SecureRandom();
         int n = maxSize - minSize + 1;
         int i = rn.nextInt(maxSize) % n;
         int randomNum = Math.max(minSize, i);

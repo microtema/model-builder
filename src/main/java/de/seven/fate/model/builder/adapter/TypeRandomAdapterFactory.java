@@ -20,6 +20,7 @@ import de.seven.fate.model.builder.adapter.string.StringRandomAdapter;
 import de.seven.fate.model.builder.adapter.url.UrlRandomAdapter;
 import de.seven.fate.model.builder.util.ClassUtil;
 import de.seven.fate.model.builder.util.MethodUtil;
+import org.apache.commons.lang3.Validate;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -70,13 +71,11 @@ public final class TypeRandomAdapterFactory {
         throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
     }
 
-
     public static <T> AbstractTypeRandomAdapter<T> lookupAdapter(Class<T> valueType) {
-        assert valueType != null;
+        Validate.notNull(valueType);
 
         return (AbstractTypeRandomAdapter<T>) ADAPTERS.get(valueType);
     }
-
 
     public static <T> T getRandomValue(Class<T> propertyType) {
 
@@ -84,7 +83,7 @@ public final class TypeRandomAdapterFactory {
     }
 
     public static <T> T getRandomValue(Class<T> propertyType, String propertyName) {
-        assert propertyType != null;
+        Validate.notNull(propertyType);
 
         if (ADAPTERS.containsKey(propertyType)) {
             return (T) ADAPTERS.get(propertyType).randomValue(propertyName);
@@ -157,8 +156,8 @@ public final class TypeRandomAdapterFactory {
     }
 
     public static <T> void generateRandomFieldValues(T model, ModelAction createAction, boolean skip) {
-        assert model != null;
-        assert createAction != null;
+        Validate.notNull(model);
+        Validate.notNull(createAction);
 
         Class<?> modelClass = model.getClass();
         Set<String> properties = MethodUtil.getProperties(modelClass);
@@ -191,7 +190,6 @@ public final class TypeRandomAdapterFactory {
                 ADAPTERS.put(entry.getKey(), valueAdapter);
             }
         }
-
     }
 
 }
