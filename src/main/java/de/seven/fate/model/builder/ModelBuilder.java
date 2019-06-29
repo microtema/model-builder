@@ -62,7 +62,7 @@ public interface ModelBuilder<T> {
 
     /**
      * @param resourceLocation may not be empty
-     * @return @return new Instance of Model created from Resource
+     * @return new Instance of Model created from Resource
      */
     @SuppressWarnings("unchecked")
     default T fromResource(String resourceLocation) {

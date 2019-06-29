@@ -203,6 +203,7 @@ public final class FieldUtil {
          *
          * @param field the field to operate on
          *              throws IllegalAccessException
+         * @throws IllegalAccessException exception
          */
         void doWith(Field field) throws IllegalAccessException;
     }
