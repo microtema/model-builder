@@ -4,9 +4,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.7fate</groupId>
+    <groupId>de.microtema</groupId>
     <artifactId>model-builder</artifactId>
-    <version>2.1.0</version>
+    <version>2.5.0</version>
     <packaging>jar</packaging>
 
     <name>Model Builder</name>
@@ -186,6 +186,12 @@
             <artifactId>powermock-api-mockito</artifactId>
             <version>${powermock.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
