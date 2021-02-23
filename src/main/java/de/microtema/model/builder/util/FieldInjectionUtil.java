@@ -4,7 +4,6 @@ import de.microtema.model.builder.annotation.Model;
 import de.microtema.model.builder.annotation.Models;
 import de.microtema.model.builder.enums.ModelType;
 import de.microtema.model.builder.enums.ModelsType;
-import de.microtema.model.builder.AbstractModelBuilder;
 import de.microtema.model.builder.ModelBuilder;
 import de.microtema.model.builder.ModelBuilderFactory;
 import lombok.experimental.UtilityClass;
@@ -18,6 +17,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -58,7 +58,7 @@ public class FieldInjectionUtil {
 
             Models modelsAnnotation = field.getAnnotation(Models.class);
 
-            Object value = getValue((AbstractModelBuilder<?>) modelBuilder, modelsType, modelsAnnotation);
+            Object value = getValue(modelBuilder, modelsType, modelsAnnotation);
 
             if ((field.getType().isArray())) {
                 value = Array.newInstance(genericType, ((Collection) value).size());
@@ -113,14 +113,18 @@ public class FieldInjectionUtil {
 
         FieldUtil.doWithFields(obj.getClass(), field -> {
 
-            Object value = ClassUtil.createInstance(field.getType());
+            Object fieldValue = FieldUtil.getFieldValue(field, obj);
 
-            if (value instanceof ModelBuilder) {
+            if (Objects.isNull(fieldValue)) {
 
-                ModelBuilderFactory.registerModelBuilder((ModelBuilder<?>) value);
+                fieldValue = ClassUtil.createInstance(field.getType());
+                FieldUtil.setFieldValue(field, obj, fieldValue);
             }
 
-            FieldUtil.setFieldValue(field, obj, value);
+            if (fieldValue instanceof ModelBuilder) {
+
+                ModelBuilderFactory.registerModelBuilder((ModelBuilder<?>) fieldValue);
+            }
 
         }, FieldInjectionUtil::isInjectionField);
     }
@@ -128,11 +132,6 @@ public class FieldInjectionUtil {
     private static Object getValue(ModelBuilder<?> modelBuilder, ModelType modelType, String resource) {
         assert modelBuilder != null;
         assert modelType != null;
-
-        if (StringUtils.isNotEmpty(resource)) {
-
-            return modelBuilder.fromResource(resource);
-        }
 
         switch (modelType) {
             case MIN:
@@ -151,7 +150,7 @@ public class FieldInjectionUtil {
 
     }
 
-    private static Object getValue(AbstractModelBuilder<?> modelBuilder, ModelsType modelsType, Models models) {
+    private static Object getValue(ModelBuilder<?> modelBuilder, ModelsType modelsType, Models models) {
         assert modelBuilder != null;
         assert modelsType != null;
 
@@ -162,9 +161,9 @@ public class FieldInjectionUtil {
         switch (modelsType) {
             case LIST:
             case ARRAY:
-                return modelBuilder.list(size, false, required);
+                return modelBuilder.list(size, false, required, true);
             case SET:
-                return modelBuilder.set(size, false, required);
+                return modelBuilder.set(size, false, required, true);
             default:
                 throw new IllegalArgumentException("Unsupported modelsType: " + modelsType);
         }

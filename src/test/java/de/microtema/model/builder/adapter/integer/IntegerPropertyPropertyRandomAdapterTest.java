@@ -1,5 +1,6 @@
 package de.microtema.model.builder.adapter.integer;
 
+import de.microtema.model.builder.util.ClassUtil;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class IntegerPropertyPropertyRandomAdapterTest {
 
-    IntegerRandomAdapter sut = new IntegerRandomAdapter();
+    IntegerRandomAdapter sut = ClassUtil.createInstance(IntegerRandomAdapter.class);
 
     @Test
     public void randomValue() {
@@ -25,6 +26,6 @@ public class IntegerPropertyPropertyRandomAdapterTest {
     @Test
     public void randomValueForEmail() {
 
-        Assert.assertEquals(new HashSet<String>(Arrays.asList("position", "zipcode")), sut.getAdapterNames());
+        Assert.assertEquals(new HashSet<>(Arrays.asList("position", "zipcode")), sut.getAdapterNames());
     }
 }

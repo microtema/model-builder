@@ -12,17 +12,14 @@ import java.util.List;
 public class App {
 
     @NotNull
-    @XmlAttribute
     private String name;
 
-    private String title;
+    @NotNull
+    private App parent;
 
     @NotNull
     private List<App> apps;
 
     @NotNull
-    private List<App> sets;
-
-    @NotNull
-    private LocalDateTime localDateTime;
+    private List<App> children;
 }

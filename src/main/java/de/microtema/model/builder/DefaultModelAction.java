@@ -34,21 +34,20 @@ public class DefaultModelAction implements ModelAction {
         }
 
         String property = MethodUtil.getPropertyName(method.getName());
+        Class<?> modelType = method.getReturnType();
 
-        Object randomValue = TypeRandomAdapterFactory.getValue(method.getReturnType(), property, random);
+        Object randomValue = TypeRandomAdapterFactory.getValue(modelType, property, random);
 
         return Optional.ofNullable(randomValue).orElseGet(() -> {
 
-            Class<?> modelType = method.getReturnType();
-
             ModelBuilder<?> modelBuilder = ModelBuilderFactory.createBuilder(modelType);
 
-            return ((AbstractModelBuilder) modelBuilder).build(method, new DefaultModelAction(overflow), requiredField, random);
+            return modelBuilder.build(method, new DefaultModelAction(requiredField), overflow, random);
         });
     }
 
     /*
-     * return true if property is requiredField or onnotated as requiredField
+     * return true if property is requiredField or annotated as requiredField
      */
     private boolean isApplicableProperty(Method method) {
         assert method != null;

@@ -1,15 +1,15 @@
 package de.microtema.model.builder.adapter.integer;
 
 import de.microtema.model.builder.adapter.AbstractTypeRandomAdapter;
-
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
 
-    public IntegerRandomAdapter() {
+    public IntegerRandomAdapter(PositionPropertyRandomAdapter positionPropertyRandomAdapter,
+                                ZipCodePropertyRandomAdapter zipCodePropertyRandomAdapter) {
 
-        registerPropertyAdapter(
-                new PositionPropertyRandomAdapter(),
-                new ZipCodePropertyRandomAdapter());
+        registerPropertyAdapter(positionPropertyRandomAdapter, zipCodePropertyRandomAdapter);
     }
 
 
@@ -22,6 +22,6 @@ public class IntegerRandomAdapter extends AbstractTypeRandomAdapter<Integer> {
     @Override
     public Integer fixValue(String propertyName) {
 
-        return propertyName.length();
+        return StringUtils.trimToEmpty(propertyName).length();
     }
 }

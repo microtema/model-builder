@@ -1,20 +1,18 @@
 package de.microtema.model.builder.address;
 
-import de.microtema.model.builder.AbstractModelBuilder;
+import de.microtema.model.builder.ModelBuilder;
 import de.microtema.model.builder.geo.GeoDataBuilder;
+import lombok.RequiredArgsConstructor;
 
-public class AddressBuilder extends AbstractModelBuilder<Address> {
+@RequiredArgsConstructor
+public class AddressBuilder implements ModelBuilder<Address> {
 
     private final GeoDataBuilder geoDataBuilder;
-
-    public AddressBuilder(GeoDataBuilder geoDataBuilder) {
-        this.geoDataBuilder = geoDataBuilder;
-    }
 
     @Override
     public Address min() {
 
-        Address min = super.min();
+        Address min = ModelBuilder.super.min();
 
         min.setGeoData(geoDataBuilder.min());
 

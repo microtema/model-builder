@@ -1,21 +1,18 @@
 package de.microtema.model.builder.person;
 
+import de.microtema.model.builder.ModelBuilder;
 import de.microtema.model.builder.address.AddressBuilder;
-import de.microtema.model.builder.AbstractModelBuilder;
+import lombok.RequiredArgsConstructor;
 
-
-public class PersonBuilder extends AbstractModelBuilder<Person> {
+@RequiredArgsConstructor
+public class PersonBuilder implements ModelBuilder<Person> {
 
     private final AddressBuilder addressBuilder;
-
-    public PersonBuilder(AddressBuilder addressBuilder) {
-        this.addressBuilder = addressBuilder;
-    }
 
     @Override
     public Person min() {
 
-        Person min = super.min();
+        Person min = ModelBuilder.super.min();
 
         min.setAddresses(addressBuilder.list());
 

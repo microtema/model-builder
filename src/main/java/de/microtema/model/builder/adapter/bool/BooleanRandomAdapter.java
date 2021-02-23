@@ -1,6 +1,7 @@
 package de.microtema.model.builder.adapter.bool;
 
 import de.microtema.model.builder.adapter.AbstractTypeRandomAdapter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.security.SecureRandom;
 
@@ -16,6 +17,6 @@ public class BooleanRandomAdapter extends AbstractTypeRandomAdapter<Boolean> {
     @Override
     public Boolean fixValue(String propertyName) {
 
-        return propertyName.length() % 2 == 0;
+        return StringUtils.trimToEmpty(propertyName).length() % 2 == 0;
     }
 }

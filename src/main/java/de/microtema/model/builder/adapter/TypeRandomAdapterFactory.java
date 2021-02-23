@@ -14,12 +14,13 @@ import de.microtema.model.builder.adapter.longv.LongRandomAdapter;
 import de.microtema.model.builder.adapter.map.MapTypeRandomAdapter;
 import de.microtema.model.builder.adapter.string.StringRandomAdapter;
 import de.microtema.model.builder.adapter.url.UrlRandomAdapter;
-import de.microtema.model.builder.AbstractModelBuilder;
 import de.microtema.model.builder.ModelAction;
 import de.microtema.model.builder.ModelBuilder;
 import de.microtema.model.builder.ModelBuilderFactory;
 import de.microtema.model.builder.util.ClassUtil;
 import de.microtema.model.builder.util.MethodUtil;
+import de.microtema.model.builder.util.ModelBuilderUtil;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.Validate;
 
 import java.lang.reflect.Array;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 
 
 @SuppressWarnings("ALL")
+@UtilityClass
 public final class TypeRandomAdapterFactory {
 
     private static final Map<Class<?>, AbstractTypeRandomAdapter<?>> ADAPTERS = Collections.synchronizedMap(new HashMap<Class<?>, AbstractTypeRandomAdapter<?>>());
@@ -65,10 +67,6 @@ public final class TypeRandomAdapterFactory {
         registerAdapter(ClassUtil.createInstance(BinaryTypeRandomAdapter.class));
         registerAdapter(ClassUtil.createInstance(MapTypeRandomAdapter.class));
         registerAdapter(ClassUtil.createInstance(CharRandomAdapter.class));
-    }
-
-    private TypeRandomAdapterFactory() {
-        throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
     }
 
     public static <T> AbstractTypeRandomAdapter<T> lookupAdapter(Class<T> valueType) {
@@ -136,7 +134,13 @@ public final class TypeRandomAdapterFactory {
         return args;
     }
 
-    public static <T> T getCollection(Class<T> modelType, Type propertyType, boolean skip, Class[] actualTypeArguments) {
+    public static <T> T getCollection(Class<T> modelType, Type propertyType, boolean skip, boolean random, Class[] actualTypeArguments) {
+
+        int size = ModelBuilderUtil.randomCollectionSize();
+
+        if(random){
+            size = 1;
+        }
 
         if (List.class.isAssignableFrom(modelType)) {
 
@@ -144,7 +148,7 @@ public final class TypeRandomAdapterFactory {
 
             ModelBuilder<?> builder = ModelBuilderFactory.createBuilder(genericType);
 
-            return (T) ((AbstractModelBuilder) builder).list(skip);
+            return (T) builder.list(size, skip, false, random);
 
         } else if (Set.class.isAssignableFrom(modelType)) {
 
@@ -152,7 +156,7 @@ public final class TypeRandomAdapterFactory {
 
             ModelBuilder<?> builder = ModelBuilderFactory.createBuilder(genericType);
 
-            return (T) ((AbstractModelBuilder) builder).set(skip);
+            return (T) builder.set(size, skip, false, random);
 
         } else if (Map.class.isAssignableFrom(modelType)) {
 
@@ -162,26 +166,25 @@ public final class TypeRandomAdapterFactory {
             ModelBuilder<?> keyBuilder = ModelBuilderFactory.createBuilder(keyGenericType);
             ModelBuilder<?> valueBuilder = ModelBuilderFactory.createBuilder(valueGenericType);
 
-            Set set = ((AbstractModelBuilder) keyBuilder).set(skip);
+            Set set = keyBuilder.set(size, skip, false, random);
 
-            return (T) set.stream().collect(Collectors.toMap(it -> it, it -> ((AbstractModelBuilder) valueBuilder).min()));
+            return (T) set.stream().collect(Collectors.toMap(it -> it, it -> valueBuilder.min()));
         }
 
         return null;
     }
 
-    private static Class<?> getGenericType(Type propertyType) {
+    public static <T> T getArray(Class<?> modelType, boolean skip, boolean random) {
 
-        Class<?> modelType = ClassUtil.getGenericType(propertyType);
+        int size = ModelBuilderUtil.randomCollectionSize();
 
-        return modelType == null ? (Class<?>) propertyType : modelType;
-    }
-
-    public static <T> T getArray(Class<?> modelType, boolean skip) {
+        if(random){
+            size = 1;
+        }
 
         ModelBuilder<?> builder = ModelBuilderFactory.createBuilder(modelType);
 
-        List list = ((AbstractModelBuilder) builder).list(skip);
+        List list = builder.list(size, skip, false, random);
 
         Object[] array = (Object[]) Array.newInstance(modelType, list.size());
 
@@ -225,4 +228,10 @@ public final class TypeRandomAdapterFactory {
         }
     }
 
+    private static Class<?> getGenericType(Type propertyType) {
+
+        Class<?> modelType = ClassUtil.getGenericType(propertyType);
+
+        return modelType == null ? (Class<?>) propertyType : modelType;
+    }
 }

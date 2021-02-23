@@ -347,7 +347,7 @@ public class ClassUtil {
         notNull(type);
 
         if (!(type instanceof ParameterizedType)) {
-            return null;
+            return (T) ((Class<T>) type);
         }
 
         ParameterizedType pt = (ParameterizedType) type;

@@ -1,6 +1,7 @@
 package de.microtema.model.builder;
 
 import de.microtema.model.builder.constants.Constants;
+import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
@@ -10,13 +11,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+@UtilityClass
 public final class ModelBuilderFactory {
 
     private static final Set<ModelBuilder> BUILDERS = new HashSet<>();
-
-    private ModelBuilderFactory() {
-        throw new UnsupportedOperationException(getClass().getName() + " should not be called with new!");
-    }
 
     public static <T> void registerModelBuilder(ModelBuilder<T> modelBuilder) {
         Validate.notNull(modelBuilder, Constants.MAY_NOT_BE_NULL, "modelBuilder");
@@ -52,7 +50,7 @@ public final class ModelBuilderFactory {
             return optionalModelBuilder.get();
         }
 
-        ModelBuilder<T> modelBuilder = new AbstractModelBuilder<T>() {
+        ModelBuilder<T> modelBuilder = new ModelBuilder<T>() {
 
             @Override
             public Class<T> getGenericType() {

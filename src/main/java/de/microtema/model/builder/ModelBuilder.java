@@ -32,7 +32,7 @@ public interface ModelBuilder<T> {
      */
     default T min() {
 
-        return build(null, new DefaultModelAction(false), true, true);
+        return build(null, new DefaultModelAction(false), false, true);
     }
 
     /**
@@ -40,7 +40,7 @@ public interface ModelBuilder<T> {
      */
     default T max() {
 
-        return build(null, new DefaultModelAction(true), true, true);
+        return build(null, new DefaultModelAction(true), false, true);
     }
 
     /**
@@ -48,7 +48,7 @@ public interface ModelBuilder<T> {
      */
     default T fix() {
 
-        return build(null, new DefaultModelAction(false), true, false);
+        return build(null, new DefaultModelAction(false), false, false);
     }
 
     /**
@@ -59,6 +59,27 @@ public interface ModelBuilder<T> {
         boolean minOrMax = getRandomValue(Boolean.class);
 
         return minOrMax ? min() : max();
+    }
+
+    default List<T> list(int size, boolean skip, boolean required, boolean random) {
+
+        List<T> list = new ArrayList<>();
+
+        while (list.size() < size) {
+
+            T model = build(null, new DefaultModelAction(required), skip, random);
+
+            list.add(model);
+        }
+
+        return list;
+    }
+
+    default Set<T> set(int size, boolean skip, boolean required, boolean random) {
+
+        List<T> list = list(size, skip, required, random);
+
+        return new HashSet<>(list);
     }
 
     /**
@@ -92,7 +113,9 @@ public interface ModelBuilder<T> {
      */
     default List<T> list() {
 
-        return list(ModelBuilderUtil.randomCollectionSize());
+        int size = ModelBuilderUtil.randomCollectionSize();
+
+        return list(size);
     }
 
     /**
@@ -118,7 +141,9 @@ public interface ModelBuilder<T> {
      */
     default Set<T> set() {
 
-        return set(ModelBuilderUtil.randomCollectionSize());
+        int size = ModelBuilderUtil.randomCollectionSize();
+
+        return set(size);
     }
 
     /**
@@ -155,6 +180,7 @@ public interface ModelBuilder<T> {
 
                 return CollectionUtil.random(modelType.getEnumConstants());
             } else {
+
                 return modelType.getEnumConstants()[0];
             }
 
@@ -162,13 +188,13 @@ public interface ModelBuilder<T> {
 
             Type propertyType = rootMethod != null ? ClassUtil.getGenericType(rootMethod.getGenericReturnType()) : null;
 
-            return TypeRandomAdapterFactory.getCollection(modelType, propertyType, skip, getActualTypeArguments());
+            return TypeRandomAdapterFactory.getCollection(modelType, propertyType, skip, random, getActualTypeArguments());
 
         } else if (modelType.isArray()) {
 
             Class propertyType = modelType.getComponentType();
 
-            return TypeRandomAdapterFactory.getArray(propertyType, skip);
+            return TypeRandomAdapterFactory.getArray(propertyType, skip, random);
 
         } else if (Class.class.equals(modelType)) {
 

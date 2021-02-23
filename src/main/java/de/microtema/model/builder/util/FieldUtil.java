@@ -74,7 +74,8 @@ public class FieldUtil {
         Validate.notNull(object);
 
         try {
-            Object value = field.get(object);
+
+            Object value = FieldUtils.readField(field, object, true);
 
             return (T) value;
         } catch (IllegalAccessException e) {

@@ -1,27 +1,28 @@
 package de.microtema.model.builder.app;
 
-import de.microtema.model.builder.ModelBuilder;
-import de.microtema.model.builder.ModelBuilderFactory;
 import org.junit.Test;
 
+import static de.microtema.model.builder.ModelBuilderFactory.min;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 public class AppBuilderTest {
 
+    App sut;
+
     @Test
     public void shouldPreventStackOverflowError() {
 
-        ModelBuilder<App> builder = ModelBuilderFactory.createBuilder(App.class);
+        sut = min(App.class);
 
-        App app = builder.min();
+        assertNotNull(sut);
+        assertNotNull(sut.getName());
 
-        assertNotNull(app);
-        assertNotNull(app.getName());
-        assertNull(app.getTitle());
-        assertNotNull(app.getLocalDateTime());
+        App parentApp = sut.getParent();
+        assertNotNull(parentApp);
+        assertNull(parentApp.getParent());
 
-        assertNotNull(app.getApps());
-        assertNotNull(app.getSets());
+        assertNotNull(sut.getApps());
+        assertNotNull(sut.getChildren());
     }
 }
