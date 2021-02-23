@@ -9,14 +9,9 @@ import de.microtema.model.builder.util.ModelBuilderUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.Validate;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import static de.microtema.model.builder.adapter.TypeRandomAdapterFactory.getRandomValue;
 
@@ -201,7 +196,7 @@ public interface ModelBuilder<T> {
             return (T) Class.class;
         }
 
-        T model = createModel();
+        T model = createModel(modelAction, skip, random);
 
         TypeRandomAdapterFactory.generateFieldValues(model, modelAction, skip, random);
 
@@ -219,15 +214,11 @@ public interface ModelBuilder<T> {
     /**
      * @return new Model
      */
-    default T createModel() {
+    default T createModel(ModelAction modelAction, boolean skip, boolean random) {
 
-        Class<T> genericType = getGenericType();
+        Class<T> instanceType = getGenericType();
 
-        Constructor<T> constructor = ClassUtil.getConstructor(genericType);
-
-        Object[] args = TypeRandomAdapterFactory.getParameters(constructor.getParameterTypes());
-
-        return ClassUtil.createInstance(genericType, args);
+        return ModelBuilderUtil.createModel(instanceType, modelAction, skip, random);
     }
 
     /**
@@ -239,5 +230,4 @@ public interface ModelBuilder<T> {
 
         return new Class[0];
     }
-
 }

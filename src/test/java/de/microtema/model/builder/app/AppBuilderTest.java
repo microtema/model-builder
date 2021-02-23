@@ -8,12 +8,10 @@ import static org.junit.Assert.assertNull;
 
 public class AppBuilderTest {
 
-    App sut;
+    App sut = min(App.class);
 
     @Test
     public void shouldPreventStackOverflowError() {
-
-        sut = min(App.class);
 
         assertNotNull(sut);
         assertNotNull(sut.getName());

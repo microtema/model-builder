@@ -12,9 +12,11 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,6 +95,21 @@ public class MethodUtil {
         } catch (NoSuchMethodException e) {
             throw new IllegalArgumentException("Unable to get method", e);
         }
+    }
+
+    public static Method findStaticMethod(Class<?> beanType, Function<Method, Boolean> filter) {
+        Validate.notNull(beanType);
+
+        Method[] methods = beanType.getMethods();
+
+        for (Method method : methods) {
+
+            if (Modifier.isStatic(method.getModifiers()) && filter.apply(method)) {
+                return method;
+            }
+        }
+
+        return null;
     }
 
     public static String getPropertyName(String methodName) {

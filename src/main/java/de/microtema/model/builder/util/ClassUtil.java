@@ -176,6 +176,27 @@ public class ClassUtil {
 
         Constructor<?>[] constructors = instanceType.getConstructors();
 
+        Constructor<T> fallBackConstructor = findConstructor(instanceType);
+
+        IllegalArgumentException exception = new IllegalArgumentException("Unable to get public constructor of Type " + instanceType);
+
+        return Optional.ofNullable(fallBackConstructor).orElseThrow(() -> exception);
+    }
+
+    /**
+     * Get Constructor for give parameters
+     *
+     * @param instanceType may not be null
+     * @param args         may empty
+     * @param <T>          required type
+     * @return Constructor or throw IllegalArgumentException
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Constructor<T> findConstructor(Class<T> instanceType, Object... args) {
+        notNull(instanceType);
+
+        Constructor<?>[] constructors = instanceType.getConstructors();
+
         Constructor<?> fallBackConstructor = null;
 
         int argumentsLength = args == null ? 0 : args.length;
@@ -191,9 +212,7 @@ public class ClassUtil {
             fallBackConstructor = constructor;
         }
 
-        IllegalArgumentException exception = new IllegalArgumentException("Unable to get public constructor of Type " + instanceType);
-
-        return (Constructor<T>) Optional.ofNullable(fallBackConstructor).orElseThrow(() -> exception);
+        return (Constructor<T>) fallBackConstructor;
     }
 
     /**
