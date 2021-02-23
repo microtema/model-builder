@@ -25,6 +25,12 @@ Reducing Boilerplate Code with Annotation Driven Tests
 
 * create person from Resource
     * **Person person = builder.fromResource("file://var/person.xml");**
+  
+* create list of person from Resource
+    * **List< Person > persons = builder.listFromResource("file://var/persons.json");**
+
+* create Set of person from Resource
+  * **Set< Person > persons = builder.setFromResource("file://var/persons.json");**
 
 * create a List of person instances within filled required with properties random **[1..10]** size
     * **List< Person > persons = builder.list();**
@@ -80,7 +86,9 @@ Reducing Boilerplate Code with Annotation Driven Tests
     * Commons-BeanUtils (Apache License)
     * Commons-IO (Apache License)
     * Commons-Lang3 (Apache License)
+    * Jackson XML Databind (Apache License)
     * Junit (EPL 1.0 License)
+    * lombok (MIT License)
 * Code-Analyses
     * Sonar
     * Jacoco

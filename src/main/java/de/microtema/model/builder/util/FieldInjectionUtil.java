@@ -60,7 +60,7 @@ public class FieldInjectionUtil {
 
             Object value = getValue(modelBuilder, modelsType, modelsAnnotation);
 
-            if ((field.getType().isArray())) {
+            if (field.getType().isArray() && value instanceof Collection) {
                 value = Array.newInstance(genericType, ((Collection) value).size());
             }
 
@@ -133,6 +133,10 @@ public class FieldInjectionUtil {
         assert modelBuilder != null;
         assert modelType != null;
 
+       if(StringUtils.isNotEmpty(resource)) {
+           return modelBuilder.fromResource(resource);
+       }
+
         switch (modelType) {
             case MIN:
                 return modelBuilder.min();
@@ -142,7 +146,7 @@ public class FieldInjectionUtil {
                 return modelBuilder.mix();
             case FIX:
                 return modelBuilder.fix();
-            case SOURCE:
+            case RESOURCE:
                 return modelBuilder.fromResource(resource);
             default:
                 throw new IllegalArgumentException("Unsupported modelType: " + modelType);
@@ -157,12 +161,30 @@ public class FieldInjectionUtil {
         int size = models.size() == -1 ? ModelBuilderUtil.randomCollectionSize() : models.size();
         ModelType modelType = models.type();
         boolean required = (modelType == ModelType.MAX);
+        String resource = models.resource();
+
+        boolean fromResource = StringUtils.isNotEmpty(resource);
 
         switch (modelsType) {
             case LIST:
+                if(fromResource) {
+                    return modelBuilder.listFromResource(resource);
+                }
+
+                return modelBuilder.list(size, false, required, true);
             case ARRAY:
+
+                if(fromResource) {
+                    return modelBuilder.arrayFromResource(resource);
+                }
+
                 return modelBuilder.list(size, false, required, true);
             case SET:
+
+                if(fromResource) {
+                    return modelBuilder.setFromResource(resource);
+                }
+
                 return modelBuilder.set(size, false, required, true);
             default:
                 throw new IllegalArgumentException("Unsupported modelsType: " + modelsType);

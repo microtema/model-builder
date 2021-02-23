@@ -33,10 +33,10 @@ public class FieldInjectionUtilTest {
     @Inject
     StringRandomAdapter adapter;
 
-    @Model(type = ModelType.SOURCE, resource = "messages.properties")
+    @Model(type = ModelType.RESOURCE, resource = "messages.properties")
     Properties properties;
 
-    @Model(type = ModelType.SOURCE, resource = "messages.xml")
+    @Model(type = ModelType.RESOURCE, resource = "messages.xml")
     Properties xmlProperties;
 
     @Models(type = ModelType.MIN)

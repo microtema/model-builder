@@ -25,5 +25,5 @@ public enum ModelType {
     /**
      * init from resource
      */
-    SOURCE
+    RESOURCE
 }

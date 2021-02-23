@@ -9,6 +9,8 @@ import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.Validate;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,13 +18,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.*;
 
 @UtilityClass
 public final class ModelBuilderUtil {
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * @return random collection size
@@ -161,5 +162,29 @@ public final class ModelBuilderUtil {
 
             return cache.get(key);
         };
+    }
+
+    public static <T> T fromJson(String resourceLocation, Class<T> beanType) {
+
+        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
+
+            return mapper.readValue(resourceAsStream, beanType);
+        } catch (IOException | NullPointerException e) {
+
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static <T> Collection<T> collectionFromJson(String resourceLocation, Class<? extends Collection> collectionType, Class<T> beanType) {
+
+        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
+
+            Object collection = mapper.readValue(resourceAsStream, mapper.getTypeFactory().constructCollectionType(collectionType, beanType));
+
+            return (Collection<T>) collection;
+        } catch (IOException | NullPointerException e) {
+
+            throw new IllegalArgumentException(e);
+        }
     }
 }

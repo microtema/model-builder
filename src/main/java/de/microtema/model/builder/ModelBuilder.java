@@ -8,6 +8,7 @@ import de.microtema.model.builder.util.MethodUtil;
 import de.microtema.model.builder.util.ModelBuilderUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.Validate;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -56,27 +57,6 @@ public interface ModelBuilder<T> {
         return minOrMax ? min() : max();
     }
 
-    default List<T> list(int size, boolean skip, boolean required, boolean random) {
-
-        List<T> list = new ArrayList<>();
-
-        while (list.size() < size) {
-
-            T model = build(null, new DefaultModelAction(required), skip, random);
-
-            list.add(model);
-        }
-
-        return list;
-    }
-
-    default Set<T> set(int size, boolean skip, boolean required, boolean random) {
-
-        List<T> list = list(size, skip, required, random);
-
-        return new HashSet<>(list);
-    }
-
     /**
      * @param resourceLocation may not be empty
      * @return @return new Instance of Model created from Resource
@@ -100,7 +80,30 @@ public interface ModelBuilder<T> {
             }
         }
 
+        if (FilenameUtils.isExtension(resourceLocation, "json")) {
+
+            return ModelBuilderUtil.fromJson(resourceLocation, getGenericType());
+        }
+
         throw new UnsupportedOperationException();
+    }
+
+    @SuppressWarnings("unchecked")
+    default List<T> listFromResource(String resource) {
+
+        return (List<T>) ModelBuilderUtil.collectionFromJson(resource, List.class, getGenericType());
+    }
+
+    @SuppressWarnings("unchecked")
+    default T[] arrayFromResource(String resource) {
+
+        return (T[]) ModelBuilderUtil.fromJson(resource, getGenericType());
+    }
+
+    @SuppressWarnings("unchecked")
+    default Set<T> setFromResource(String resource) {
+
+        return (Set<T>) ModelBuilderUtil.collectionFromJson(resource, Set.class, getGenericType());
     }
 
     /**
@@ -148,6 +151,27 @@ public interface ModelBuilder<T> {
     default Set<T> set(int size) {
 
         return new HashSet<>(list(size));
+    }
+
+    default List<T> list(int size, boolean skip, boolean required, boolean random) {
+
+        List<T> list = new ArrayList<>();
+
+        while (list.size() < size) {
+
+            T model = build(null, new DefaultModelAction(required), skip, random);
+
+            list.add(model);
+        }
+
+        return list;
+    }
+
+    default Set<T> set(int size, boolean skip, boolean required, boolean random) {
+
+        List<T> list = list(size, skip, required, random);
+
+        return new HashSet<>(list);
     }
 
     /**

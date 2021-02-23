@@ -18,5 +18,7 @@ public @interface Models {
 
     int size() default -1;
 
+    String resource() default "";
+
     ModelType type() default ModelType.MIX;
 }
