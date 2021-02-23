@@ -51,11 +51,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.0</version>
                 <configuration>
-                    <testFailureIgnore>true</testFailureIgnore>
-                    <skip>false</skip>
                     <reuseForks>false</reuseForks>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
-                    <useSystemClassLoader>false</useSystemClassLoader>
                 </configuration>
             </plugin>
             <plugin>

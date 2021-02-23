@@ -97,4 +97,8 @@ Reducing Boilerplate Code with Annotation Driven Tests
 
 MIT (unless noted otherwise)
 
+## Test Coverage
+
+95 %
+
  
