@@ -18,12 +18,9 @@ public class AnnotationUtil {
 
     static {
 
-        addPredicate("javax.xml.bind.annotation.XmlAttribute", it -> true);
-        addPredicate("javax.xml.bind.annotation.XmlElement", it -> true);
-
-        addPredicate("javax.validation.constraints.NotNull", it -> true);
-        addPredicate("javax.validation.constraints.NotEmpty", it -> true);
-        addPredicate("javax.validation.constraints.NotBlank", it -> true);
+        addPredicate("NotNull", it -> true);
+        addPredicate("NotEmpty", it -> true);
+        addPredicate("NotBlank", it -> true);
     }
 
     /**
@@ -76,7 +73,7 @@ public class AnnotationUtil {
     private static String getAnnotationName(Object annotation) {
         Validate.notNull(annotation);
 
-        String annotationName = annotation.getClass().getName();
+        String annotationName = annotation.getClass().getSimpleName();
 
         if (!(annotation instanceof Proxy)) {
 
@@ -87,6 +84,6 @@ public class AnnotationUtil {
 
         Class<?>[] classes = proxy.getClass().getInterfaces();
 
-        return classes[0].getName();
+        return classes[0].getSimpleName();
     }
 }

@@ -1,5 +1,6 @@
 package de.microtema.model.builder;
 
+import de.microtema.model.builder.address.Address;
 import de.microtema.model.builder.order.PurchaseItem;
 import de.microtema.model.builder.order.PurchaseOrder;
 import de.microtema.model.builder.person.Person;
@@ -153,6 +154,38 @@ public class ModelBuilderFactoryTest {
 
         assertFalse(properties.isEmpty());
         assertEquals("xml", properties.get("key"));
+    }
+
+    @Test
+    public void fromResourceWithinJson() {
+
+        Class<Address> modelType = Address.class;
+
+        Address answer = ModelBuilderFactory.createBuilder(modelType).fromResource("address.json");
+
+        assertNotNull(answer);
+    }
+
+    @Test
+    public void listFromResource() {
+
+        Class<Address> modelType = Address.class;
+
+        List<Address> answer = ModelBuilderFactory.createBuilder(modelType).listFromResource("addresses.json");
+
+        assertNotNull(answer);
+        assertFalse(answer.isEmpty());
+    }
+
+    @Test
+    public void setFromResource() {
+
+        Class<Address> modelType = Address.class;
+
+        Set<Address> answer = ModelBuilderFactory.createBuilder(modelType).setFromResource("addresses.json");
+
+        assertNotNull(answer);
+        assertFalse(answer.isEmpty());
     }
 
     @Test

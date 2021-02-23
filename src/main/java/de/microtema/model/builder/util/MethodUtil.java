@@ -6,13 +6,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.text.WordUtils;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,7 +21,8 @@ import java.util.stream.Stream;
 public class MethodUtil {
 
     static final Map<Class<?>, Set<String>> PROPERTIES_CACHE = new ConcurrentHashMap<>(256);
-    private static final Set<String> NOT_NULL_CONSTRAINTS = Stream.of("javax.validation.constraints.NotNull").collect(Collectors.toSet());
+
+    private static final Set<String> NOT_NULL_CONSTRAINTS = Stream.of("NotNull", "NotEmpty", "NotBlank").collect(Collectors.toSet());
 
     /**
      * @param beanType may not be null
@@ -120,28 +118,6 @@ public class MethodUtil {
         return WordUtils.uncapitalize(property);
     }
 
-    private static String convertToGetterMethod(String property) {
-        assert property != null;
-
-        return "get" + WordUtils.capitalize(property);
-    }
-
-    private static String convertToSetterMethod(String property) {
-        assert property != null;
-
-        return "set" + WordUtils.capitalize(property);
-    }
-
-    private static Class<?> getParameterType(Class<?> beanType, String property) {
-        assert beanType != null;
-        assert property != null;
-
-        Method method = getGetterMethod(beanType, property);
-
-        return method.getReturnType();
-    }
-
-
     /**
      * Return true if is Required Field else false
      *
@@ -163,15 +139,27 @@ public class MethodUtil {
             }
         }
 
-        XmlAttribute xmlAttribute = method.getAnnotation(XmlAttribute.class);
+        return false;
+    }
 
-        if (xmlAttribute != null) {
-            return xmlAttribute.required();
-        }
+    private static String convertToGetterMethod(String property) {
+        assert property != null;
 
-        XmlElement xmlElement = method.getAnnotation(XmlElement.class);
+        return "get" + WordUtils.capitalize(property);
+    }
 
-        return xmlElement != null && xmlElement.required();
+    private static String convertToSetterMethod(String property) {
+        assert property != null;
 
+        return "set" + WordUtils.capitalize(property);
+    }
+
+    private static Class<?> getParameterType(Class<?> beanType, String property) {
+        assert beanType != null;
+        assert property != null;
+
+        Method method = getGetterMethod(beanType, property);
+
+        return method.getReturnType();
     }
 }

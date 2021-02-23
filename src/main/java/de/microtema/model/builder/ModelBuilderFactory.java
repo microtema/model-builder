@@ -100,6 +100,16 @@ public final class ModelBuilderFactory {
         return createBuilder(modelType).fromResource(fromResource);
     }
 
+    public static <T> List<T> listFromResource(final Class<T> modelType, String resource) {
+
+        return createBuilder(modelType).listFromResource(resource);
+    }
+
+    public static <T> Set<T> setFromResource(final Class<T> modelType, String resource) {
+
+        return createBuilder(modelType).setFromResource(resource);
+    }
+
     public static <T> List<T> list(final Class<T> modelType) {
 
         return createBuilder(modelType).list();

@@ -2,6 +2,7 @@ package de.microtema.model.builder.wrapper;
 
 import de.microtema.model.builder.address.Address;
 import de.microtema.model.builder.person.Person;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Date;
