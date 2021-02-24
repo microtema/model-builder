@@ -3,17 +3,17 @@ package de.microtema.model.builder.dto;
 import de.microtema.model.builder.geo.GeoFormat;
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class GeoDataDTO {
 
-    @XmlElement(required = true)
+    @NotNull
     private Double latitude;
 
-    @XmlElement(required = true)
+    @NotNull
     private Double longitude;
 
-    @XmlElement(required = true)
+    @NotNull
     private GeoFormat type;
 }

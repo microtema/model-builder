@@ -2,23 +2,23 @@ package de.microtema.model.builder.dto;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class AddressDTO {
 
-    @XmlElement(required = true)
+    @NotNull
     private String streetName;
 
-    @XmlElement(required = true)
+    @NotNull
     private String streetNumber;
 
-    @XmlElement(required = true)
+    @NotNull
     private Integer zipCode;
 
-    @XmlElement(required = true)
+    @NotNull
     private GeoDataDTO geoData;
 
-    @XmlElement
+    @NotNull
     private String description;
 }

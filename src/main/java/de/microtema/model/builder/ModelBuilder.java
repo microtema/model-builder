@@ -178,7 +178,7 @@ public interface ModelBuilder<T> {
      * @param rootMethod  from root model may be null
      * @param modelAction may be not null
      * @param skip        should property be skipped
-     * @param skip        should value be random or fix
+     * @param random      should value be random or fix
      * @return new model from type T
      */
     @SuppressWarnings("unchecked")

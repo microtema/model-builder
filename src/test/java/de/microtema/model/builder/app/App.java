@@ -4,8 +4,6 @@ package de.microtema.model.builder.app;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAttribute;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data

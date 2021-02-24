@@ -2,7 +2,7 @@ package de.microtema.model.builder.dto;
 
 import lombok.Data;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -10,28 +10,28 @@ import java.util.Objects;
 @Data
 public class PersonDTO {
 
-    @XmlElement(required = true)
+    @NotNull
     private Long id;
 
-    @XmlElement(required = true)
+    @NotNull
     private String name;
 
-    @XmlElement(required = true)
+    @NotNull
     private String email;
 
-    @XmlElement(required = true)
+    @NotNull
     private String phoneNumber;
 
-    @XmlElement(required = true)
+    @NotNull
     private Integer position;
 
-    @XmlElement(required = true)
+    @NotNull
     private Date dob;
 
-    @XmlElement
+    @NotNull
     private Date updateDate;
 
-    @XmlElement
+    @NotNull
     private List<AddressDTO> addresses;
 
     @Override
