@@ -120,7 +120,7 @@
                         <artifactId>maven-gpg-plugin</artifactId>
                         <version>1.6</version>
                         <configuration>
-                            <executable>gpg2</executable>
+                            <executable>gpg</executable>
                         </configuration>
                         <executions>
                             <execution>
@@ -241,7 +241,7 @@
             <name>Mario Tema</name>
             <email>7fate@web.com</email>
             <organization>Mario Tema</organization>
-            <organizationUrl>http://www.7fate.de</organizationUrl>
+            <organizationUrl>http://microtema.de</organizationUrl>
             <roles>
                 <role>developer</role>
             </roles>
