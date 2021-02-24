@@ -1,0 +1,18 @@
+image: maven:3.3.9
+options:
+  max-time: 20 # configure default 20 minute timeout
+stepdefinitions:
+  - test: &test
+      name: Test and Build
+      caches:
+        - maven
+      script:
+        - mvn -B verify
+      artifacts:
+        - target/**
+pipelines:
+  branches:
+    master:
+      - step: *test
+    develop:
+      - step: *test
