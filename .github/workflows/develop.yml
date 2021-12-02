@@ -1,0 +1,109 @@
+# This workflow will build a Java project with Maven
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  compile:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Compile
+      run: mvn compile
+  security-check:
+
+    runs-on: ubuntu-latest
+    needs: compile
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Security Check
+      run: echo "security-check"
+  versioning:
+
+    runs-on: ubuntu-latest
+    needs: security-check
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Versoning
+      run: echo "versoning"
+  unit-test:
+
+    runs-on: ubuntu-latest
+    needs: versioning
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Unit Test
+      run: mvn test
+  it-test:
+
+    runs-on: ubuntu-latest
+    needs: versioning
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Integration Test
+      run: mvn test
+  quality-gate:
+
+    runs-on: ubuntu-latest
+    needs: [unit-test, it-test]
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Quality Gate
+      run: echo "quality gate"
+  build:
+
+    runs-on: ubuntu-latest
+    needs: quality-gate
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build
+      run: mvn package
+
+  deploy:
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Deploy
+      run: echo "deploy"
