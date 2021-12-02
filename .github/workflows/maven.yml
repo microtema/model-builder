@@ -40,6 +40,7 @@ jobs:
     needs: security-check
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -52,6 +53,7 @@ jobs:
     needs: versioning
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -64,6 +66,7 @@ jobs:
     needs: versioning
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -76,6 +79,7 @@ jobs:
     needs: [unit-test, it-test]
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -88,6 +92,7 @@ jobs:
     needs: quality-gate
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -100,6 +105,7 @@ jobs:
     needs: build
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -112,6 +118,7 @@ jobs:
     needs: tag
 
     steps:
+    - uses: actions/checkout@v2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
