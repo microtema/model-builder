@@ -14,9 +14,7 @@ import org.junit.Test;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class StringModelBuilderTest {
 
@@ -40,6 +38,12 @@ public class StringModelBuilderTest {
 
     @Models(size = 3)
     Set<String> modelsAsSetWithFixedSize;
+
+    @Model(resource = "messages.xml")
+    String xml;
+
+    @Model(resource = "messages.xml")
+    byte[] binary;
 
     @Before
     public void setUp() {
@@ -93,5 +97,26 @@ public class StringModelBuilderTest {
         assertEquals(3, modelsAsSetWithFixedSize.size());
         assertFalse(modelsAsSetWithFixedSize.isEmpty());
         models.forEach(Assert::assertNotNull);
+    }
+
+    @Test
+    public void xml() {
+
+        assertNotNull(xml);
+
+        assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                "<!DOCTYPE properties SYSTEM \"http://java.sun.com/dtd/properties.dtd\">\n" +
+                "<properties>\n" +
+                "    <comment>Here are some favorites</comment>\n" +
+                "    <entry key=\"key\">xml</entry>\n" +
+                "</properties>", xml);
+    }
+
+    @Test
+    public void binary() {
+
+        assertNotNull(binary);
+
+        assertEquals(xml, new String(binary));
     }
 }

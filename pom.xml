@@ -6,7 +6,7 @@
 
     <groupId>de.microtema</groupId>
     <artifactId>model-builder</artifactId>
-    <version>2.5.1-SNAPSHOT</version>
+    <version>2.5.2</version>
     <packaging>jar</packaging>
 
     <name>Model Builder</name>
@@ -109,7 +109,7 @@
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
+                        <version>1.6.8</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
@@ -203,7 +203,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.16</version>
+            <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

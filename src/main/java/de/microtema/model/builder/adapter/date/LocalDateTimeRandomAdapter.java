@@ -1,6 +1,7 @@
 package de.microtema.model.builder.adapter.date;
 
 import de.microtema.model.builder.adapter.AbstractTypeRandomAdapter;
+import de.microtema.model.builder.util.NumberUtil;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,9 @@ public class LocalDateTimeRandomAdapter extends AbstractTypeRandomAdapter<LocalD
     @Override
     protected LocalDateTime randomValueDefault(String propertyName) {
 
-        return LocalDateTime.now();
+        int seconds = NumberUtil.getStringSum(propertyName);
+
+        return LocalDateTime.now().plusSeconds(seconds);
     }
 
     @Override
