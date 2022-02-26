@@ -8,15 +8,16 @@ import de.microtema.model.builder.constants.Constants;
 import javassist.util.proxy.MethodHandler;
 import javassist.util.proxy.ProxyFactory;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.*;
 
@@ -169,6 +170,29 @@ public final class ModelBuilderUtil {
         try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
 
             return mapper.readValue(resourceAsStream, beanType);
+        } catch (IOException | NullPointerException e) {
+
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static String fromString(String resourceLocation) {
+
+        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
+
+            return IOUtils.toString(resourceAsStream, Charset.defaultCharset());
+        } catch (IOException | NullPointerException e) {
+
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static byte[] fromBinary(String resourceLocation) {
+
+        try (InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceLocation)) {
+
+            return IOUtils.toByteArray(resourceAsStream);
+
         } catch (IOException | NullPointerException e) {
 
             throw new IllegalArgumentException(e);

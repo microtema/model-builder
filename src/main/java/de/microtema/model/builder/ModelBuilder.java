@@ -8,7 +8,6 @@ import de.microtema.model.builder.util.MethodUtil;
 import de.microtema.model.builder.util.ModelBuilderUtil;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.Validate;
-import org.codehaus.jackson.type.TypeReference;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -82,7 +81,17 @@ public interface ModelBuilder<T> {
 
         if (FilenameUtils.isExtension(resourceLocation, "json")) {
 
-            return ModelBuilderUtil.fromJson(resourceLocation, getGenericType());
+            return ModelBuilderUtil.fromJson(resourceLocation, genericType);
+        }
+
+        if (String.class.isAssignableFrom(genericType)) {
+
+            return (T) ModelBuilderUtil.fromString(resourceLocation);
+        }
+
+        if (byte[].class.isAssignableFrom(genericType)) {
+
+            return (T) ModelBuilderUtil.fromBinary(resourceLocation);
         }
 
         throw new UnsupportedOperationException();

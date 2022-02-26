@@ -1,6 +1,7 @@
 package de.microtema.model.builder.adapter.date;
 
 import de.microtema.model.builder.adapter.AbstractTypeRandomAdapter;
+import de.microtema.model.builder.util.NumberUtil;
 import lombok.SneakyThrows;
 
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ public class DateRandomAdapter extends AbstractTypeRandomAdapter<Date> {
     @SneakyThrows
     public Date fixValue(String propertyName) {
 
-        int seconds = propertyName.length();
+        int seconds = NumberUtil.getStringSum(propertyName);
 
         String formattedTime = formatSeconds(seconds);
 

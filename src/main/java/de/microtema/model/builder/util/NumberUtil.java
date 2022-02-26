@@ -1,6 +1,7 @@
 package de.microtema.model.builder.util;
 
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -32,5 +33,22 @@ public final class NumberUtil {
     public static Integer randomInteger() {
 
         return random(0, Integer.MAX_VALUE);
+    }
+
+    public int getStringSum(String str) {
+
+        if (StringUtils.isEmpty(str)) {
+            return 0;
+        }
+
+        int sum = 0;
+
+        for (char ch : str.toLowerCase().toCharArray()) {
+            if (ch >= 'a' && ch <= 'z') {
+                sum += 1 + ch - 'a';
+            }
+        }
+
+        return sum;
     }
 }

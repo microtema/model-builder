@@ -61,4 +61,20 @@ public class ModelBuilderUtilTest {
 
         assertNotNull(properties);
     }
+
+    @Test
+    public void fromString() {
+
+        String properties = ModelBuilderUtil.fromString("messages.xml");
+
+        assertNotNull(properties);
+    }
+
+    @Test
+    public void fromBinary() {
+
+        byte[] properties = ModelBuilderUtil.fromBinary("messages.xml");
+
+        assertNotNull(properties);
+    }
 }
